@@ -23,6 +23,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
     </extensions>
 
     <actions>
