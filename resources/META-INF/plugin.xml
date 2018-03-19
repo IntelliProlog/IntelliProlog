@@ -24,6 +24,10 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
+        <configurationType implementation="ch.eif.intelliprolog.PrologRunConfigurationType"/>
+        <moduleType id="PROLOG_MODULE_TYPE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
+        <moduleBuilder builderClass="ch.eif.intelliprolog.module.PrologModuleBuilder" id="PROLOG_MODULE_BUILDER"
+                       order="first"/>
     </extensions>
 
     <actions>
