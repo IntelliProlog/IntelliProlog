@@ -23,11 +23,12 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
-        <configurationType implementation="ch.eif.intelliprolog.PrologRunConfigurationType"/>
         <moduleType id="PROLOG_MODULE_TYPE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
-        <moduleBuilder builderClass="ch.eif.intelliprolog.module.PrologModuleBuilder" id="PROLOG_MODULE_BUILDER"
-                       order="first"/>
+        <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
+        <sdkType implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/>
+        <runConfigurationProducer implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationProducer"/>
+        <configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/>
+        <programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/>
     </extensions>
 
     <actions>
