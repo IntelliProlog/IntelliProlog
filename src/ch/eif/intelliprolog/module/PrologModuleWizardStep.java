@@ -6,7 +6,7 @@ import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 
 import javax.swing.*;
 
-public class PrologModuleWizardStep extends ModuleWizardStep {
+class PrologModuleWizardStep extends ModuleWizardStep {
 
     private final PrologProjectSettings projectSettings = new PrologProjectSettings();
 

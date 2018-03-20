@@ -1,18 +1,29 @@
 package ch.eif.intelliprolog.module;
 
-import com.intellij.ide.util.projectWizard.ModuleBuilder;
+import ch.eif.intelliprolog.sdk.PrologSdkType;
+import com.intellij.compiler.CompilerWorkspaceConfiguration;
+import com.intellij.ide.util.projectWizard.JavaModuleBuilder;
+import com.intellij.ide.util.projectWizard.ModuleBuilderListener;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleType;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.projectRoots.SdkTypeId;
 import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PrologModuleBuilder extends ModuleBuilder {
+public class PrologModuleBuilder extends JavaModuleBuilder implements ModuleBuilderListener {
+
+    private TextFieldWithBrowseButton myPrologInterpreter = new TextFieldWithBrowseButton();
 
     @Override
-    public void setupRootModel(ModifiableRootModel modifiableRootModel) {
-
+    public void setupRootModel(ModifiableRootModel modifiableRootModel) throws ConfigurationException {
+        addListener(this);
+        super.setupRootModel(modifiableRootModel);
     }
 
     @Override
@@ -20,9 +31,19 @@ public class PrologModuleBuilder extends ModuleBuilder {
         return PrologModuleType.getInstance();
     }
 
+    @Override
+    public boolean isSuitableSdkType(SdkTypeId sdkType) {
+        return sdkType instanceof PrologSdkType;
+    }
+
     @Nullable
     @Override
     public ModuleWizardStep getCustomOptionsStep(WizardContext context, Disposable parentDisposable) {
         return new PrologModuleWizardStep();
+    }
+
+    @Override
+    public void moduleCreated(@NotNull Module module) {
+        CompilerWorkspaceConfiguration.getInstance(module.getProject()).CLEAR_OUTPUT_DIRECTORY = false;
     }
 }
