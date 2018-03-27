@@ -1,0 +1,100 @@
+// Based on https://github.com/likelion/swiprolog/blob/master/src/com/github/likelion/swiprolog/Prolog.bnf
+{
+    parserClass="ch.eif.intelliprolog.parser.PrologParser"
+
+    extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+    psiClassPrefix="Prolog"
+    psiImplClassSuffix="Impl"
+    psiPackage="ch.eif.intelliprolog.psi"
+    psiImplPackage="ch.eif.intelliprolog.psi.impl"
+
+    elementTypeHolderClass="ch.eif.intelliprolog.psi.PrologTypes"
+    elementTypeClass="ch.eif.intelliprolog.psi.PrologElementType"
+    tokenTypeClass="ch.eif.intelliprolog.psi.PrologTokenType"
+
+    tokens = [
+        DOT = "."
+        IMPLIES = ":-"
+        COMMA = ","
+        LPAREN = "("
+        RPAREN = ")"
+        CUT ="!"
+        LBRACKET = "["
+        RBRACKET = "]"
+        COLON = ":"
+        SEMICOLON = ";"
+        PIPE = "|"
+        PROMPT = "?-"
+        NOT = "\+"
+        LBRACE = "{"
+        RBRACE = "}"
+        HAT = "^"
+        IFTHEN = "->"
+        SOFTCUT = "*->"
+        DCG = "-->"
+        SLASH = "/"
+
+        FAIL = "fail"
+
+        UNIFY = "="
+        UNIV = "=.."
+        NOTUNIFY = "\="
+        PLUS = "+"
+        MINUS ="-"
+        MULTIPLY = "*"
+        IS = "is"
+
+        OPERATOR = "regexp:=(\.\.|\\=|:=|=)?|(\\==?)|\+|-|\*|>(>|=)?|<(<|=)?|(is)"
+
+        ONCE = "once"
+
+        ATOM = "regexp:([a-z][a-zA-Z0-9_]*)|('([^'\\]|\\.)*')"
+        VARIABLE = "regexp:[A-Z_][a-zA-Z0-9_]*"
+        NUMBER = "regexp:(-)?(0((x[0-9a-fA-F]+)|(b[10]+)|(o[0-7]+))?|[1-9][0-9]*(\.[0-9]+)?(E(\+|\-)?[0-9]+)?)"
+        STRING = "regexp:'([^'\\]|\\.)*'|\"([^\"\\]|\\\"|\\\'|\\)*\""
+        COMMENT = "regexp:(%[^\r\n]*)|(/\*([^\*]|\*[^/]|\n)*\*/)"
+    ]
+}
+
+prologFile ::= sentence*
+
+private sentence ::= ( list | clause | directive | query ) DOT
+
+clause ::= head [ IMPLIES body ]
+private head ::= term [ ( COMMA terminal )* DCG grammarbody !(IMPLIES) ]
+
+directive ::= IMPLIES ( ( "multifile" | "dynamic" ) predspec ( COMMA predspec )* | body )
+
+private predspec ::= [ ATOM COLON ] ATOM SLASH [SLASH] NUMBER
+
+query ::= PROMPT body
+private body ::= body2 | NOT body | ONCE LPAREN body RPAREN | LPAREN body RPAREN [ COMMA body ]
+private body2 ::= body3 [ ( IFTHEN | SOFTCUT ) body [ disj body ] ]
+private body3 ::= body4 [ COMMA body ]
+private body4 ::= body5 [ disj body ]
+private body5 ::= body6 [ HAT body ]
+private body6 ::= term [ OPERATOR term ]
+
+private disj ::= SEMICOLON | PIPE
+
+private terminal ::= list | STRING
+
+private grammarbody ::= grammarbody2 | LBRACE body RBRACE | NOT grammarbody | ONCE LPAREN grammarbody RPAREN | LPAREN grammarbody RPAREN [ COMMA grammarbody ]
+private grammarbody2 ::= grammarbody3 [ ( IFTHEN | SOFTCUT ) grammarbody [ disj grammarbody ] ]
+private grammarbody3 ::= grammarbody4 [ COMMA grammarbody ]
+private grammarbody4 ::= grammarbody5 [ disj grammarbody ]
+private grammarbody5 ::= term [ HAT term ]
+
+term ::= predicatespec | LPAREN term RPAREN | LBRACE term RBRACE | list | STRING | NUMBER | VARIABLE | CUT | FAIL
+
+private predicatespec ::= predicate [ SLASH NUMBER ]
+private predicate ::= modular [ LPAREN arglist RPAREN !(SLASH) ]
+private modular ::= [ ATOM COLON ] ATOM
+
+private list ::= LBRACKET [ listexpr ] RBRACKET
+private listexpr ::= term [ ( COMMA listexpr ) | ( PIPE term ) ]
+
+private arglist ::= arglist2 ( COMMA term )*
+private arglist2 ::= arglist3 [ ( SLASH ATOM )* !(COMMA) ] // filepath
+private arglist3 ::= (DOT !(COMMA)) | term // current dir
