@@ -29,6 +29,7 @@
         <runConfigurationProducer implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationProducer"/>
         <configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/>
         <programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/>
+        <lang.parserDefinition language="Prolog" implementationClass="ch.eif.intelliprolog.PrologParserDefinition"/>
     </extensions>
 
     <actions>

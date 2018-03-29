@@ -8,7 +8,7 @@ import com.intellij.psi.FileViewProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class PrologFile extends PsiFileBase {
-    protected PrologFile(@NotNull FileViewProvider viewProvider) {
+    public PrologFile(@NotNull FileViewProvider viewProvider) {
         super(viewProvider, PrologLanguage.INSTANCE);
     }
 
