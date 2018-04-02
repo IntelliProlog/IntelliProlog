@@ -1,6 +1,5 @@
 package ch.eif.intelliprolog;
 
-import ch.eif.intelliprolog.parser.PrologParser;
 import ch.eif.intelliprolog.psi.PrologFile;
 import ch.eif.intelliprolog.psi.PrologTypes;
 import com.intellij.lang.ASTNode;
