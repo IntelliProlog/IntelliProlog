@@ -30,6 +30,10 @@
         <configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/>
         <programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/>
         <lang.parserDefinition language="Prolog" implementationClass="ch.eif.intelliprolog.PrologParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Prolog"
+                                       implementationClass="ch.eif.intelliprolog.PrologSyntaxHighlighterFactory"/>
+        <annotator language="Prolog" implementationClass="ch.eif.intelliprolog.editor.PrologAnnotator"/>
+        <colorSettingsPage implementation="ch.eif.intelliprolog.PrologColorSettingsPage"/>
     </extensions>
 
     <actions>

@@ -8,4 +8,8 @@ public class PrologElementType extends IElementType {
     public PrologElementType(@NotNull String debugName) {
         super(debugName, PrologLanguage.INSTANCE);
     }
+
+    public static boolean isParenthesis(IElementType tokenType) {
+        return tokenType.equals(PrologTypes.LPAREN) || tokenType.equals(PrologTypes.RPAREN);
+    }
 }
