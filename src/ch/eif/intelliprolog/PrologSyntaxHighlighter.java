@@ -14,6 +14,7 @@ import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
 import static ch.eif.intelliprolog.psi.PrologElementType.isParenthesis;
+import static ch.eif.intelliprolog.psi.PrologElementType.isBrackets;
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
@@ -72,6 +73,9 @@ public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey PARENTHESIS =
             createTextAttributesKey("PARENTHESIS", DefaultLanguageHighlighterColors.PARENTHESES);
 
+    public static final TextAttributesKey BRACKETS =
+            createTextAttributesKey("BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
+
     public static final TextAttributesKey COMMENT =
             createTextAttributesKey("PROLOG_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
@@ -98,6 +102,7 @@ public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
     private static final TextAttributesKey[] ANONYMOUS_VARIABLE_KEYS = new TextAttributesKey[]{ANONYMOUS_VARIABLE};
     private static final TextAttributesKey[] NAMED_VARIABLE_KEYS = new TextAttributesKey[]{NAMED_VARIABLE};
     private static final TextAttributesKey[] PARENTHESIS_KEYS = new TextAttributesKey[]{PARENTHESIS};
+    private static final TextAttributesKey[] BRACKETS_KEYS = new TextAttributesKey[]{BRACKETS};
     private static final TextAttributesKey[] COMMENT_KEYS = new TextAttributesKey[]{COMMENT};
     private static final TextAttributesKey[] EMPTY_ATTRIBUTES = new TextAttributesKey[0];
 
@@ -138,6 +143,8 @@ public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
             return NAMED_VARIABLE_KEYS;
         } else if (isParenthesis(tokenType)) {
             return PARENTHESIS_KEYS;
+        } else if (isBrackets(tokenType)) {
+            return BRACKETS_KEYS;
         } else if (tokenType.equals(PrologTypes.COMMENT)) {
             return COMMENT_KEYS;
         } else if (tokenType.equals(TokenType.BAD_CHARACTER)) {

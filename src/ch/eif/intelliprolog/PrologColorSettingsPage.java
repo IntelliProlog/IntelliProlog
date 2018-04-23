@@ -21,6 +21,7 @@ public class PrologColorSettingsPage implements ColorSettingsPage {
             new AttributesDescriptor("Anonymous Variable", PrologSyntaxHighlighter.ANONYMOUS_VARIABLE),
             new AttributesDescriptor("Named Variable", PrologSyntaxHighlighter.NAMED_VARIABLE),
             new AttributesDescriptor("Parenthesis", PrologSyntaxHighlighter.PARENTHESIS),
+            new AttributesDescriptor("Brackets", PrologSyntaxHighlighter.BRACKETS),
             new AttributesDescriptor("Bad Character", PrologSyntaxHighlighter.BAD_CHARACTER),
             new AttributesDescriptor("Quoted Compound Name", PrologSyntaxHighlighter.QUOTED_COMPOUND_NAME),
             new AttributesDescriptor("Unquoted Compound Name", PrologSyntaxHighlighter.UNQUOTED_COMPOUND_NAME),

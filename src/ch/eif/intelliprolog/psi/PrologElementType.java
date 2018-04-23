@@ -12,4 +12,8 @@ public class PrologElementType extends IElementType {
     public static boolean isParenthesis(IElementType tokenType) {
         return tokenType.equals(PrologTypes.LPAREN) || tokenType.equals(PrologTypes.RPAREN);
     }
+
+    public static boolean isBrackets(IElementType tokenType) {
+        return tokenType.equals(PrologTypes.LBRACKET) || tokenType.equals(PrologTypes.RBRACKET);
+    }
 }
