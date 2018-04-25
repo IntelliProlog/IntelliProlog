@@ -38,6 +38,10 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="ch.eif.intelliprolog.TestAction" class="ch.eif.intelliprolog.TestAction" text="TestAction"
+                description="TestAction">
+            <add-to-group group-id="RunMenu" anchor="first"/>
+        </action>
     </actions>
 
 </idea-plugin>
