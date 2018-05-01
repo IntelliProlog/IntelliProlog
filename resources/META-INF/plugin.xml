@@ -25,10 +25,10 @@
         <!-- Add your extensions here -->
         <moduleType id="PROLOG_MODULE_TYPE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
         <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
-        <sdkType implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/>
-        <runConfigurationProducer implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationProducer"/>
-        <configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/>
-        <programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/>
+        <!--sdkType implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/-->
+        <!--runConfigurationProducer implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationProducer"/-->
+        <!--configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/-->
+        <!--programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/-->
         <lang.parserDefinition language="Prolog" implementationClass="ch.eif.intelliprolog.PrologParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Prolog"
                                        implementationClass="ch.eif.intelliprolog.PrologSyntaxHighlighterFactory"/>
@@ -40,6 +40,10 @@
         <!-- Add your actions here -->
         <action id="ch.eif.intelliprolog.TestAction" class="ch.eif.intelliprolog.TestAction" text="TestAction"
                 description="TestAction">
+            <add-to-group group-id="RunMenu" anchor="first"/>
+        </action>
+        <action id="ch.eif.intelliprolog.actions.RunPrologAction" class="ch.eif.intelliprolog.actions.RunPrologAction"
+                text="RunProlog" description="RunProlog action">
             <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
     </actions>
