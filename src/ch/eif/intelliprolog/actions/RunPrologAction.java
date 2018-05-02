@@ -1,6 +1,9 @@
 package ch.eif.intelliprolog.actions;
 
 import ch.eif.intelliprolog.PrologFileType;
+import ch.eif.intelliprolog.actions.run.RunCommandLineState;
+import com.intellij.execution.configurations.CommandLineState;
+import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.LangDataKeys;
@@ -11,9 +14,6 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 
 public class RunPrologAction extends AnAction {
 
@@ -31,9 +31,6 @@ public class RunPrologAction extends AnAction {
 
             Messages.showMessageDialog(project, psiFile.toString(), "Selected Element", Messages.getInformationIcon());
 
-            String result = runMacOSProlog();
-
-            Messages.showMessageDialog(project, result, "Result of File", Messages.getInformationIcon());
         }
     }
 
@@ -52,35 +49,9 @@ public class RunPrologAction extends AnAction {
         }
     }
 
-    public String runMacOSProlog() {
+    public String runMacOSProlog(ExecutionEnvironment env, PsiFile sourceFile) {
 
-        StringBuffer sb = new StringBuffer();
-
-        try {
-            rt = Runtime.getRuntime();
-            proc = rt.exec("gprolog --query-goal append([a,b],[c,d],X)");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-            PrintWriter writer = new PrintWriter(proc.getOutputStream());
-
-            writer.print("halt.");
-            writer.flush();
-            writer.close();
-
-            String line = null;
-
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-                sb.append(line);
-                sb.append("\n");
-            }
-
-            int exitVal = proc.waitFor();
-            System.out.println("Exited with error code " + exitVal);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
+        RunCommandLineState command = new RunCommandLineState(env, "prolog", sourceFile.getVirtualFile().getPath(), null, false);
+        return "";
     }
 }

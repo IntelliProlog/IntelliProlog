@@ -21,11 +21,17 @@
     <depends>com.intellij.modules.lang</depends>
     -->
 
+    <project-components>
+        <component>
+            <implementation-class>ch.eif.intelliprolog.PrologProjectComponent</implementation-class>
+        </component>
+    </project-components>
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <moduleType id="PROLOG_MODULE_TYPE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
+        <moduleType id="PROLOG_MODULE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
         <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
-        <!--sdkType implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/-->
+        <sdkType id="PROLOG" implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/>
         <!--runConfigurationProducer implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationProducer"/-->
         <!--configurationType implementation="ch.eif.intelliprolog.runner.PrologRunConfigurationType"/-->
         <!--programRunner implementation="ch.eif.intelliprolog.runner.PrologDefaultProgramRunner"/-->
@@ -45,6 +51,12 @@
         <action id="ch.eif.intelliprolog.actions.RunPrologAction" class="ch.eif.intelliprolog.actions.RunPrologAction"
                 text="RunProlog" description="RunProlog action">
             <add-to-group group-id="RunMenu" anchor="first"/>
+        </action>
+        <action id="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+                class="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+                text="Load/Reload Current File in REPL...">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift L"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </action>
     </actions>
 
