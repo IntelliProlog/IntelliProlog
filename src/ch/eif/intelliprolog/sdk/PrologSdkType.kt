@@ -1,7 +1,6 @@
 package ch.eif.intelliprolog.sdk
 
 import ch.eif.intelliprolog.PrologIcons
-import ch.eif.intelliprolog.util.ProcessRunner
 import ch.eif.intelliprolog.util.PrologVersion
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.projectRoots.*
@@ -14,7 +13,6 @@ import java.io.FileFilter
 import java.io.FilenameFilter
 import java.util.*
 import javax.swing.Icon
-import kotlin.Comparator
 
 class PrologSdkType : SdkType("GPROLOG") {
 
@@ -57,7 +55,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             }
         }
 
-        fun isProlog(name: String): Boolean = name == "gprolog" || name.matches("gprolog-[.0-9*]+".toRegex())
+        fun isProlog(name: String): Boolean = name == "gprolog" || name == "gprolog.exe" || name.matches("gprolog-[.0-9*]+".toRegex())
 
         fun getPrologVersion(prologPath: File):String? {
             if (prologPath.isDirectory) {
@@ -145,19 +143,17 @@ class PrologSdkType : SdkType("GPROLOG") {
                 }
             })?.toList() ?: listOf())
         } else if (SystemInfo.isWindows) {
-            throw UnsupportedOperationException()
-            /*
-            var progFiles = System.getenv("ProgramFiles(x86)")
+            /*var progFiles = System.getenv("ProgramFiles(x86)")
             if (progFiles == null) {
                 progFiles = System.getenv("ProgramFiles")
             }
             if (progFiles == null)
-                return null
-            val versionsRoot = File(progFiles, "GNU Prolog")
+                return null*/
+            var cDrive = "C:"
+            val versionsRoot = File(cDrive, "GNU-Prolog")
             if (!versionsRoot.isDirectory)
-                return progFiles
+                return cDrive
             versions = versionsRoot.listFiles()?.toList() ?: listOf()
-            */
         } else if (SystemInfo.isMac) {
             val macVersions = ArrayList<File>()
             val brewVersionsRoot = File("/usr/local/Cellar/gnu-prolog")
