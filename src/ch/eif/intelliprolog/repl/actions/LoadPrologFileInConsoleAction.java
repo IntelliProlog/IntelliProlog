@@ -2,9 +2,14 @@ package ch.eif.intelliprolog.repl.actions;
 
 import ch.eif.intelliprolog.PrologIcons;
 import ch.eif.intelliprolog.psi.PrologFile;
+import ch.eif.intelliprolog.repl.PrologConsoleExecuteActionHandler;
+import ch.eif.intelliprolog.repl.PrologConsoleProcessHandler;
+import ch.eif.intelliprolog.repl.PrologREPLUtils;
+import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -21,6 +26,26 @@ public final class LoadPrologFileInConsoleAction extends PrologConsoleActionBase
 
     public LoadPrologFileInConsoleAction() {
         getTemplatePresentation().setIcon(PrologIcons.FILE);
+    }
+
+    private static String getActionFile(AnActionEvent e) {
+        Module module = PrologREPLUtils.getModule(e);
+        if (module == null) {
+            return null;
+        }
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        if (editor == null || editor.getProject() == null) {
+            return null;
+        }
+        PsiFile psiFile = PsiDocumentManager.getInstance(editor.getProject()).getPsiFile(editor.getDocument());
+        if (psiFile == null || !(psiFile instanceof PrologFile)) {
+            return null;
+        }
+        VirtualFile virtualFile = psiFile.getVirtualFile();
+        if (virtualFile == null || virtualFile instanceof LightVirtualFile) {
+            return null;
+        }
+        return virtualFile.getPath();
     }
 
     @Override
@@ -52,27 +77,14 @@ public final class LoadPrologFileInConsoleAction extends PrologConsoleActionBase
         FileDocumentManager.getInstance().saveAllDocuments();
 
         String command = "consult('" + filePath.substring(0, filePath.length() - 3) + "').";
-        executeCommand(project, command);
-    }
+        PrologConsoleProcessHandler processHandler = (PrologConsoleProcessHandler) PrologREPLUtils.prepareCommand(project);
 
-    private static String getActionFile(AnActionEvent e) {
-        Module module = RunPrologConsoleAction.getModule(e);
-        if (module == null) {
-            return null;
-        }
-        Editor editor = e.getData(CommonDataKeys.EDITOR);
-        if (editor == null || editor.getProject() == null) {
-            return null;
-        }
-        PsiFile psiFile = PsiDocumentManager.getInstance(editor.getProject()).getPsiFile(editor.getDocument());
-        if (psiFile == null || !(psiFile instanceof PrologFile)) {
-            return null;
-        }
-        VirtualFile virtualFile = psiFile.getVirtualFile();
-        if (virtualFile == null || virtualFile instanceof LightVirtualFile) {
-            return null;
-        }
-        return virtualFile.getPath();
+        LanguageConsoleImpl console = processHandler.getLanguageConsole();
+        console.setInputText(command);
+        CaretModel caretModel = editor.getCaretModel();
+        caretModel.moveToOffset(command.length());
+
+        new PrologConsoleExecuteActionHandler(project, processHandler).runExecuteAction(console, true);
     }
 
     @Override

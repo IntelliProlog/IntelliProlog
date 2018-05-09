@@ -1,7 +1,6 @@
 package ch.eif.intelliprolog.repl;
 
 import ch.eif.intelliprolog.sdk.PrologSdkType;
-import ch.eif.intelliprolog.util.PrologUtil;
 import com.intellij.execution.CantRunException;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionHelper;
@@ -79,7 +78,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
     }
 
-    private static GeneralCommandLine createCommandLine(Module module, String workingDir) throws CantRunException {
+    public static GeneralCommandLine createCommandLine(Module module, String workingDir) throws CantRunException {
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {

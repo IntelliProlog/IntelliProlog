@@ -1,4 +1,4 @@
-package ch.eif.intelliprolog.runner;
+package ch.eif.intelliprolog.repl.runner;
 
 import com.intellij.execution.configurations.RunProfile;
 import com.intellij.execution.executors.DefaultRunExecutor;
