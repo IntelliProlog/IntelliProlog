@@ -1,6 +1,5 @@
 package ch.eif.intelliprolog.editor;
 
-import ch.eif.intelliprolog.PrologSyntaxHighlighter;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;

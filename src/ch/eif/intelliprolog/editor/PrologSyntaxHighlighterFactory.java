@@ -1,4 +1,4 @@
-package ch.eif.intelliprolog;
+package ch.eif.intelliprolog.editor;
 
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory;
