@@ -19,7 +19,7 @@ public class PrologRunConfigurationType extends ConfigurationTypeBase {
             @NotNull
             @Override
             public RunConfiguration createTemplateConfiguration(@NotNull Project project) {
-                return new PrologRunConfiguration(project, PrologRunConfigurationType.this);
+                return new PrologRunConfiguration(project, this);
             }
 
             @Override

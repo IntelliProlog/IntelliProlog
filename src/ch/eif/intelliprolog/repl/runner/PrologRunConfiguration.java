@@ -1,13 +1,11 @@
 package ch.eif.intelliprolog.repl.runner;
 
 import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.LocatableConfigurationBase;
-import com.intellij.execution.configurations.RunConfiguration;
-import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.configurations.RuntimeConfigurationException;
+import com.intellij.execution.configurations.*;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
@@ -22,7 +20,10 @@ import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class PrologRunConfiguration extends LocatableConfigurationBase {
+import java.util.Arrays;
+import java.util.Collection;
+
+class PrologRunConfiguration extends ModuleBasedConfiguration<RunConfigurationModule> {
 
     static final String PATH_TO_SOURCE_FILE = "sourceFile";
     static final String ENABLE_TRACE = "enableTrace";
@@ -32,8 +33,13 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
     private String pathToSourceFile = null;
     private boolean enableTrace = false;
 
-    PrologRunConfiguration(Project project, PrologRunConfigurationType configurationType) {
-        super(project, configurationType.getConfigurationFactories()[0], "Prolog");
+
+    PrologRunConfiguration(String name, Project project, ConfigurationFactory factory) {
+        super(name, new RunConfigurationModule(project), factory);
+    }
+
+    PrologRunConfiguration(Project project, ConfigurationFactory factory) {
+        this("Prolog", project, factory);
     }
 
     @NotNull
@@ -55,8 +61,6 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
 
     @Override
     public void writeExternal(Element element) throws WriteExternalException {
-        /*super.writeExternal(element);
-        XmlSerializer.serializeInto(this, element);*/
         super.writeExternal(element);
         JDOMExternalizer.write(element, PATH_TO_SOURCE_FILE, pathToSourceFile);
         JDOMExternalizer.write(element, ENABLE_TRACE, enableTrace);
@@ -64,9 +68,12 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
     }
 
     @Override
+    public Collection<Module> getValidModules() {
+        return Arrays.asList(ModuleManager.getInstance(getProject()).getModules());
+    }
+
+    @Override
     public void readExternal(Element element) throws InvalidDataException {
-        /*super.readExternal(element);
-        XmlSerializer.deserializeInto(this, element);*/
         PathMacroManager.getInstance(getProject()).expandPaths(element);
         super.readExternal(element);
         pathToSourceFile = JDOMExternalizer.readString(element, PATH_TO_SOURCE_FILE);

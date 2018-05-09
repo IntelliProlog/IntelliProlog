@@ -33,7 +33,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final String workingDir;
     private GeneralCommandLine cmdLine;
 
-    private PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir) {
+    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir) {
         super(module.getProject(), consoleTitle, workingDir);
 
         this.module = module;
@@ -88,7 +88,6 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             homePath = sdk.getHomeDirectory();
         }
         GeneralCommandLine line = new GeneralCommandLine();
-        //line.setExePath(PrologUtil.getCommandPath(homePath, "gprolog"));
         if (SystemInfo.isWindows) {
             line.withEnvironment("LINEDIT", "gui=no");
         }

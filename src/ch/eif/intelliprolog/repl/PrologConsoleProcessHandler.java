@@ -11,7 +11,7 @@ public class PrologConsoleProcessHandler extends ColoredProcessHandler {
 
     private final LanguageConsoleImpl console;
 
-    PrologConsoleProcessHandler(Process process, String commandLine, LanguageConsoleImpl console) {
+    public PrologConsoleProcessHandler(Process process, String commandLine, LanguageConsoleImpl console) {
         super(process, commandLine, Charset.forName("UTF-8"));
         this.console = console;
     }

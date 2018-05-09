@@ -9,7 +9,7 @@ public class PrologDefaultProgramRunner extends DefaultProgramRunner {
     @NotNull
     @Override
     public String getRunnerId() {
-        return "PrologCommandLineRunner";
+        return "PrologConsoleRunner";
     }
 
     @Override
