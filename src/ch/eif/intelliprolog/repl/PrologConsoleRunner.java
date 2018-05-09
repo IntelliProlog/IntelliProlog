@@ -14,6 +14,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,6 +89,9 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         }
         GeneralCommandLine line = new GeneralCommandLine();
         //line.setExePath(PrologUtil.getCommandPath(homePath, "gprolog"));
+        if (SystemInfo.isWindows) {
+            line.withEnvironment("LINEDIT", "gui=no");
+        }
         line.setExePath(new File(homePath.getPath()).getAbsolutePath());
         line.withWorkDirectory(workingDir);
 
