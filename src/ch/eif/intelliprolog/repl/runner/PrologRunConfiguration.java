@@ -1,36 +1,35 @@
-package ch.eif.intelliprolog.runner;
+package ch.eif.intelliprolog.repl.runner;
 
-import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.LocatableConfigurationBase;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.configurations.RuntimeConfigurationException;
 import com.intellij.execution.runners.ExecutionEnvironment;
+import com.intellij.openapi.components.PathMacroManager;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtilCore;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.InvalidDataException;
+import com.intellij.openapi.util.JDOMExternalizer;
 import com.intellij.openapi.util.WriteExternalException;
-import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VfsUtilCore;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.util.PathUtil;
-import com.intellij.util.xmlb.XmlSerializer;
 import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 class PrologRunConfiguration extends LocatableConfigurationBase {
 
+    static final String PATH_TO_SOURCE_FILE = "sourceFile";
+    static final String ENABLE_TRACE = "enableTrace";
+
+
     @Nullable
     private String pathToSourceFile = null;
-
-    @Nullable
-    private String goalToRun = null;
-
     private boolean enableTrace = false;
 
     PrologRunConfiguration(Project project, PrologRunConfigurationType configurationType) {
@@ -44,28 +43,34 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
 
     @Nullable
     @Override
-    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) throws ExecutionException {
-        final String filePath = getPathToSourceFile();
-        if (StringUtil.isEmpty(filePath)) {
-            throw new ExecutionException("Empty file path");
-        }
-        return new PrologCommandLineState(environment, getPathToSourceFile(), getGoalToRun(), getEnableTrace());
+    public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) {
+        PrologCommandLineState state = new PrologCommandLineState(environment, this);
+        return state;
     }
 
     @Override
-    public void checkConfiguration() {
+    public void checkConfiguration() throws RuntimeConfigurationException {
+        super.checkConfiguration();
     }
 
     @Override
     public void writeExternal(Element element) throws WriteExternalException {
+        /*super.writeExternal(element);
+        XmlSerializer.serializeInto(this, element);*/
         super.writeExternal(element);
-        XmlSerializer.serializeInto(this, element);
+        JDOMExternalizer.write(element, PATH_TO_SOURCE_FILE, pathToSourceFile);
+        JDOMExternalizer.write(element, ENABLE_TRACE, enableTrace);
+        PathMacroManager.getInstance(getProject()).collapsePathsRecursively(element);
     }
 
     @Override
     public void readExternal(Element element) throws InvalidDataException {
+        /*super.readExternal(element);
+        XmlSerializer.deserializeInto(this, element);*/
+        PathMacroManager.getInstance(getProject()).expandPaths(element);
         super.readExternal(element);
-        XmlSerializer.deserializeInto(this, element);
+        pathToSourceFile = JDOMExternalizer.readString(element, PATH_TO_SOURCE_FILE);
+        enableTrace = JDOMExternalizer.readBoolean(element, ENABLE_TRACE);
     }
 
     @Nullable
@@ -103,15 +108,7 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
 
     public void setPathToSourceFile(@Nullable String pathToSourceFile) {
         this.pathToSourceFile = pathToSourceFile;
-    }
-
-    @Nullable
-    public String getGoalToRun() {
-        return goalToRun;
-    }
-
-    public void setGoalToRun(@Nullable String goalToRun) {
-        this.goalToRun = goalToRun;
+        setGeneratedName();
     }
 
     public boolean getEnableTrace() {
@@ -121,4 +118,5 @@ class PrologRunConfiguration extends LocatableConfigurationBase {
     public void setEnableTrace(boolean enableTrace) {
         this.enableTrace = enableTrace;
     }
+
 }

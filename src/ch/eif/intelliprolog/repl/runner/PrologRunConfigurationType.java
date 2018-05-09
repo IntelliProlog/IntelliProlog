@@ -1,4 +1,4 @@
-package ch.eif.intelliprolog.runner;
+package ch.eif.intelliprolog.repl.runner;
 
 import ch.eif.intelliprolog.PrologFileType;
 import ch.eif.intelliprolog.PrologIcons;
