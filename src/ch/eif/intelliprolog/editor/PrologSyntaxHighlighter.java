@@ -1,6 +1,7 @@
-package ch.eif.intelliprolog;
+package ch.eif.intelliprolog.editor;
 
 
+import ch.eif.intelliprolog.PrologLexerAdapter;
 import ch.eif.intelliprolog.psi.PrologTypes;
 import ch.eif.intelliprolog.psi.impl.PrologPsiUtil;
 import com.intellij.lexer.Lexer;
@@ -13,8 +14,8 @@ import com.intellij.psi.TokenType;
 import com.intellij.psi.tree.IElementType;
 import org.jetbrains.annotations.NotNull;
 
-import static ch.eif.intelliprolog.psi.PrologElementType.isParenthesis;
 import static ch.eif.intelliprolog.psi.PrologElementType.isBrackets;
+import static ch.eif.intelliprolog.psi.PrologElementType.isParenthesis;
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
 public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
