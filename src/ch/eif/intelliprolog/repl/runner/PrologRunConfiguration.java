@@ -50,8 +50,7 @@ class PrologRunConfiguration extends ModuleBasedConfiguration<RunConfigurationMo
     @Nullable
     @Override
     public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment environment) {
-        PrologCommandLineState state = new PrologCommandLineState(environment, this);
-        return state;
+        return new PrologCommandLineState(environment, this);
     }
 
     @Override

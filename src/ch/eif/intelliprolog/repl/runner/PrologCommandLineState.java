@@ -2,17 +2,23 @@ package ch.eif.intelliprolog.repl.runner;
 
 import ch.eif.intelliprolog.repl.PrologConsole;
 import ch.eif.intelliprolog.repl.PrologConsoleProcessHandler;
+import ch.eif.intelliprolog.repl.PrologConsoleRunner;
 import ch.eif.intelliprolog.sdk.PrologSdkType;
 import com.intellij.execution.*;
 import com.intellij.execution.configurations.CommandLineState;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.console.LanguageConsoleImpl;
+import com.intellij.execution.filters.Filter;
 import com.intellij.execution.filters.TextConsoleBuilder;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
+import com.intellij.execution.filters.TextConsoleBuilderImpl;
+import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.process.ProcessTerminatedListener;
 import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.ProgramRunner;
+import com.intellij.execution.ui.ConsoleView;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -32,6 +38,7 @@ import java.io.OutputStream;
 
 class PrologCommandLineState extends CommandLineState {
 
+    private static final String INTERPRETER_TITLE = "GNU-Prolog";
     private final
     @NotNull
     PrologRunConfiguration config;
@@ -39,11 +46,11 @@ class PrologCommandLineState extends CommandLineState {
     private final
     ExecutionEnvironment env;
 
-    private TextConsoleBuilder myConsole;
-
     private GeneralCommandLine cmdLine;
 
     private PrologConsole console;
+
+    private PrologConsoleRunner runner;
 
     PrologCommandLineState(
             final @NotNull ExecutionEnvironment env,
@@ -52,65 +59,38 @@ class PrologCommandLineState extends CommandLineState {
         this.env = env;
         this.config = configuration;
 
-        myConsole = TextConsoleBuilderFactory.getInstance().createBuilder(env.getProject());
+        console = new PrologConsole(env.getProject(), "GNU-Prolog");
     }
 
     @NotNull
     @Override
     protected ProcessHandler startProcess() throws ExecutionException {
-        Project project = env.getProject();
+        /*Project project = env.getProject();
         final Module module = config.getModule();
         String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String path = srcRoot + File.separator + "src";
-        cmdLine = createCommandLine(project, path);
-        console = new PrologConsole(project, "GNU-Prolog");
-        ProcessHandler processHandler = new PrologConsoleProcessHandler(cmdLine.createProcess(), cmdLine.getCommandLineString(), console);
-        ProcessTerminatedListener.attach(processHandler);
-        return processHandler;
+        final GeneralCommandLine line = createCommandLine(project, path);
+        final Process process = line.createProcess();
+        final String commandLineString = line.getCommandLineString();
+        return new PrologConsoleProcessHandler(process, commandLineString, console);*/
+
+        final Module module = config.getModule();
+        String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
+        String path = srcRoot + File.separator + "src";
+        runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, config.getPathToSourceFile());
+        runner.initAndRun();
+        return runner.getProcessHandler();
     }
 
-    @Override
     @NotNull
-    public ExecutionResult execute(@NotNull final Executor executor, @NotNull final ProgramRunner runner) throws ExecutionException {
+    @Override
+    public ExecutionResult execute(@NotNull Executor executor, @NotNull ProgramRunner runner) throws ExecutionException {
+
+
         final ProcessHandler processHandler = startProcess();
+        final PrologConsole consoleView = this.runner.getConsoleView();
 
-        final String pathToSourceFile = config.getPathToSourceFile();
-
-        String command = "consult('" + pathToSourceFile.substring(0, pathToSourceFile.length() - 3) + "').";
-
-        console.setInputText(command);
-
-        console.attachToProcess(processHandler);
-        final Editor editor = console.getEditor();
-        CaretModel caretModel = editor.getCaretModel();
-        caretModel.moveToOffset(command.length());
-
-        execute(processHandler, console);
-        return new DefaultExecutionResult(console, processHandler, createActions(console, processHandler, executor));
-    }
-
-    private void execute(ProcessHandler handler, LanguageConsoleImpl console) {
-        Document document = console.getCurrentEditor().getDocument();
-        String text = document.getText();
-        TextRange range = new TextRange(0, document.getTextLength());
-
-        console.getCurrentEditor().getSelectionModel().setSelection(range.getStartOffset(), range.getEndOffset());
-        console.setInputText("");
-
-        processLine(handler, text);
-    }
-
-    private void processLine(ProcessHandler processHandler, String line) {
-        OutputStream os = processHandler.getProcessInput();
-        if (os != null) {
-            byte[] bytes = (line + "\n").getBytes();
-            try {
-                os.write(bytes);
-                os.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        return new DefaultExecutionResult(consoleView, processHandler, createActions(consoleView, processHandler, executor));
     }
 
     private GeneralCommandLine createCommandLine(Project project, String workingDir) throws CantRunException {
@@ -127,7 +107,8 @@ class PrologCommandLineState extends CommandLineState {
         }
         line.setExePath(new File(homePath.getPath()).getAbsolutePath());
         line.withWorkDirectory(workingDir);
-
+        final ParametersList list = line.getParametersList();
+        list.addParametersString("--consult-file " + this.config.getPathToSourceFile());
         return line;
     }
 

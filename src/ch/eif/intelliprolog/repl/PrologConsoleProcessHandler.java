@@ -1,5 +1,6 @@
 package ch.eif.intelliprolog.repl;
 
+import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
 import com.intellij.openapi.util.Key;

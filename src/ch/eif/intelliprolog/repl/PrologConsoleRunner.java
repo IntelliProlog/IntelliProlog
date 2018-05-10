@@ -5,6 +5,7 @@ import com.intellij.execution.CantRunException;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionHelper;
 import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.console.ConsoleHistoryController;
 import com.intellij.execution.console.ProcessBackedConsoleExecuteActionHandler;
 import com.intellij.execution.process.OSProcessHandler;
@@ -31,21 +32,23 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final Project project;
     private final String consoleTitle;
     private final String workingDir;
+    private final String sourceFilePath;
     private GeneralCommandLine cmdLine;
 
-    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir) {
+    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath) {
         super(module.getProject(), consoleTitle, workingDir);
 
         this.module = module;
         this.project = module.getProject();
         this.consoleTitle = consoleTitle;
         this.workingDir = workingDir;
+        this.sourceFilePath = sourceFilePath;
     }
 
     public static PrologConsoleProcessHandler run(@NotNull Module module) {
         String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String path = srcRoot + File.separator + "src";
-        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path);
+        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, null);
         try {
             runner.initAndRun();
             return (PrologConsoleProcessHandler) runner.getProcessHandler();
@@ -63,7 +66,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @Nullable
     @Override
     protected Process createProcess() throws ExecutionException {
-        cmdLine = createCommandLine(module, workingDir);
+        cmdLine = createCommandLine(module, workingDir, this.sourceFilePath);
         return cmdLine.createProcess();
     }
 
@@ -79,7 +82,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
     }
 
-    public static GeneralCommandLine createCommandLine(Module module, String workingDir) throws CantRunException {
+    public static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath) throws CantRunException {
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
@@ -93,6 +96,11 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         }
         line.setExePath(new File(homePath.getPath()).getAbsolutePath());
         line.withWorkDirectory(workingDir);
+
+        if (sourceFilePath != null) {
+            final ParametersList list = line.getParametersList();
+            list.addParametersString("--consult-file " + sourceFilePath);
+        }
 
         return line;
     }
