@@ -24,7 +24,7 @@ class PrologModuleType : ModuleType<PrologModuleBuilder>("PROLOG_MODULE") {
     }
 
     override fun getNodeIcon(isOpened: Boolean): Icon {
-        return PrologFileType.INSTANCE.icon
+        return PrologIcons.FILE
     }
 
     companion object {

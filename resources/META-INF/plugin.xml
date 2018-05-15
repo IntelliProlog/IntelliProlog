@@ -32,7 +32,7 @@
         <moduleType id="PROLOG_MODULE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
         <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
         <sdkType id="PROLOG" implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/>
-        <runConfigurationProducer implementation="ch.eif.intelliprolog.repl.runner.PrologRunConfigurationProducer"/>
+        <!--runConfigurationProducer implementation="ch.eif.intelliprolog.repl.runner.PrologRunConfigurationProducer"/-->
         <configurationType implementation="ch.eif.intelliprolog.repl.runner.PrologRunConfigurationType"/>
         <programRunner implementation="ch.eif.intelliprolog.repl.runner.PrologDefaultProgramRunner"/>
         <lang.parserDefinition language="Prolog" implementationClass="ch.eif.intelliprolog.PrologParserDefinition"/>

@@ -200,18 +200,20 @@ class PrologSdkType : SdkType("GPROLOG") {
         return versionString
     }
 
-    override fun createAdditionalDataConfigurable(sdkModel: SdkModel, sdkModificator: SdkModificator): AdditionalDataConfigurable {
-        return PrologSdkConfigurable()
+    override fun createAdditionalDataConfigurable(sdkModel: SdkModel, sdkModificator: SdkModificator): AdditionalDataConfigurable? {
+        //return PrologSdkConfigurable()
+        return null
     }
 
     override fun saveAdditionalData(additionalData: SdkAdditionalData, additional: Element) {
-        if (additionalData is PrologSdkAdditionalData) {
+        /*if (additionalData is PrologSdkAdditionalData) {
             additionalData.save(additional)
-        }
+        }*/
     }
 
     override fun loadAdditionalData(additional: Element?): SdkAdditionalData? {
-        return PrologSdkAdditionalData.load(additional!!)
+       //return PrologSdkAdditionalData.load(additional!!)
+        return null
     }
 
     override fun getPresentableName(): String {
