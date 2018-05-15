@@ -11,14 +11,12 @@ IntelliJ platform.
 
 ### Motivation
 
-The motivation behind this project is that in the Logical Programming course at the Applied Sciences University of 
-Fribourg, students learn to program in GNU Prolog. 
+The motivation behind this project is that in the Logical Programming course at the Applied Sciences University of
+Fribourg, students learn to program in GNU Prolog.
 
 More and more students are using IntelliJ or other IDEs developed by JetBrains for their development needs and for the
-moment there does not exist a good way to write and run GNU Prolog code in IntelliJ. 
+moment there does not exist a good way to write and run GNU Prolog code in IntelliJ.
 
 A previous project developed a plugin for the Eclipse IDE, but since that IDE is used less and less nowadays, the
 decision was taken to start a new project to develop a plugin for IntelliJ and possibly other variants of IDES
 developed by JetBrains.
-
-
