@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 public class PrologParserDefinition implements ParserDefinition {
     public static final TokenSet WHITE_SPACES = TokenSet.create(TokenType.WHITE_SPACE);
     public static final TokenSet COMMENTS = TokenSet.create(PrologTypes.COMMENT);
+    public static final TokenSet STRINGS = TokenSet.create(PrologTypes.STRING);
 
     public static final IFileElementType FILE = new IFileElementType(PrologLanguage.INSTANCE);
 
@@ -46,7 +47,7 @@ public class PrologParserDefinition implements ParserDefinition {
     @NotNull
     @Override
     public TokenSet getStringLiteralElements() {
-        return TokenSet.EMPTY;
+        return STRINGS;
     }
 
     @NotNull

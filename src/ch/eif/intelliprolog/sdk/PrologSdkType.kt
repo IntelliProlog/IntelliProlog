@@ -61,12 +61,6 @@ class PrologSdkType : SdkType("GPROLOG") {
             if (prologPath.isDirectory) {
                 return null
             }
-            /*try {
-                return ProcessRunner(null).executeOrFail(prologPath.toString(), "--numeric-version").trim()
-            } catch (ex: Exception) {
-
-            }*/
-
             return "1.4.4"
         }
     }
@@ -143,12 +137,6 @@ class PrologSdkType : SdkType("GPROLOG") {
                 }
             })?.toList() ?: listOf())
         } else if (SystemInfo.isWindows) {
-            /*var progFiles = System.getenv("ProgramFiles(x86)")
-            if (progFiles == null) {
-                progFiles = System.getenv("ProgramFiles")
-            }
-            if (progFiles == null)
-                return null*/
             var cDrive = "C:"
             val versionsRoot = File(cDrive, "GNU-Prolog")
             if (!versionsRoot.isDirectory)
@@ -175,12 +163,12 @@ class PrologSdkType : SdkType("GPROLOG") {
 
     override fun suggestSdkName(currentSdkName: String?, sdkHome: String?): String {
         val suggestedName: String
-        if (currentSdkName != null && currentSdkName.length > 0) {
+        if (currentSdkName != null && currentSdkName.isNotEmpty()) {
             suggestedName = currentSdkName
         } else {
             val versionString = getVersionString(sdkHome)
             if (versionString != null) {
-                suggestedName = "GNU-Prolog" + versionString
+                suggestedName = "GNU-Prolog$versionString"
             } else {
                 suggestedName = "Unknown"
             }
@@ -193,7 +181,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             return null
         }
         val versionString: String? = getPrologVersion(File(sdkHome))
-        if (versionString != null && versionString.length == 0) {
+        if (versionString != null && versionString.isEmpty()) {
             return null
         }
 
@@ -201,18 +189,13 @@ class PrologSdkType : SdkType("GPROLOG") {
     }
 
     override fun createAdditionalDataConfigurable(sdkModel: SdkModel, sdkModificator: SdkModificator): AdditionalDataConfigurable? {
-        //return PrologSdkConfigurable()
         return null
     }
 
     override fun saveAdditionalData(additionalData: SdkAdditionalData, additional: Element) {
-        /*if (additionalData is PrologSdkAdditionalData) {
-            additionalData.save(additional)
-        }*/
     }
 
     override fun loadAdditionalData(additional: Element?): SdkAdditionalData? {
-       //return PrologSdkAdditionalData.load(additional!!)
         return null
     }
 
@@ -232,6 +215,6 @@ class PrologSdkType : SdkType("GPROLOG") {
     }
 
     override fun isRootTypeApplicable(type: OrderRootType): Boolean {
-        return false
+        return true
     }
 }

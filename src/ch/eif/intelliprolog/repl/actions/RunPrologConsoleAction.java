@@ -30,6 +30,6 @@ public final class RunPrologConsoleAction extends AnAction implements DumbAware 
     @Override
     public void actionPerformed(AnActionEvent e) {
         Module module = PrologREPLUtils.getModule(e);
-        PrologConsoleRunner.run(module);
+        PrologConsoleRunner.run(module, null, false);
     }
 }

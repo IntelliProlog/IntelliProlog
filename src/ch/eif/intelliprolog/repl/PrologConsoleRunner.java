@@ -33,9 +33,10 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final String consoleTitle;
     private final String workingDir;
     private final String sourceFilePath;
+    private final boolean withTrace;
     private GeneralCommandLine cmdLine;
 
-    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath) {
+    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, @NotNull boolean withTrace) {
         super(module.getProject(), consoleTitle, workingDir);
 
         this.module = module;
@@ -43,12 +44,13 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         this.consoleTitle = consoleTitle;
         this.workingDir = workingDir;
         this.sourceFilePath = sourceFilePath;
+        this.withTrace = withTrace;
     }
 
-    public static PrologConsoleProcessHandler run(@NotNull Module module) {
+    public static PrologConsoleProcessHandler run(@NotNull Module module, String sourceFilePath, boolean withTrace) {
         String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String path = srcRoot + File.separator + "src";
-        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, null);
+        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, sourceFilePath, withTrace);
         try {
             runner.initAndRun();
             return (PrologConsoleProcessHandler) runner.getProcessHandler();
@@ -66,7 +68,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @Nullable
     @Override
     protected Process createProcess() throws ExecutionException {
-        cmdLine = createCommandLine(module, workingDir, this.sourceFilePath);
+        cmdLine = createCommandLine(module, workingDir, this.sourceFilePath, this.withTrace);
         return cmdLine.createProcess();
     }
 
@@ -82,7 +84,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
     }
 
-    public static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath) throws CantRunException {
+    public static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath, boolean withTrace) throws CantRunException {
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
@@ -99,6 +101,9 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
         if (sourceFilePath != null) {
             final ParametersList list = line.getParametersList();
+            if (withTrace) {
+                list.addParametersString("--entry-goal " + "trace");
+            }
             list.addParametersString("--consult-file " + sourceFilePath);
         }
 

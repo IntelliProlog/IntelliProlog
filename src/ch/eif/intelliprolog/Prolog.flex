@@ -6,6 +6,7 @@ import ch.eif.intelliprolog.psi.PrologTypes;
 import com.intellij.psi.TokenType;
 
 %%
+ // OPTIONS
 %class PrologLexer
 %implements FlexLexer
 %unicode
@@ -18,6 +19,8 @@ import com.intellij.psi.TokenType;
 
 %}
 
+
+ // MACROS
 LPAREN = "("
 RPAREN = ")"
 LBRACKET = "["
@@ -81,29 +84,16 @@ OPERATOR_SYMBOLS = {NON_COMBINABLE_OPERATOR_SYMBOLS} | {COMBINABLE_OPERATOR_SYMB
 //parenthesized operator symbols
 PAR_OPERATOR_SYMBOLS = {NON_COMBINABLE_OPERATOR_SYMBOLS} | ({COMBINABLE_OPERATOR_SYMBOLS} | {DOT})+
 
+ // LEXICAL STATES
 %state SENTENCE, PARENTHESIZED_SYMBOLS, SINGLE_QUOTE_STRING, DOUBLE_QUOTE_STRING, CHAR_CODE
 
-
-
 %%
-
-
 
 <CHAR_CODE> {
 
     ({CHAR_CODE_ESCAPED}|{CHAR_CODE}) .             { yybegin(SENTENCE); return PrologTypes.CHAR_CODE; }
 
 }
-
-/*
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+       { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-
-<WAITING_VALUE> {WHITE_SPACE}+                      { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-
-<YYINITIAL> ({CRLF}|{WHITE_SPACE})+                 { yybegin(YYINITIAL); return LogtalkTypes.WHITE_SPACE; }
-*/
-
-
 
 <PARENTHESIZED_SYMBOLS> {
 

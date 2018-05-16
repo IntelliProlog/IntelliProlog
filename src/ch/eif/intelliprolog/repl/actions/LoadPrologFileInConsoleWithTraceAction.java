@@ -1,6 +1,7 @@
 package ch.eif.intelliprolog.repl.actions;
 
 import ch.eif.intelliprolog.PrologIcons;
+import ch.eif.intelliprolog.psi.PrologFile;
 import ch.eif.intelliprolog.repl.PrologConsoleProcessHandler;
 import ch.eif.intelliprolog.repl.PrologConsoleRunner;
 import ch.eif.intelliprolog.repl.PrologREPLUtils;
@@ -9,16 +10,22 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.editor.CaretModel;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.testFramework.LightVirtualFile;
 
 import java.io.File;
 
-public final class LoadPrologFileInConsoleAction extends AnAction {
+public final class LoadPrologFileInConsoleWithTraceAction extends AnAction {
 
-    public LoadPrologFileInConsoleAction() {
+    public LoadPrologFileInConsoleWithTraceAction() {
         getTemplatePresentation().setIcon(PrologIcons.FILE);
     }
 
@@ -39,7 +46,7 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
         PsiDocumentManager.getInstance(project).commitAllDocuments();
         FileDocumentManager.getInstance().saveAllDocuments();
 
-        PrologConsoleRunner.run(PrologREPLUtils.getModule(project), filePath, false);
+        PrologConsoleRunner.run(PrologREPLUtils.getModule(project), filePath, true);
     }
 
     @Override
@@ -51,7 +58,7 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
         } else {
             File file = new File(filePath);
             presentation.setVisible(true);
-            presentation.setText(String.format("Load \"%s\" in GNU Prolog Interpreter", file.getName()));
+            presentation.setText(String.format("Load \"%s\" in GNU Prolog Interpreter with trace", file.getName()));
         }
     }
 }

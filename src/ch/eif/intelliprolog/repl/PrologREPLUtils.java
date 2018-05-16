@@ -1,14 +1,20 @@
 package ch.eif.intelliprolog.repl;
 
+import ch.eif.intelliprolog.psi.PrologFile;
 import com.intellij.execution.ExecutionHelper;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.LangDataKeys;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiDocumentManager;
+import com.intellij.psi.PsiFile;
+import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.util.NotNullFunction;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,20 +31,6 @@ public class PrologREPLUtils {
             }
         }
         return null;
-    }
-
-    public static ProcessHandler prepareCommand(Project project) {
-        PrologConsoleProcessHandler processHandler = findRunningPrologConsole(project);
-
-        if (processHandler == null || processHandler.isProcessTerminated()) {
-            Module module = getModule(project);
-            processHandler = PrologConsoleRunner.run(module);
-            if (processHandler == null) {
-                return null;
-            }
-        }
-
-        return processHandler;
     }
 
     public static Module getModule(AnActionEvent e) {
@@ -60,6 +52,26 @@ public class PrologREPLUtils {
             return modules[0];
         }
         return null;
+    }
+
+    public static String getActionFile(AnActionEvent e) {
+        Module module = getModule(e);
+        if (module == null) {
+            return null;
+        }
+        Editor editor = e.getData(CommonDataKeys.EDITOR);
+        if (editor == null || editor.getProject() == null) {
+            return null;
+        }
+        PsiFile psiFile = PsiDocumentManager.getInstance(editor.getProject()).getPsiFile(editor.getDocument());
+        if (psiFile == null || !(psiFile instanceof PrologFile)) {
+            return null;
+        }
+        VirtualFile virtualFile = psiFile.getVirtualFile();
+        if (virtualFile == null || virtualFile instanceof LightVirtualFile) {
+            return null;
+        }
+        return virtualFile.getPath();
     }
 
     private static final class PrologConsoleMatcher implements NotNullFunction<RunContentDescriptor, Boolean> {

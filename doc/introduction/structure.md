@@ -18,7 +18,6 @@ The features we'll be implementing are the following:
 1. Parser and Lexer for GNU Prolog
 1. Highlighting including syntax and errors
 1. Code commenting and folding
-1. Code completion
 
 Before we get to implementing the features, we'll go over the steps for setting up a project needed to develop our
 IntelliJ Platform plugin.

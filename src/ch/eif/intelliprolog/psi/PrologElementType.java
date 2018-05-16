@@ -9,11 +9,11 @@ public class PrologElementType extends IElementType {
         super(debugName, PrologLanguage.INSTANCE);
     }
 
-    public static boolean isParenthesis(IElementType tokenType) {
-        return tokenType.equals(PrologTypes.LPAREN) || tokenType.equals(PrologTypes.RPAREN);
+    public static boolean isParenthesis(IElementType elementType) {
+        return elementType.equals(PrologTypes.LPAREN) || elementType.equals(PrologTypes.RPAREN);
     }
 
-    public static boolean isBrackets(IElementType tokenType) {
-        return tokenType.equals(PrologTypes.LBRACKET) || tokenType.equals(PrologTypes.RBRACKET);
+    public static boolean isBrackets(IElementType elementType) {
+        return elementType.equals(PrologTypes.LBRACKET) || elementType.equals(PrologTypes.RBRACKET);
     }
 }

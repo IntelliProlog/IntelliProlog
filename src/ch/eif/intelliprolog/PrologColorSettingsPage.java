@@ -52,8 +52,6 @@ public class PrologColorSettingsPage implements ColorSettingsPage {
                 "        F is F1 * N.\n" +
                 "not(P) :- P, !, fail.\n" +
                 "not(_).\n";
-
-
     }
 
     @Nullable

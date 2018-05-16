@@ -26,10 +26,10 @@ public class PrologPsiUtil {
     }
 
     public static boolean isAtomKeyword(PsiElement element) {
-        return getElementType(element).equals(PrologTypes.ATOM) && Constants.ATOM_KEYWORDS.contains(element.getText());
+        return getElementType(element).equals(PrologTypes.ATOM) && Constants.KEYWORDS.contains(element.getText());
     }
 
     public static boolean isCompoundNameKeyword(PsiElement element) {
-        return getElementType(element).equals(PrologTypes.COMPOUND_NAME) && Constants.COMPOUND_NAME_KEYWORDS.contains(element.getText());
+        return getElementType(element).equals(PrologTypes.COMPOUND_NAME) && Constants.KEYWORDS.contains(element.getText());
     }
 }

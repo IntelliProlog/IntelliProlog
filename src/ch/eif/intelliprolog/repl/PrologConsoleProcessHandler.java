@@ -17,11 +17,6 @@ public class PrologConsoleProcessHandler extends ColoredProcessHandler {
         this.console = console;
     }
 
-    @Override
-    public void coloredTextAvailable(@NotNull String text, @NotNull Key attributes) {
-        super.coloredTextAvailable(text, attributes);
-    }
-
     public LanguageConsoleImpl getLanguageConsole() {
         return console;
     }
