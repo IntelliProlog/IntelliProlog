@@ -32,25 +32,25 @@ The other requirements are the following:
 
 IntelliJ IDEA is needed for the development of our plugin, and two versions exist:
 
-- Ultimate Edition is a commercial closed-source IDE developed by JetBrains and costs €149 the 1st year, but has a 30
-  day trial. Students can get a free license with their student email address. The Ultimate Edition allows to use any
+* Ultimate Edition is a commercial closed-source IDE developed by JetBrains and costs €149 the 1st year, but has a 30
+  day trial. Students can get a free license with their student email address. The Ultimate Edition allows the use of any
   plugin developed for a JetBrains IDE as well as including other advanced features.
-- Community Edition is a Apache 2.0 licensed open-sourced IDE developed by JetBrains. The Community Edition can only
+* Community Edition is an Apache 2.0 licensed open-sourced IDE developed by JetBrains. The Community Edition can only
   use plugins developed specifically for it.
-  
+
 The two different editions can be downloaded from the [IntelliJ IDEA website](https://www.jetbrains.com/idea/).
 
 ### IntelliJ IDEA Community Edition source code
 
 The IntelliJ IDEA Community Edition source code is not essential but very useful during the development of plugins for
-the JetBrains IDEs since it allows easier debugging and inspection of the source code that is the basis for the plugin.
+the JetBrains IDEs since it allows easier debugging and inspection of the source code that is the basis of the plugin.
 
-The source code can be checked out from the IntelliJ IDEA Community Edition repository on GitHub, 
-[https://github.com/JetBrains/intellij-community](), using either IntelliJ IDEA or from the command line.
+The source code can be checked out from the IntelliJ IDEA Community Edition repository on
+[GitHub](https://github.com/JetBrains/intellij-community), using either IntelliJ IDEA or from the command line.
 
 ### Plugin Devkit
- 
-The Plugin DevKit is a IntelliJ plugin developed by JetBrains, and adds support for developing IntelliJ plugins using
+
+The Plugin DevKit is an IntelliJ plugin developed by JetBrains, and adds support for developing IntelliJ plugins using
 the IntelliJ IDEA build system. It also adds an easy way of building and launching our plugin in a separate instance of
 IntelliJ IDEA.
 
@@ -71,4 +71,3 @@ by JetBrains. It allows us to see the tree of ElementTypes defined in our Parser
 plugin.
 
 This plugin can be installed through the plugin interface in IntelliJ IDEA.
-

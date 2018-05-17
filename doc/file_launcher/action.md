@@ -32,7 +32,9 @@ the action or disabling the action completely if the action would not be able to
 
 #### Registering actions
 
+To register actions in the plugin we have to add appropriate elements to the `plugin.xml` file, in the actions section.
 
+The parent element is `action` with an id uniquely identifying the action, the class of the action and the text to display. Within the `action` element we can add other elements, these allow to define where the action should be located as well as mouse or keyboard shortcuts. More details are available in the [Actions section](https://www.jetbrains.org/intellij/sdk/docs/basics/action_system.html) of the IntelliJ Platform SDK DevGuide.
 
 ### Plugin actions
 
@@ -112,7 +114,7 @@ We implement the abstract methods provided by the abstract class, these methods 
 We also create two static methods:
 
 + `PrologConsoleProcessHandler run(Module module, String sourceFilePath, boolean withTrace)`,
-  this method creates an instance of `PrologConsoleRunner`, tries to initialise and run our console runner and return the process handler for the runner.
+  this method creates an instance of `PrologConsoleRunner`, tries to initialise and run our console runner and return the process handler for the runner, depicted in listing \ref{code:run-consolerunner}.
 + `GeneralCommandLine createCommandLine(Module module, String workingDir, String sourceFilePath, boolean withTrace) throws CantRunException`,
   this method creates our commandline. We check that we have a PrologSDK configured, we then create a
   [`GeneralCommandLine`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/platform-api/src/com/intellij/execution/configurations/GeneralCommandLine.java) and pass it our
@@ -122,11 +124,19 @@ We also create two static methods:
   + `--consult-file <path to file>`if we are launching the console with a file.
 
   If we are on a Windows system, we also have to set an [environment variable](http://www.gprolog.org/manual/gprolog.html#sec13) to make sure that
-  `gprolog` is launched in text mode, the environment variable is `LINEDIT gui=no`.
+  `gprolog` is launched in text mode, the environment variable is `LINEDIT gui=no`. All of this is depicted in listing \ref{code:createcmdline-consolerunner}
 
+\begin{listing}[H]
 \inputminted[firstline=50, lastline=61, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
+\caption{run method}
+\label{code:run-consolerunner}
+\end{listing}
 
+\begin{listing}[H]
 \inputminted[firstline=87, lastline=111, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
+\caption{run method}
+\label{code:createcmdline-consolerunner}
+\end{listing}
 
 #### LoadPrologFileInConsoleAction
 
@@ -140,6 +150,7 @@ The action implements the two methods listed earlier, `actionPerformed` and `upd
 In this method we check if a file is available to be run and if yes we set it to be visible with an
 appropriate text.
 
+\begin{listing}[H]
 \inputminted[firstline=57, lastline=68, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
 
 ##### void actionPerformed(AnActionEvent e)
@@ -159,6 +170,7 @@ After we are sure that the file has been correctly written to disk we can run ou
 `run` method of `PrologConsoleRunner`, giving it the reference to our project, the path to the file and
 if we want to run it with trace turned on, which in this case we don't so we pass it `false`.
 
+\begin{listing}[H]
 \inputminted[firstline=25, lastline=43, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
 
 #### LoadPrologFileInConsoleWithTraceAction

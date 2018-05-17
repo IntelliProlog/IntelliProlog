@@ -3,15 +3,39 @@
 Creating the plugin project is as simple as creating any project in IntelliJ IDEA with the only
 difference being we select IntelliJ Platform Plugin as the project type.
 
-The steps are outlined in the following images.
+The steps are :
 
-![New Project menu entry](content/images/project_creation1.png)
++ Select `New project`, illustrated in figure \ref{fig:newproject}
++ Select `IntelliJ Platform Plugin`, illustrated in figure \ref{fig:projecttype}
++ Define a name and location for the project, illustrated in figure \ref{fig:projectnameloc}
 
-![Select IntelliJ Platform Plugin project type](content/images/project_creation2.png)
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{content/images/project_creation1.png}
+\caption{New project menu entry}
+\label{fig:newproject}
+\end{figure}
 
-![Define project name and project location](content/images/project_creation3.png)
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{content/images/project_creation2.png}
+\caption{Select IntelliJ Platform Plugin project type}
+\label{fig:projecttype}
+\end{figure}
 
-After the project is created we need to define the project SDK, this is accomplished in the Project
-Structure window
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{content/images/project_creation3.png}
+\caption{Define project name and project location}
+\label{fig:projectnameloc}
+\end{figure}
 
-![Define project SDK](content/images/project_creation4.png)
+After the project is created we need to define the project SDK, illustrated in figure \ref{fig:projectsdk},
+this is accomplished in the Project Structure window.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{content/images/project_creation4.png}
+\caption{Define project SDK}
+\label{fig:projectsdk}
+\end{figure}

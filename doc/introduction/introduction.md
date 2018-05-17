@@ -1,7 +1,7 @@
 # IntelliProlog Introduction
 
 This chapter will discuss the global structure of this report concerning the development of an
-IntelliJ plugin for the programming language Prolog, specifically the GNU Prolog @gprolog-website
+IntelliJ plugin for the programming language Prolog, specifically the GNU Prolog
 implementation developed by Daniel Diaz.
 
 ## Introduction
