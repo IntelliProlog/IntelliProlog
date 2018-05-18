@@ -12,14 +12,18 @@ A parser for the IntelliJ Platform is composed of three elements, these elements
 To create our token and element types we simply need to create two classes extending `IElementType`
 and JetBrains recommends to put both of these in a `psi` package within your project.
 
-The token type class has a constructor with a string argument that calls the superclass constructor
+The token type class, depicted in listing \ref{code:prologtokentype}, has a constructor with a string argument that calls the superclass constructor
 with the string parameter and the instance of our custom language that we created at the beginning
 of this tutorial. We also override the `toString` method and return the string returned by the super
 class appended to `PrologTokenType`, this mainly helps when debugging the parser and lexer.
 
+\begin{listing}[h]
 \inputminted[firstline=7, lastline=16, breaklines]{java}{code-source/ch/eif/intelliprolog/psi/PrologTokenType.java}
+\caption{PrologTokenType class}
+\label{code:prologtokentype}
+\end{listing}
 
-The element type class is very similar to the token type class, it has the same constructor and that
+The element type class, depicted in listing \ref{code:prologelementtype} is very similar to the token type class, it has the same constructor and that
 normally would be all but in our plugin we added two methods to help identify the element when doing
 the syntax highlighting. These methods are:
 
@@ -30,7 +34,11 @@ the syntax highlighting. These methods are:
 
 These two methods are helper functions, and therefore not necessary in your own plugin.
 
+\begin{listing}[h]
 \inputminted[firstline=7, lastline=19, breaklines]{java}{code-source/ch/eif/intelliprolog/psi/PrologElementType.java}
+\caption{PrologElementType class}
+\label{code:prologelementtype}
+\end{listing}
 
 ### Grammar
 
@@ -64,9 +72,13 @@ not directly related to the grammar definition. These elements are:
 + The token type class, the class we create earlier.
 
 The definition of these values are written between braces at the top of our grammar definition file,
-the definition from our plugin is visible below.
+the definition from our plugin is depicted in listing \ref{code:grammarkit-options}.
 
+\begin{listing}[h]
 \inputminted[firstline=1, lastline=14, breaklines]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
+\caption{Grammar-Kit parser options}
+\label{code:grammarkit-options}
+\end{listing}
 
 #### Grammar-kit grammar definition
 
@@ -87,9 +99,13 @@ In this grammar definition we do not use some of the more advanced features of G
 want more information about these features visit the [GitHub repository](https://github.com/JetBrains/Grammar-Kit), we will not cover these more advanced features since they
 are outside the scope of this project.
 
-The final grammar definition for our Prolog plugin, can be found below.
+The final grammar definition for our Prolog plugin, can be found in listing \ref{code:bnfgrammar}.
 
+\begin{listing}[h]
 \inputminted[linenos, breaklines]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
+\caption{BNF grammar definition}
+\label{code:bnfgrammar}
+\end{listing}
 
 #### Generation and testing of grammar
 

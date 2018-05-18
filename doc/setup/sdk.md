@@ -12,14 +12,14 @@ The setup of the common JDK is accomplished through the Project Structure dialog
 reached through the File menu in an open project or the Configure menu on the IntelliJ IDEA start page,
 illustrated in figures \ref{fig:projstructfile} and \ref{fig:projstructconf}.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/4]{content/images/project_settings_menu_entry1.png}
 \caption{Project Structure in File menu}
 \label{fig:projstructfile}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/2]{content/images/project_settings_menu_entry2.png}
 \caption{Project Structure in Configure menu on start page}
@@ -29,7 +29,7 @@ illustrated in figures \ref{fig:projstructfile} and \ref{fig:projstructconf}.
 In the Project Structure dialog, select the SDK item on the left side, followed by clicking the +
 sign and selecting JDK, as illustrated in the figure \ref{fig:commonjdk}.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/2]{content/images/project_structure1.png}
 \caption{Setup common JDK in Project Structure}
@@ -43,7 +43,7 @@ We then select the JDK source folder we wish to setup, in our case we selected t
 The setup of the IntelliJ Platform SDK is done in the same window as the common JDK, and the same +
 sign but selecting IntelliJ Platform SDK instead, as illustrated in the figure \ref{fig:intellijsdk}.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/2]{content/images/project_structure2.png}
 \caption{Setup IntelliJ Platform SDK}
@@ -53,7 +53,7 @@ sign but selecting IntelliJ Platform SDK instead, as illustrated in the figure \
 We then select the directory containing the install IntelliJ IDEA, normally IntelliJ should suggest
 it by default, after that select the previously configured common JDK, illustrated in figure \ref{fig:jdksdk}.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/2]{content/images/project_structure3.png}
 \caption{Select common JDK for the IntelliJ Platform SDK}
@@ -67,7 +67,7 @@ This is done by changing to the Sourcepath tab while the selection is on the Int
 and then clicking the + symbol and selecting the root directory where you checked out the IntelliJ
 from GitHub, illustrated in figure \ref{fig:intellijsource}.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth/4]{content/images/project_structure4.png}
 \caption{Configuring sourcepath of IntelliJ Community}

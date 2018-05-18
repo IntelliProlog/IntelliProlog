@@ -33,13 +33,13 @@ We will add 3 extra static methods, these are :
 In the `annotate` method, depicted in the listing \ref{code:annotate}, from the `Annotator` interface we check if we should annotate the element
 and if `true`, call the `highlightTokens` method
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=23, lastline=30]{java}{code-source/ch/eif/intelliprolog/editor/PrologAnnotator.java}
 \caption{highlightTokens method}
 \label{code:highlightTokens}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=47, lastline=51]{java}{code-source/ch/eif/intelliprolog/editor/PrologAnnotator.java}
 \caption{annotate method}
 \label{code:annotate}
@@ -50,7 +50,7 @@ and if `true`, call the `highlightTokens` method
 The `Annotator` needs to be added to the extensions section of the `plugin.xml` file,
 the element that needs to be added is visible in listing \ref{reg:annotator}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=38, lastline=38]{xml}{code-resources/META-INF/plugin.xml}
 \caption{ColorSettingsPage registration}
 \label{reg:annotator}

@@ -50,7 +50,7 @@ this into account in this method and return different paths for each, the path t
 
 The example from our plugin, written in Kotlin, is depicted in listing \ref{code:prologsdktype}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=127, lastline=158, linenos, fontsize=\footnotesize]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \caption{suggestHomePath method}
 \label{code:prologsdktype}
@@ -62,7 +62,7 @@ The `getLatestVersions(versions)`method call at line 167, is used to get the lat
 
 The `boolean isValidSdkHome(String path)` method is used to check that the path really points to an executable that we are looking for. This method uses some other methods, all of these are depicted in listing \ref{code:isvalidsdk}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=160, lastline=162, linenos]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \inputminted[firstline=42, lastline=56, linenos]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \inputminted[firstline=58, lastline=58, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
@@ -78,7 +78,7 @@ of the executable to `GNU-Prolog` or returning `Unknown` if we do not have the v
 
 This method uses some other methods, all of these are depicted in listing \ref{code:suggestsdkname}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=164, lastline=189, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \inputminted[firstline=60, lastline=65, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \caption{suggestSdkName method}
@@ -99,7 +99,7 @@ This method can be used to return an instance of a class implementing the `Addit
 
 The `String getPresentableName()` method is similar to `suggestSdkName(String currentSdkName, String sdkHome)` but returns a more generic name that is used in the list of available SDKs that can be defined, the method is depicted in listing \ref{code:getpresentablename}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=202, lastline=204, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \caption{getPresentableName method}
 \label{code:getpresentablename}
@@ -112,7 +112,7 @@ dialog, display hidden files, and also what constitutes a valid file or director
 
 This method does not need to be overriden as the `SdkType` base class already provides an implementation, but it can be useful to override it if we have some very specific verifications we want to do, as depicted in listing \ref{code:gethomechooser}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=93, lastline=125, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \caption{getHomeChooserDescriptor method}
 \label{code:gethomechooser}
@@ -125,7 +125,7 @@ executable. This is not absolutely necessary but becomes useful when your plugin
 
 In our plugin we simply return `1.4.4`, as depicted in listing \ref{code:getversionstring}, since that is at the moment of writing the only version of GNU-Prolog used but in other cases we can use a Regex to extract the version number from the parent directory or even the executable depending on the language.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=179, lastline=289, linenos, breaklines]{kotlin}{code-source/ch/eif/intelliprolog/sdk/PrologSdkType.kt}
 \caption{getVersionString method}
 \label{code:getversionstring}
@@ -148,7 +148,7 @@ In our class we define only a single static field, an instance field.
 The `SdkType` needs to be added to the extensions section of the `plugin.xml` file,
 the element that needs to be added is depicted in listing \ref{reg:sdktype}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=34, lastline=34]{xml}{code-resources/META-INF/plugin.xml}
 \caption{SdkType registration}
 \label{reg:sdktype}

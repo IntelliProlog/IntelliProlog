@@ -126,15 +126,15 @@ We also create two static methods:
   If we are on a Windows system, we also have to set an [environment variable](http://www.gprolog.org/manual/gprolog.html#sec13) to make sure that
   `gprolog` is launched in text mode, the environment variable is `LINEDIT gui=no`. All of this is depicted in listing \ref{code:createcmdline-consolerunner}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=50, lastline=61, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
 \caption{run method}
 \label{code:run-consolerunner}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=87, lastline=111, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
-\caption{run method}
+\caption{createCommandLine method}
 \label{code:createcmdline-consolerunner}
 \end{listing}
 
@@ -148,15 +148,18 @@ The action implements the two methods listed earlier, `actionPerformed` and `upd
 ##### void update(AnActionEvent e)
 
 In this method we check if a file is available to be run and if yes we set it to be visible with an
-appropriate text.
+appropriate text, depicted in listing \ref{code:update-loadprolog}.
 
-\begin{listing}[H]
-\inputminted[firstline=57, lastline=68, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
+\begin{listing}[h]
+\inputminted[firstline=46, lastline=56, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
+\caption{update method}
+\label{code:update-loadprolog}
+\end{listing}
 
 ##### void actionPerformed(AnActionEvent e)
 
 In this method we first check if an editor and project are available, then retrieve the path to the
-file we wish to run in the REPL.
+file we wish to run in the REPL, the whole method is depicted in listing \ref{code:actionperformed-loadprolog}.
 
 The next step is making sure that the current state of the file is saved to the filesystem, using the
 methods `commitAllDocuments()` and `saveAllDocuments()` from `PsiDocumentManager` and
@@ -170,8 +173,11 @@ After we are sure that the file has been correctly written to disk we can run ou
 `run` method of `PrologConsoleRunner`, giving it the reference to our project, the path to the file and
 if we want to run it with trace turned on, which in this case we don't so we pass it `false`.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[firstline=25, lastline=43, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
+\caption{actionPerformed method}
+\label{code:actionperformed-loadprolog}
+\end{listing}
 
 #### LoadPrologFileInConsoleWithTraceAction
 
@@ -183,3 +189,14 @@ when we run our console runner.
 This action class is very similar to the previous actions but in this action we only check if a
 module is available in the `update` method and in the `actionPerformed` method we simply run our
 console runner, with a `null` as the path and `false` for the trace argument.
+
+### Registering our actions
+
+The actions need to be added to the actions section of the `plugin.xml` file,
+the elements that need to be added are depicted in listing \ref{reg:actions}.
+
+\begin{listing}[h]
+\inputminted[breaklines, fontsize=\footnotesize,firstline=46, lastline=69]{xml}{code-resources/META-INF/plugin.xml}
+\caption{Plugin actions registration}
+\label{reg:actions}
+\end{listing}

@@ -42,13 +42,13 @@ we define constants for the `TextAttributesKey` classes, an example of the `Text
 integers can be seen in listing \ref{code:integer_term} and the corresponding array in listing
 \ref{code:integer_term_keys}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=32, lastline=33]{java}{code-source/ch/eif/intelliprolog/editor/PrologSyntaxHighlighter.java}
 \caption{`TextAttributesKey` for integers}
 \label{code:integer_term}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=91, lastline=91]{java}{code-source/ch/eif/intelliprolog/editor/PrologSyntaxHighlighter.java}
 \caption{`TextAttributesKey` array for integers}
 \label{code:integer_term_keys}
@@ -65,7 +65,7 @@ To use it we simply extend it and implement it's abstract method `SyntaxHighligh
 The `SyntaxHighlighterFactory` needs to be added to the extensions section of the `plugin.xml` file,
 the element that needs to be added is visible in listing \ref{reg:syntaxhighlighterfactory}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=36, lastline=36]{xml}{code-resources/META-INF/plugin.xml}
 \caption{SyntaxHighlighterFactory registration}
 \label{reg:syntaxhighlighterfactory}
@@ -95,19 +95,19 @@ the methods defined in it, these methods are:
   defining fore and background colours, in our plugin we return `ColorDescriptor.EMPTY_ARRAY`.
 + `String getDisplayName()`, this method returns the name to display in the settings, we return `Prolog`.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=46, lastline=55]{java}{code-source/ch/eif/intelliprolog/PrologColorSettingsPage.java}
 \caption{getDemoText example}
 \label{code:getdemotext}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=16, lastline=30]{java}{code-source/ch/eif/intelliprolog/PrologColorSettingsPage.java}
 \caption{AttributesDescriptor array example}
 \label{code:DESCRIPTORS}
 \end{listing}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=65, lastline=67]{java}{code-source/ch/eif/intelliprolog/PrologColorSettingsPage.java}
 \caption{getAttributeDescriptors example}
 \label{code:getAttributeDescriptors}
@@ -118,7 +118,7 @@ the methods defined in it, these methods are:
 The `ColorSettingsPage` needs to be added to the extensions section of the `plugin.xml` file,
 the element that needs to be added is visible in listing \ref{reg:prologcolorsettingspage}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize,firstline=39, lastline=39]{xml}{code-resources/META-INF/plugin.xml}
 \caption{ColorSettingsPage registration}
 \label{reg:prologcolorsettingspage}

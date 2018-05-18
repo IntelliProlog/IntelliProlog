@@ -42,7 +42,7 @@ For our project which is targeting the language GNU-Prolog, we will generalise t
 the class `PrologLanguage`. The `Language` subclass is a singleton and therefore has a private
 constructor and a static instance field as seen in listing \ref{code:prologlanguage}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologLanguage.java}
 \caption{PrologLanguage class}
 \label{code:prologlanguage}
@@ -65,7 +65,7 @@ our plugin, these can be found by looking at the source of [`LanguageFileType`](
 
 The example from our plugin is depicted in listing \ref{code:prologfiletype}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologFileType.java}
 \caption{PrologFileType class}
 \label{code:prologfiletype}
@@ -81,7 +81,7 @@ pass it the instance of our FileType.
 
 The example from our plugin is depicted in the listing \ref{code:prologfiletypefactory}.
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologFileTypeFactory.java}
 \caption{PrologFileTypeFactory class}
 \label{code:prologfiletypefactory}
@@ -92,7 +92,7 @@ The registration of our FileTypeFactory is done in the `plugin.xml` file found i
 
 The line depicted in the listing \ref{reg:filetypefactory} needs to be inserted in the `extensions` part of the file:
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize, firstline=33, lastline=33]{xml}{code-resources/META-INF/plugin.xml}
 \caption{FileTypeFactory registration}
 \label{reg:filetypefactory}
@@ -104,7 +104,7 @@ We can create a class that is entirely responsible for loading and keeping refer
 
 An example for our plugin is depicted in listing \ref{code:prologicons}
 
-\begin{listing}[H]
+\begin{listing}[h]
 \inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologIcons.java}
 \caption{PrologIcons class}
 \label{code:prologicons}

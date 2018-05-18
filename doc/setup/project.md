@@ -9,21 +9,21 @@ The steps are :
 + Select `IntelliJ Platform Plugin`, illustrated in figure \ref{fig:projecttype}
 + Define a name and location for the project, illustrated in figure \ref{fig:projectnameloc}
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{content/images/project_creation1.png}
 \caption{New project menu entry}
 \label{fig:newproject}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{content/images/project_creation2.png}
 \caption{Select IntelliJ Platform Plugin project type}
 \label{fig:projecttype}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{content/images/project_creation3.png}
 \caption{Define project name and project location}
@@ -33,7 +33,7 @@ The steps are :
 After the project is created we need to define the project SDK, illustrated in figure \ref{fig:projectsdk},
 this is accomplished in the Project Structure window.
 
-\begin{figure}[H]
+\begin{figure}
 \centering
 \includegraphics[width=\textwidth]{content/images/project_creation4.png}
 \caption{Define project SDK}
