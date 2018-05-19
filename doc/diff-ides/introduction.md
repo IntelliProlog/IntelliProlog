@@ -8,12 +8,12 @@ provide some other IDEs like PyCharm, WebStorm and GoLand.
 In this section we will compare JetBrains IDEs, the differences in their architecture and how this
 affects the development of plugins for them.
 
-We will focus on [IntelliJ IDEA](https://www.jetbrains.com/idea/) and [PyCharm](https://www.jetbrains.com/pycharm/)
+We will focus on IntelliJ IDEA [@IDEA] and PyCharm [@PyCharm]
 since both of these provide Community editions and are therefore free and open source software,
-which means we can inspect their source code, available on GitHub, [IntelliJ IDEA GitHub repo](https://github.com/JetBrains/intellij-community) and [PyCharm GitHub repo](https://github.com/JetBrains/intellij-community/tree/master/python).
+which means we can inspect their source code, available on GitHub, IntelliJ IDEA GitHub repo [@IDEAC-GH] and PyCharm GitHub repo [@PyCharm]-GH.
 
 The reason we are going through these differences is that during the process of this project, we saw
-in some of the forums and the [Plugin Compatibility with IntelliJ Platform Products page](http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html) that not all JetBrains IDEs are created equal. All of them are based on the
+in some of the forums and the Plugin Compatibility with IntelliJ Platform Products page [@PCIPP] that not all JetBrains IDEs are created equal. All of them are based on the
 `IntelliJ Platform`. Some of the IDEs have their own extra modules that are not present in the others.
 
 The modules included in all the IDEs are:

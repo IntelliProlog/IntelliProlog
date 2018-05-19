@@ -17,7 +17,7 @@ class ProcessRunner(workingDirectory: String? = null) {
         }
     }
 
-    fun executeOrFail(vararg cmd: String):String {
+    fun executeOrFail(vararg cmd: String): String {
         return executeOrFail(cmd.toList(), null)
     }
 

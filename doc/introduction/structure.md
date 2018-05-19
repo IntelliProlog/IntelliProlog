@@ -5,7 +5,7 @@ The structure of the project will be as follows:
 * Tutorial: How to create a custom language plugin
 * Differences between the JetBrains IDEs
 * Comparison of the different Prolog implementations
-* Quick overview of different licenses for OSS
+* Quick overview of different licenses for software
 
 ### Tutorial: How to create a custom language plugin
 
@@ -19,7 +19,7 @@ The features we'll be implementing are the following:
 1. Highlighting including syntax and errors
 1. Code commenting and folding
 
-Before we get to implementing the features, we'll go over the steps for setting up a project needed
+Before we get to implementing the features, we will go over the steps for setting up a project needed
 to develop our IntelliJ Platform plugin.
 
 ### Differences between the JetBrain IDEs
@@ -41,4 +41,4 @@ some of the implementations.
 
 In this section of the report we will do a quick overview of a couple of different licenses for
 software, more specifically Open Source Software (OSS) licenses, the licenses that we will discuss
-are the MIT, Apache 2.0.
+are the MIT license and Apache 2.0 license.

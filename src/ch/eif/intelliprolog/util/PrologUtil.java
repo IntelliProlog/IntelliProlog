@@ -4,7 +4,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 
 import java.io.File;
 
-public class PrologUtil {
+class PrologUtil {
 
     public static String getCommandPath(VirtualFile gprologHome, String executable) {
         if (gprologHome == null)

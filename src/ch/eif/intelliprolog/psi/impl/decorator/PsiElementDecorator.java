@@ -17,15 +17,15 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class PsiElementDecorator implements PsiElement {
+class PsiElementDecorator implements PsiElement {
 
     private final PsiElement decoratedPsiElement;
 
-    protected PsiElementDecorator(PsiElement psiElement) {
+    PsiElementDecorator(PsiElement psiElement) {
         this.decoratedPsiElement = psiElement;
     }
 
-    public PsiElement getDecoratedPsiElement() {
+    PsiElement getDecoratedPsiElement() {
         return decoratedPsiElement;
     }
 

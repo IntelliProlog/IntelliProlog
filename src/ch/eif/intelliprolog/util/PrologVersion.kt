@@ -3,7 +3,7 @@ package ch.eif.intelliprolog.util
 class PrologVersion constructor(private val version: List<Int>) : Comparable<PrologVersion> {
 
     companion object {
-        fun fromString(version : String) = PrologVersion(version.split(".").map { it.toInt() }.toList())
+        fun fromString(version: String) = PrologVersion(version.split(".").map { it.toInt() }.toList())
     }
 
     override fun equals(other: Any?): Boolean {
@@ -40,7 +40,6 @@ class PrologVersion constructor(private val version: List<Int>) : Comparable<Pro
         }
         return buf.toString()
     }
-
 
 
     override fun compareTo(other: PrologVersion): Int {

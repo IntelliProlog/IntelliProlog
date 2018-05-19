@@ -1,6 +1,6 @@
 ## LogTalk
 
-[Logtalk](https://logtalk.org/logtalk.html) is a Prolog implementation with object-oriented features
+Logtalk [@LGT] is a Prolog implementation with object-oriented features
 that extends other Prolog implementations, using their compiler as its back-end compiler. It was
 created by Paulo Moura.
 

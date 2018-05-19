@@ -2,7 +2,7 @@ package ch.eif.intelliprolog.psi.impl.decorator;
 
 import com.intellij.psi.PsiElement;
 
-public class WrongPsiElementException extends RuntimeException {
+class WrongPsiElementException extends RuntimeException {
 
     private final PsiElement actual;
     private final String expected;

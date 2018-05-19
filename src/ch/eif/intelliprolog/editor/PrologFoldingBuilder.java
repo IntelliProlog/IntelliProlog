@@ -20,7 +20,7 @@ import static ch.eif.intelliprolog.psi.impl.decorator.SentenceDecorator.isSenten
 
 public class PrologFoldingBuilder implements FoldingBuilder {
 
-    public static final int LIST_SIZE_FOLDING_THRESHOLD = 3;
+    private static final int LIST_SIZE_FOLDING_THRESHOLD = 3;
 
     private static final Pattern WHITES = Pattern.compile("[\\s]+");
 

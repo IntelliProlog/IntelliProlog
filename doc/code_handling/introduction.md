@@ -11,13 +11,13 @@ These features are more visual than other code handling features but are still v
 allow programmers to reduce the visual clutter of the source code. Visual clutter can be very distracting
 when writing bigger and more complicated programs, especially if the files are also very big.
 
-Other code handling features that we envisioned of implementing but did not for different reasons
+Other code handling features that we envisioned implementing but did not for different reasons,
 mainly lack of time, are:
 
 + Refactoring
 + Code completion
 + Find Usages
 
-The implementations of these features are taken from the [Logtalk IDEA plugin](https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea).
+The implementations of these features are taken from the Logtalk IDEA plugin [@lgt3plug].
 
 Without further ado, let us start with commenting.

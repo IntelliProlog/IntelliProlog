@@ -6,7 +6,7 @@ IDEA to understand and breakdown our files.
 ## Introduction
 
 Parsers and lexers are a fundamental part of any programming language compiler since they decompose
-a source file into it's component parts and then produces an Abstract Syntax Tree. The Abstract
+a source file into its component parts and then produces an Abstract Syntax Tree. The Abstract
 Syntax Tree defines the structure of the program and can then be used to understand what it is
 supposed to do, it is for this reason that parsers and lexers are fundamental when creating a
 programming language.
@@ -36,4 +36,4 @@ The PSI is composed of multiple PSI elements in a tree hierarchy, a PSI tree, ju
 Syntax Tree, it is this PSI tree and its elements that enable some of the most useful features listed
 above.
 
-More information about the [`Program Structure Interface`](http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview/psi.html) is available in the [IntelliJ Platform SDK DevGuide](http://www.jetbrains.org/intellij/sdk/docs/welcome.html)
+More information about the `Program Structure Interface` [@PSI] is available in the IntelliJ Platform SDK DevGuide [@DevGuide]

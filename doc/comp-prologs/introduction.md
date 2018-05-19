@@ -1,13 +1,13 @@
 # Comparison of the different Prolog implementations
 
-[Prolog](https://en.wikipedia.org/wiki/Prolog) is a general-purpose logic programming language,
-initially conceived in the 1970s by [Alain Colmerauer](https://en.wikipedia.org/wiki/Alain_Colmerauer).
+Prolog [@PROLOG] is a general-purpose logic programming language,
+initially conceived in the 1970s by Alain Colmerauer [@ACOLM].
 
 ## Introduction
 
 In this section we will compare 2 implementations and an extension for these implementations,
-[GNU Prolog](http://www.gprolog.org/) the language we have focused on in this project,
-[SWI-Prolog](http://swi-prolog.org/) and the [Logtalk](http://logtalk.org/) extension that adds
+GNU Prolog [@GPRO] the language we have focused on in this project,
+SWI-Prolog [@SWIP] and the Logtalk [@LGT] extension that adds
 object-oriented elements to Prolog.
 
 We will compare these implementations across the following features and tools:

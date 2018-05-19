@@ -14,8 +14,8 @@ import java.io.File
 
 class PrologProjectComponent(val project: Project) : ProjectComponent {
     companion object {
-        val PROLOG_PATH_NOT_FOUND = "gprolog not found in PATH. It can cause issues."+
-                                    "Please specify prolog executable SDK for project."
+        val PROLOG_PATH_NOT_FOUND = "gprolog not found in PATH. It can cause issues." +
+                "Please specify prolog executable SDK for project."
     }
 
     fun invokeInUI(block: () -> Unit) {
@@ -28,11 +28,11 @@ class PrologProjectComponent(val project: Project) : ProjectComponent {
 
     fun getPrologModules(): List<Module> {
         val moduleManager = ModuleManager.getInstance(project)!!
-        return moduleManager.modules.filter { ModuleType.get(it) == PrologModuleType.INSTANCE}
+        return moduleManager.modules.filter { ModuleType.get(it) == PrologModuleType.INSTANCE }
     }
 
     override fun projectOpened() {
-        if(!getPrologModules().isEmpty()) {
+        if (!getPrologModules().isEmpty()) {
             val paths = System.getenv("PATH")!!.split(File.pathSeparator.toRegex()).toTypedArray().toMutableList()
 
             val sdk = ProjectRootManager.getInstance(project).projectSdk

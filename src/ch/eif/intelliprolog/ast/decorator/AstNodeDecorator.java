@@ -9,11 +9,11 @@ import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class AstNodeDecorator implements ASTNode {
+class AstNodeDecorator implements ASTNode {
 
     private final ASTNode node;
 
-    protected AstNodeDecorator(ASTNode node) {
+    AstNodeDecorator(ASTNode node) {
         this.node = node;
     }
 

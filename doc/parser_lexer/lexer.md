@@ -3,7 +3,7 @@
 The lexer defines how the contents of a source file for our language is tokenised, broken into
 individual tokens, used by the parser.
 
-Their have been various ways to define lexers in the past, using programs like [`Flex`](https://en.wikipedia.org/wiki/Flex_(lexical_analyser_generator)) or [`Lex`](https://en.wikipedia.org/wiki/Lex_(software)), which was written by the former CEO of Google Eric Schmidt. IntelliJ recommends to use [`JFlex`](http://www.jflex.de/), which we will.
+Their have been various ways to define lexers in the past, using programs like `Flex` [@FLEX] or `Lex` [@LEX], which was written by the former CEO of Google Eric Schmidt. IntelliJ recommends to use `JFlex` [@JFLEX], which we will.
 
 The steps for creating a lexer for the IntelliJ Platform are:
 
@@ -27,47 +27,47 @@ them using `%%` has separator, these sections are:
    lexical states available.
 + Rules and actions, depicted in listing \ref{flex:rules}, this section is the main part of the lexer. We define how the scanner matches
   the input using regular expressions and lexical states, more detailed information is available in
-  the [`JFlex` Manual](http://jflex.de/manual.pdf)
+  the `JFlex` Manual [@JFLEXMAN].
 
 \begin{listing}[h]
-\inputminted[firstline=1, lastline=8, breaklines, fontsize=\footnotesize]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
+\inputminted[firstline=1, lastline=8, breaklines, autogobble, fontsize=\footnotesize]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
 \caption{User code in Flex file}
 \label{flex:user}
 \end{listing}
 
 \begin{listing}[h]
-\inputminted[firstline=8, lastline=16, breaklines, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
-\inputminted[firstline=60, lastline=70, breaklines, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
-\inputminted[firstline=87, lastline=90, breaklines, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
+\inputminted[firstline=8, lastline=16, breaklines, autogobble, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
+\inputminted[firstline=60, lastline=70, breaklines, autogobble, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
+\inputminted[firstline=87, lastline=90, breaklines, autogobble, fontsize=\footnotesize, linenos]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
 \caption{Options, macros and lexical states in Flex file}
 \label{flex:options}
 \end{listing}
 
 \begin{listing}[h]
-\inputminted[firstline=106, lastline=112, breaklines, fontsize=\footnotesize, autogobble]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
+\inputminted[firstline=106, lastline=112, breaklines, autogobble, fontsize=\footnotesize, autogobble]{text}{code-source/ch/eif/intelliprolog/Prolog.flex}
 \caption{Extract from rules and actions part of Flex file}
 \label{flex:rules}
 \end{listing}
 
-As with the parser definition we are also using the definition from the [logtalk3 intellij plugin](https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea), this for the same reasons
+As with the parser definition we are also using the definition from the logtalk3 intellij plugin [@lgt3plug], this for the same reasons
 detailed for the parser.
 
 #### Generate lexer class
 
 Generating the lexer class is similar to generating the parser class, we just have to click on `Run JFlex Generator` in the context menu for the flexe definition file.
 
-If it's the first time that the generator is run, IDEA will offer to download the JFlex generator as
+If it is the first time that the generator is run, IDEA will offer to download the JFlex generator as
 well as a skeleton file detailing how it should be run. This should be saved in the project root directory.
 
 ### FlexAdapter
 
-The `FlexAdapter` class will be called `PrologLexerAdapter`, visible in listing \ref{code:PrologLexerAdapter}, for our plugin and extends the [`FlexAdapter` class](https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/core-api/src/com/intellij/lexer/FlexAdapter.java) provided by JetBrains.
+The `FlexAdapter` class will be called `PrologLexerAdapter`, visible in listing \ref{code:PrologLexerAdapter}, for our plugin and extends the `FlexAdapter` class [@FLEXADAPT] provided by JetBrains.
 
 The only thing we need to implement in this class is a constructor that calls the super class
 constructor with our lexer class.
 
 \begin{listing}[h]
-\inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologLexerAdapter.java}
+\inputminted[breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologLexerAdapter.java}
 \caption{PrologLexerAdapter class}
 \label{code:PrologLexerAdapter}
 \end{listing}
@@ -77,25 +77,25 @@ constructor with our lexer class.
 The root PSI file class represents a file that belongs to our language and is used as the root element
 in the PSI tree generated by our parser and lexer after going through our source file.
 
-The class that we will call `PrologFile`, depicted in listing \ref{code:PrologFile}, extends the [`PsiFileBase` class](https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/core-impl/src/com/intellij/extapi/psi/PsiFileBase.java),
+The class that we will call `PrologFile`, depicted in listing \ref{code:PrologFile}, extends the `PsiFileBase` class [@PFB],
 and has a constructor calling the super class constructor with the `FileViewProvider` argument and
 the instance of our `PrologLanguage` class.
 
 We also override the `FileType getFileType()` method returning the instance of our `PrologFileType` and override the `toString()` method returning `Prolog File`.
 
 \begin{listing}[h]
-\inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/psi/PrologFile.java}
+\inputminted[breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/psi/PrologFile.java}
 \caption{PrologFile class}
 \label{code:PrologFile}
 \end{listing}
 
 ### Parser Definition
 
-The parser definition class, called `PrologParserDefinition` visible in listing \ref{code:PrologParserDefintion} implements the [`ParserDefinition`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/core-api/src/com/intellij/lang/ParserDefinition.java), and defines the implementation of a custom
+The parser definition class, called `PrologParserDefinition` visible in listing \ref{code:PrologParserDefinition} implements the `ParserDefinition` [@PARSDEF], and defines the implementation of a custom
 language parser.
 
-This class is where we define which parser, lexer, PSI file base and elements to be used in our parser
-, to accomplish this we need to implement the methods defined in [`ParserDefinition`].
+This class is where we define which parser, lexer, PSI file base and elements to be used in our parser,
+to accomplish this we need to implement the methods defined in `ParserDefinition`.
 
 These methods are:
 
@@ -117,7 +117,7 @@ These methods are:
   tokens need a space between them, we return `SpaceRequirements.MAY`
 
 \begin{listing}[h]
-\inputminted[breaklines, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/PrologParserDefinition.java}
+\inputminted[breaklines, autogobble, fontsize=\footnotesize, firstline=18, lastline=68]{java}{code-source/ch/eif/intelliprolog/PrologParserDefinition.java}
 \caption{PrologParserDefinition}
 \label{code:PrologParserDefinition}
 \end{listing}
@@ -128,7 +128,7 @@ The `ParserDefinition` needs to be added to the extensions section of the `plugi
 the element that needs to be added is visible in listing \ref{reg:parserdefinition}.
 
 \begin{listing}[h]
-\inputminted[breaklines, fontsize=\footnotesize,firstline=35, lastline=35]{xml}{code-resources/META-INF/plugin.xml}
+\inputminted[breaklines, autogobble, fontsize=\footnotesize,firstline=31, lastline=31]{xml}{code-resources/META-INF/plugin.xml}
 \caption{ParserDefinition registration}
 \label{reg:parserdefinition}
 \end{listing}

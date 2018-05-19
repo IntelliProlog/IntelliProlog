@@ -14,7 +14,7 @@ An action is defined using a class that extends the abstract class `AnAction` pr
 The main method in the `AnAction` class is `void actionPerformed(AnActionEvent e)`, the other commonly
 used method is `void update(AnActioNEvent e)`.
 
-For the complete list of methods available in the `AnAction` class, checkout the source code [`AnAction.java`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/editor-ui-api/src/com/intellij/openapi/actionSystem/AnAction.java)
+For the complete list of methods available in the `AnAction` class, checkout the source code `AnAction.java` [@AnAction].
 
 The actions are then registered in the `plugin.xml` file under the `actions` section.
 
@@ -34,7 +34,7 @@ the action or disabling the action completely if the action would not be able to
 
 To register actions in the plugin we have to add appropriate elements to the `plugin.xml` file, in the actions section.
 
-The parent element is `action` with an id uniquely identifying the action, the class of the action and the text to display. Within the `action` element we can add other elements, these allow to define where the action should be located as well as mouse or keyboard shortcuts. More details are available in the [Actions section](https://www.jetbrains.org/intellij/sdk/docs/basics/action_system.html) of the IntelliJ Platform SDK DevGuide.
+The parent element is `action` with an id uniquely identifying the action, the class of the action and the text to display. Within the `action` element we can add other elements, these allow to define where the action should be located as well as mouse or keyboard shortcuts. More details are available in the Actions section [@ActSec] of the IntelliJ Platform SDK DevGuide.
 
 ### Plugin actions
 
@@ -45,7 +45,7 @@ The actions we are going to implement in our plugin are the following:
 + `RunPrologConsoleAction`
 
 These actions will be available in the `Run` menu as well as the right-click context-menu of the file
-in question.
+editor.
 
 Before looking at our actions we will take a look at the methods and classes needed by our actions.
 We will call these our REPL helpers.
@@ -59,7 +59,7 @@ Our REPL helpers consist of 5 classes:
 + `PrologConsoleProcessHandler`
 + `PrologConsoleRunner`
 
-These classes are inspired by the classes from the [Haskell IDEA plugin](https://github.com/atsky/haskell-idea-plugin/), more specifically the [repl](https://github.com/atsky/haskell-idea-plugin/tree/master/plugin/src/org/jetbrains/haskell/repl) part of it.
+These classes are inspired by the classes from the Haskell IDEA plugin [@HaskIDEA], more specifically the repl [@HaskREPL] part of it.
 
 ##### PrologREPLUtils
 
@@ -79,8 +79,8 @@ As well as an inner class `PrologConsoleMatcher`, which is used in the `findRunn
 
 ##### PrologConsole
 
-This class represents a Prolog version of a basic IDEA LanguageConsole. We only extend the
-[`LanguageConsoleImpl` class](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/lang-impl/src/com/intellij/execution/console/LanguageConsoleImpl.java)
+This class represents a Prolog version of a basic IDEA `LanguageConsole`. We only extend the
+`LanguageConsoleImpl` class [@LangConsImp]
 provided by JetBrains.
 
 This class sets up the view of the console window and actions that are available in the console window.
@@ -89,7 +89,7 @@ one would do it.
 
 ##### PrologConsoleProcessHandler
 
-The `PrologConsoleProcessHandler` extends from the [`ColoredProcessHandler`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/platform-impl/src/com/intellij/execution/process/KillableProcessHandler.java) class provided by JetBrains,
+The `PrologConsoleProcessHandler` extends from the `ColoredProcessHandler` [@ColProcHan] class provided by JetBrains,
 this class provides a process handler that supports ANSI coloring. The process handler is what controls
 our console process, starting and killing it, and integrates with the actions associated with our
 console view.
@@ -113,27 +113,27 @@ We implement the abstract methods provided by the abstract class, these methods 
 
 We also create two static methods:
 
-+ `PrologConsoleProcessHandler run(Module module, String sourceFilePath, boolean withTrace)`,
-  this method creates an instance of `PrologConsoleRunner`, tries to initialise and run our console runner and return the process handler for the runner, depicted in listing \ref{code:run-consolerunner}.
++ `void run(Module module, String sourceFilePath, boolean withTrace)`,
+  this method creates an instance of `PrologConsoleRunner`, tries to initialise and run our console runner, depicted in listing \ref{code:run-consolerunner}.
 + `GeneralCommandLine createCommandLine(Module module, String workingDir, String sourceFilePath, boolean withTrace) throws CantRunException`,
   this method creates our commandline. We check that we have a PrologSDK configured, we then create a
-  [`GeneralCommandLine`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/platform-api/src/com/intellij/execution/configurations/GeneralCommandLine.java) and pass it our
-  [`gprolog` commandline parameters](http://www.gprolog.org/manual/gprolog.html#sec8), which are:
+  `GeneralCommandLine` [@GenCmdLine] and pass it our
+  `gprolog` commandline parameters [@gprologcmdline], which are:
 
-  + `--entry-goal trace` if we are launching the console with a file in trace mode.
-  + `--consult-file <path to file>`if we are launching the console with a file.
+  + `--entry-goal trace`, if we are launching the console with a file in trace mode.
+  + `--consult-file <path to file>`, if we are launching the console with a file.
 
-  If we are on a Windows system, we also have to set an [environment variable](http://www.gprolog.org/manual/gprolog.html#sec13) to make sure that
+  If we are on a Windows system, we also have to set an environment variable [@gprologenv] to make sure that
   `gprolog` is launched in text mode, the environment variable is `LINEDIT gui=no`. All of this is depicted in listing \ref{code:createcmdline-consolerunner}
 
 \begin{listing}[h]
-\inputminted[firstline=50, lastline=61, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
+\inputminted[firstline=50, lastline=60, linenos, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
 \caption{run method}
 \label{code:run-consolerunner}
 \end{listing}
 
 \begin{listing}[h]
-\inputminted[firstline=87, lastline=111, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
+\inputminted[firstline=62, lastline=86, linenos, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/repl/PrologConsoleRunner.java}
 \caption{createCommandLine method}
 \label{code:createcmdline-consolerunner}
 \end{listing}
@@ -141,7 +141,7 @@ We also create two static methods:
 #### LoadPrologFileInConsoleAction
 
 The `LoadPrologFileFileInConsoleAction` action launches our file that is currently open in the editor
-within the `gprolog`REPL that is running inside a IDEA console window.
+within the `gprolog` REPL that is running inside a IDEA console window.
 
 The action implements the two methods listed earlier, `actionPerformed` and `update`.
 
@@ -151,7 +151,7 @@ In this method we check if a file is available to be run and if yes we set it to
 appropriate text, depicted in listing \ref{code:update-loadprolog}.
 
 \begin{listing}[h]
-\inputminted[firstline=46, lastline=56, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
+\inputminted[firstline=44, lastline=55, linenos, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
 \caption{update method}
 \label{code:update-loadprolog}
 \end{listing}
@@ -163,18 +163,18 @@ file we wish to run in the REPL, the whole method is depicted in listing \ref{co
 
 The next step is making sure that the current state of the file is saved to the filesystem, using the
 methods `commitAllDocuments()` and `saveAllDocuments()` from `PsiDocumentManager` and
-`FileDocumentManager` respectively. This is necessary because IntelliJ IDEA uses a VirtualFileSystem,
+`FileDocumentManager` respectively. This is necessary because IntelliJ IDEA uses a Virtual File System,
 that encapsulates most of the activities necessary for working with files. The reason they do this is
 so that IDEA can add some extra features to the files, like tracking modifications and abstracting
-the underlying implementation of the file system of the operating systems file system. More information
-is available in the [IntelliJ Platform SDK DevGuide documentation](http://www.jetbrains.org/intellij/sdk/docs/basics/virtual_file_system.html)
+the underlying implementation of the file system of the operating system. More information
+is available in the IntelliJ Platform SDK DevGuide documentation [@VFS]
 
-After we are sure that the file has been correctly written to disk we can run our console using the
+After we are sure that the file has been correctly written to disk, we can run our console using the
 `run` method of `PrologConsoleRunner`, giving it the reference to our project, the path to the file and
 if we want to run it with trace turned on, which in this case we don't so we pass it `false`.
 
 \begin{listing}[h]
-\inputminted[firstline=25, lastline=43, linenos, breaklines]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
+\inputminted[firstline=24, lastline=41, linenos, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/repl/actions/LoadPrologFileInConsoleAction.java}
 \caption{actionPerformed method}
 \label{code:actionperformed-loadprolog}
 \end{listing}
@@ -196,7 +196,7 @@ The actions need to be added to the actions section of the `plugin.xml` file,
 the elements that need to be added are depicted in listing \ref{reg:actions}.
 
 \begin{listing}[h]
-\inputminted[breaklines, fontsize=\footnotesize,firstline=46, lastline=69]{xml}{code-resources/META-INF/plugin.xml}
+\inputminted[breaklines, autogobble, fontsize=\footnotesize,firstline=42, lastline=65]{xml}{code-resources/META-INF/plugin.xml}
 \caption{Plugin actions registration}
 \label{reg:actions}
 \end{listing}

@@ -2,7 +2,7 @@ package ch.eif.intelliprolog.ast.decorator;
 
 import com.intellij.psi.tree.IElementType;
 
-public class WrongAstNodeException extends RuntimeException {
+class WrongAstNodeException extends RuntimeException {
     private final IElementType actual;
     private final String expected;
 
@@ -10,7 +10,7 @@ public class WrongAstNodeException extends RuntimeException {
         this(actual, expected.toString());
     }
 
-    public WrongAstNodeException(IElementType actual, String expected) {
+    private WrongAstNodeException(IElementType actual, String expected) {
         this.actual = actual;
         this.expected = expected;
     }

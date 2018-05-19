@@ -22,7 +22,7 @@ The other requirements are the following:
 
 * IntelliJ IDEA Community Edition source code
 
-* Plugin DevKit
+* Plugin DevKit plugin
 
 * Grammar-Kit plugin
 
@@ -38,7 +38,7 @@ IntelliJ IDEA is needed for the development of our plugin, and two versions exis
 * Community Edition is an Apache 2.0 licensed open-sourced IDE developed by JetBrains. The Community Edition can only
   use plugins developed specifically for it.
 
-The two different editions can be downloaded from the [IntelliJ IDEA website](https://www.jetbrains.com/idea/).
+The two different editions can be downloaded from the IntelliJ IDEA website [@IDEA].
 
 ### IntelliJ IDEA Community Edition source code
 
@@ -46,15 +46,15 @@ The IntelliJ IDEA Community Edition source code is not essential but very useful
 the JetBrains IDEs since it allows easier debugging and inspection of the source code that is the basis of the plugin.
 
 The source code can be checked out from the IntelliJ IDEA Community Edition repository on
-[GitHub](https://github.com/JetBrains/intellij-community), using either IntelliJ IDEA or from the command line.
+GitHub [@IDEAC-GH], using either IntelliJ IDEA or from the command line.
 
-### Plugin Devkit
+### Plugin Devkit plugin
 
 The Plugin DevKit is an IntelliJ plugin developed by JetBrains, and adds support for developing IntelliJ plugins using
 the IntelliJ IDEA build system. It also adds an easy way of building and launching our plugin in a separate instance of
 IntelliJ IDEA.
 
-This plugin is bundled with all IntelliJ IDEA IDEs, it just needs to be enabled in the IDEs settings.
+This plugin is bundled with all IntelliJ IDEA IDEs, it just needs to be enabled in the IDE settings.
 
 ### Grammar-Kit plugin
 

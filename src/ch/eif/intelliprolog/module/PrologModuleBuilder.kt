@@ -15,7 +15,7 @@ import java.io.File
 
 class PrologModuleBuilder : ModuleBuilder() {
 
-    override fun getBuilderId() = "prolog.module.builder"
+    override fun getBuilderId() = "intelliprolog.module.builder"
 
     override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? =
             StdModuleTypes.JAVA!!.modifySettingsStep(settingsStep, this)

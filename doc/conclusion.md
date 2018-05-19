@@ -25,13 +25,13 @@ improvement are:
   that are used for often.
 + Refactoring and finding usages, are features that have become more and more important the larger
   software projects become. With more and more software having more than 1 million lines of code,
-  according to [information is beautiful](https://informationisbeautiful.net/visualizations/million-lines-of-code/),
+  according to the site 'information is beautiful' [@million],
   even the XBox HD DVD Player software had just over 5 million lines of code. At sizes like that it
   would be impossible for a human to find all call and rename correctly a function that is spread all
   over the project, that is where refactoring and finding the usages comes in handy.
 
 There are a lots of other features that can be added to this plugin, for a more complete list of
-features that can be implemented in IntelliJ IDEs, check out the [Custom Language Support](https://www.jetbrains.org/intellij/sdk/docs/reference_guide/custom_language_support.html)
+features that can be implemented in IntelliJ IDEs, check out the Custom Language Support [@csp]
 page of the IntelliJ Platform SDK DevGuide.
 
 ## Goals achieved
@@ -48,9 +48,18 @@ the following:
 ## Personal opinion
 
 This project was very interesting but at the same time very frustrating, mainly because of the poor
-documentation for the complicated aspects of plugin development for the IntelliJ Platform.
+documentation for the complicated aspects of the plugin development process for the IntelliJ Platform.
 
 The only way to understand how something needs to be implemented relied on reading the implementations
 of other plugins, and most plugins implement features very differently. It seems the more complicated
 features have several different ways that they can be implemented and there is no clear indication what
 the proper or best way is.
+
+There is one benefit of this, I learnt to read a lot of source code and understand it. It also gave me
+a new appreciation of good documentation and the necessity of it.
+
+In the end, I am pleased with the result, since half way through I sort of lost hope in being able to
+implement the main objective of the plugin, launching the current file. It was only after reading through
+a dozen different plugins that I found a solution that I could adapt to our needs.
+
+

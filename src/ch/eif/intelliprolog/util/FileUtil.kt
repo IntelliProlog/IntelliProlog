@@ -31,7 +31,7 @@ fun copyFile(iStream: InputStream, destination: File) {
     try {
         val buffer = ByteArray(1024 * 16)
         var length: Int
-        while (true ) {
+        while (true) {
             length = iStream.read(buffer)
             if (length <= 0) {
                 break
@@ -80,6 +80,7 @@ fun readLines(file: File): Iterable<String> {
                     line = null
                     return result!!
                 }
+
                 override fun hasNext(): Boolean {
                     return fetch() != null
                 }

@@ -25,11 +25,11 @@ public class OperationDecorator extends PsiElementDecorator {
         return psiElement instanceof OperationDecorator ? (OperationDecorator) psiElement : new OperationDecorator(psiElement);
     }
 
-    public boolean isBinary() {
+    private boolean isBinary() {
         return getFirstChild() instanceof PrologNativeBinaryOperation;
     }
 
-    public boolean isLeft() {
+    private boolean isLeft() {
         return !isBinary();
     }
 

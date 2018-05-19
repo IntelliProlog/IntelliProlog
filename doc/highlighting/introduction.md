@@ -8,12 +8,12 @@ identify errors and get a better overall view of the source code they are readin
 Highlighting in IntelliJ is achieved through 3 parts, syntax highlighting, error highlighting and
 annotation.
 
-Within IntelliJ IDEA highlighting is provided by the lexer, parser and the [`Annotator`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-d00d8b4ae3ed33097972b8a4286b336bf4ffcfab/platform/analysis-api/src/com/intellij/lang/annotation/Annotator.java) interface.
+Within IntelliJ IDEA highlighting is provided by the lexer, parser and the `Annotator` [@ANNOT] interface.
 The quality of the highlighting is very dependent on the quality of the lexing and parsing, for this
 reason we need to ensure that our lexing and parsing is done correctly. Even if the the lexing and
 parsing are not perfect we can still have highlighting that is useful.
 
-The implementation of the highlighting is inspired/based on the [Logtalk IDEA plugin](https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea).
+The implementation of the highlighting is inspired/based on the Logtalk IDEA plugin [@lgt3plug].
 
 In this section we will see what is needed to perform syntax highlighting, basic error highlighting
 and possible ways to improve it, and finally how to add annotations to our source code.

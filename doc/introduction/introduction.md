@@ -1,8 +1,8 @@
 # IntelliProlog Introduction
 
 This chapter will discuss the global structure of this report concerning the development of an
-IntelliJ plugin for the programming language Prolog, specifically the GNU Prolog
-implementation developed by Daniel Diaz.
+IntelliJ plugin for the programming language Prolog, specifically the GNU Prolog [@GPRO]
+implementation developed by Daniel Diaz [@DanDi].
 
 ## Introduction
 
@@ -18,5 +18,5 @@ More and more students are using IntelliJ or other IDEs developed by JetBrains f
 moment there does not exist a good way to write and run GNU Prolog code in IntelliJ.
 
 A previous project developed a plugin for the Eclipse IDE, but since that IDE is used less and less nowadays, the
-decision was taken to start a new project to develop a plugin for IntelliJ and possibly other variants of IDES
+decision was taken to start a new project to develop a plugin for IntelliJ and possibly other variants of IDEs
 developed by JetBrains.

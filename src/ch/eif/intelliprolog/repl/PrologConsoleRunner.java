@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<PrologConsole> {
 
-    static final String INTERPRETER_TITLE = "gprolog";
+    private static final String INTERPRETER_TITLE = "gprolog";
 
     private final String myType = "gprolog";
     private final Module module;
@@ -36,7 +36,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final boolean withTrace;
     private GeneralCommandLine cmdLine;
 
-    public PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, @NotNull boolean withTrace) {
+    private PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, boolean withTrace) {
         super(module.getProject(), consoleTitle, workingDir);
 
         this.module = module;
@@ -47,17 +47,42 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         this.withTrace = withTrace;
     }
 
-    public static PrologConsoleProcessHandler run(@NotNull Module module, String sourceFilePath, boolean withTrace) {
+    public static void run(@NotNull Module module, String sourceFilePath, boolean withTrace) {
         String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String path = srcRoot + File.separator + "src";
         PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, sourceFilePath, withTrace);
         try {
             runner.initAndRun();
-            return (PrologConsoleProcessHandler) runner.getProcessHandler();
+            runner.getProcessHandler();
         } catch (ExecutionException e) {
             ExecutionHelper.showErrors(module.getProject(), Arrays.<Exception>asList(e), INTERPRETER_TITLE, null);
-            return null;
         }
+    }
+
+    private static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath, boolean withTrace) throws CantRunException {
+        Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
+        VirtualFile homePath;
+        if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
+            throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly.");
+        } else {
+            homePath = sdk.getHomeDirectory();
+        }
+        GeneralCommandLine line = new GeneralCommandLine();
+        if (SystemInfo.isWindows) {
+            line.withEnvironment("LINEDIT", "gui=no");
+        }
+        line.setExePath(new File(homePath.getPath()).getAbsolutePath());
+        line.withWorkDirectory(workingDir);
+
+        if (sourceFilePath != null) {
+            final ParametersList list = line.getParametersList();
+            if (withTrace) {
+                list.addParametersString("--entry-goal " + "trace");
+            }
+            list.addParametersString("--consult-file " + sourceFilePath);
+        }
+
+        return line;
     }
 
     @Override
@@ -82,31 +107,5 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     protected ProcessBackedConsoleExecuteActionHandler createExecuteActionHandler() {
         new ConsoleHistoryController(myType, "", getConsoleView()).install();
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
-    }
-
-    public static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath, boolean withTrace) throws CantRunException {
-        Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
-        VirtualFile homePath;
-        if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
-            throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly.");
-        } else {
-            homePath = sdk.getHomeDirectory();
-        }
-        GeneralCommandLine line = new GeneralCommandLine();
-        if (SystemInfo.isWindows) {
-            line.withEnvironment("LINEDIT", "gui=no");
-        }
-        line.setExePath(new File(homePath.getPath()).getAbsolutePath());
-        line.withWorkDirectory(workingDir);
-
-        if (sourceFilePath != null) {
-            final ParametersList list = line.getParametersList();
-            if (withTrace) {
-                list.addParametersString("--entry-goal " + "trace");
-            }
-            list.addParametersString("--consult-file " + sourceFilePath);
-        }
-
-        return line;
     }
 }

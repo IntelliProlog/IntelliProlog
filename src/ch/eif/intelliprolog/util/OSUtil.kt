@@ -14,7 +14,7 @@ object OSUtil {
 
     fun userHome(): String = System.getProperty("user.home")!!
 
-    fun removeExtension(name: String) : String {
+    fun removeExtension(name: String): String {
         if (name.endsWith(".exe")) {
             return name.substring(name.length - 4)
         }

@@ -1,0 +1,77 @@
+@online{million, title = {the site 'information is beautiful'}, url = { https://informationisbeautiful.net/visualizations/million-lines-of-code/} }
+@online{csp, title = {Custom Language Support}, url = { https://www.jetbrains.org/intellij/sdk/docs/reference_guide/custom_language_support.html} }
+@online{IDEA, title = {IntelliJ IDEA}, url = { https://www.jetbrains.com/idea/} }
+@online{PyCharm, title = {PyCharm}, url = { https://www.jetbrains.com/pycharm/} }
+@online{IDEAC-GH, title = {IntelliJ IDEA GitHub repo}, url = { https://github.com/JetBrains/intellij-community} }
+@online{PyCharm-GH, title = {PyCharm GitHub repo}, url = { https://github.com/JetBrains/intellij-community/tree/master/python} }
+@online{PCIPP, title = {Plugin Compatibility with IntelliJ Platform Products page}, url = { http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html} }
+@online{GS-SE, title = {https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html}, url = { https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/setting_up_environment.html} }
+@online{JB-PR, title = {JetBrains Plugins Repository}, url = { https://plugins.jetbrains.com/} }
+@online{FoldBuil, title = {`FoldingBuilder` interface}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-12c6e6cd02d57c0ab4fd314f62b4ecb94841a0fa/platform/core-api/src/com/intellij/lang/folding/FoldingBuilder.java} }
+@online{COMMENTER, title = {`Commenter` interface}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-12c6e6cd02d57c0ab4fd314f62b4ecb94841a0fa/platform/core-api/src/com/intellij/lang/Commenter.java} }
+@online{CAL, title = {Choose a License}, url = { https://choosealicense.com/} }
+@online{TLDR, title = {tl;dr Legal}, url = { https://tldrlegal.com/} }
+@online{APL2, title = {Apache License 2.0}, url = { https://www.apache.org/licenses/LICENSE-2.0} }
+@online{CALAPL2, title = {Choose a license / Apache License 2.0}, url = { https://choosealicense.com/licenses/apache-2.0/} }
+@online{MIT, title = {MIT License}, url = { https://opensource.org/licenses/MIT} }
+@online{CALMIT, title = {Choose a license / MIT License}, url = { https://choosealicense.com/licenses/mit/} }
+@online{TAK, title = {`TextAttributesKey` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-5ecc06ee734c5a9c83a92cbf28c9dd3030293fc7/platform/core-api/src/com/intellij/openapi/editor/colors/TextAttributesKey.java} }
+@online{CSPage, title = {`ColorSettingsPage` interface}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-935f73f27a9c63d529d5f6ea38948a5944c7e630/platform/lang-api/src/com/intellij/openapi/options/colors/ColorSettingsPage.java} }
+@online{SYNTAXHIGH, title = {`SyntaxHighlighter` interface}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/editor-ui-api/src/com/intellij/openapi/fileTypes/SyntaxHighlighter.java} }
+@online{SYNTAXBASE, title = {`SyntaxHighlighterBase` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/editor-ui-api/src/com/intellij/openapi/fileTypes/SyntaxHighlighterBase.java} }
+@online{DEFCOL, title = {`DefaultLanguageHighlighterColors` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-5a00c10a69088737a364efbc82a082207a598b45/platform/editor-ui-api/src/com/intellij/openapi/editor/DefaultLanguageHighlighterColors.java} }
+@online{SYNTAXFACT, title = {`SyntaxHighlighterFactory` abstract class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/editor-ui-api/src/com/intellij/openapi/fileTypes/SyntaxHighlighterFactory.java} }
+@online{FILL, title = {Logtalk IDEA plugin}, url = { https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea} }
+@online{SYNERR, title = {IntelliJ Platform SDK DevGuide / Syntax and Error Highlighting}, url = { http://www.jetbrains.org/intellij/sdk/docs/reference_guide/custom_language_support/syntax_highlighting_and_error_highlighting.html} }
+@online{PSIERR, title = {`PsiBuilder.error()`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-d00d8b4ae3ed33097972b8a4286b336bf4ffcfab/platform/core-api/src/com/intellij/lang/PsiBuilder.java?nav=8173:8178:focused&line=277&preview=false} }
+@online{ANNOT, title = {`Annotator` interface}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-d00d8b4ae3ed33097972b8a4286b336bf4ffcfab/platform/analysis-api/src/com/intellij/lang/annotation/Annotator.java} }
+@online{LangFType, title = {`LanguageFileType`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-12c6e6cd02d57c0ab4fd314f62b4ecb94841a0fa/platform/core-api/src/com/intellij/openapi/fileTypes/LanguageFileType.java} }
+@online{SPRING, title = {Spring}, url = { https://spring.io/} }
+@online{TS, title = {Typescript}, url = { https://www.typescriptlang.org/} }
+@online{JS, title = {Javascript}, url = { https://www.javascript.com/} }
+@online{ANGJS, title = {AngularJS}, url = { https://angularjs.org/} }
+@online{SDKs, title = {SDKs}, url = { https://www.jetbrains.com/help/idea/sdk.html} }
+@online{SdkType, title = {`SdkType` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-a00d19098ca9850e1b28a9db178df5a4b3456659/platform/lang-api/src/com/intellij/openapi/projectRoots/SdkType.java?line=36} }
+@online{nvm, title = {`nvm`}, url = { https://github.com/creationix/nvm} }
+@online{AnAction, title = {`AnAction.java`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/editor-ui-api/src/com/intellij/openapi/actionSystem/AnAction.java} }
+@online{ActSec, title = {Actions section}, url = { https://www.jetbrains.org/intellij/sdk/docs/basics/action_system.html} }
+@online{HaskIDEA, title = {Haskell IDEA plugin}, url = { https://github.com/atsky/haskell-idea-plugin/} }
+@online{HaskREPL, title = {Haskell IDEA plugin / repl}, url = { https://github.com/atsky/haskell-idea-plugin/tree/master/plugin/src/org/jetbrains/haskell/repl} }
+@online{LangConsImp, title = {`LanguageConsoleImpl` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/lang-impl/src/com/intellij/execution/console/LanguageConsoleImpl.java} }
+@online{ColProcHan, title = {`ColoredProcessHandler`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/platform-impl/src/com/intellij/execution/process/KillableProcessHandler.java} }
+@online{GenCmdLine, title = {`GeneralCommandLine`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/platform-api/src/com/intellij/execution/configurations/GeneralCommandLine.java} }
+@online{gprologcmdline, title = {`gprolog` commandline parameters}, url = { http://www.gprolog.org/manual/gprolog.html#sec8} }
+@online{gprologenv, title = {environment variable}, url = { http://www.gprolog.org/manual/gprolog.html#sec13} }
+@online{VFS, title = {IntelliJ Platform SDK DevGuide documentation / Virtual File System}, url = { http://www.jetbrains.org/intellij/sdk/docs/basics/virtual_file_system.html} }
+@online{FILL, title = {GitHub}, url = { https://github.com/JetBrains/intellij-community} }
+@online{DanDi, title = {Daniel Diaz}, url = { http://cri-dist.univ-paris1.fr/diaz/} }
+@online{PSUP, title = {Panthéon Sorbonne University of Paris}, url = { http://www.pantheonsorbonne.fr/} }
+@online{FILL, title = {Warren Abstract Machine}, url = { https://en.wikipedia.org/wiki/Warren_Abstract_Machine} }
+@online{GPROJ, title = {GNU Prolog for Java}, url = { https://www.gnu.org/software/gnuprologjava/} }
+@online{JWIEL, title = {Jan Wielemaker}, url = { https://research.vu.nl/en/persons/jan-wielemaker} }
+@online{VUNL, title = {Vrije Universiteit Amsterdam}, url = { https://vu.nl/en/} }
+@online{WAM, title = {Warren Abstract Machine}, url = { https://en.wikipedia.org/wiki/Warren_Abstract_Machine} }
+@online{JPLP, title = {JPL package}, url = { http://www.swi-prolog.org/packages/jpl/} }
+@online{PROLOG, title = {Prolog}, url = { https://en.wikipedia.org/wiki/Prolog} }
+@online{ACOLM, title = {Alain Colmerauer}, url = { https://en.wikipedia.org/wiki/Alain_Colmerauer} }
+@online{GPRO, title = {GNU Prolog}, url = { http://www.gprolog.org/} }
+@online{SWIP, title = {SWI-Prolog}, url = { http://swi-prolog.org/} }
+@online{LGT, title = {Logtalk}, url = { http://logtalk.org/} }
+@online{FILL, title = {Logtalk}, url = { https://logtalk.org/logtalk.html} }
+@online{FLEX, title = {`Flex`}, url = { https://en.wikipedia.org/wiki/Flex_(lexical_analyser_generator} }
+@online{LEX, title = {`Lex`}, url = { https://en.wikipedia.org/wiki/Lex_(software} }
+@online{JFLEX, title = {`JFlex`}, url = { http://www.jflex.de/} }
+@online{JFLEXMAN, title = {`JFlex` Manual}, url = { http://jflex.de/manual.pdf} }
+@online{FLEXADAPT, title = {`FlexAdapter` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/core-api/src/com/intellij/lexer/FlexAdapter.java} }
+@online{PFB, title = {`PsiFileBase` class}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-32b2fa21845ae8598f946709d2aa98c005add383/platform/core-impl/src/com/intellij/extapi/psi/PsiFileBase.java} }
+@online{PARSDEF, title = {`ParserDefinition`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/core-api/src/com/intellij/lang/ParserDefinition.java} }
+@online{IElType, title = {`IElementType`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-5a00c10a69088737a364efbc82a082207a598b45/platform/core-api/src/com/intellij/psi/tree/IElementType.java} }
+@online{BNF, title = {Backus-Naur Form}, url = { https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form} }
+@online{CFG, title = {context-free grammar}, url = { https://en.wikipedia.org/wiki/Context-free_grammar} }
+@online{GKP, title = {Grammar-Kit plugin}, url = { https://github.com/JetBrains/Grammar-Kit} }
+@online{ASTWE, title = {`ASTWrapperPsiElement`}, url = { https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/core-impl/src/com/intellij/extapi/psi/ASTWrapperPsiElement.java} }
+@online{lgt3plug, title = {logtalk3 intellij plugin}, url = { https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea} }
+@online{ProBNF, title = {Prolog BNF grammar}, url = { https://gist.github.com/kuoe0/6191706} }
+@online{GKP-GH, title = { Grammar-Kit GitHub repository}, url = { https://github.com/JetBrains/Grammar-Kit} }
+@online{PSI, title = {`Program Structure Interface`}, url = { http://www.jetbrains.org/intellij/sdk/docs/basics/architectural_overview/psi.html} }
+@online{DevGuide, title = {IntelliJ Platform SDK DevGuide}, url = { http://www.jetbrains.org/intellij/sdk/docs/welcome.html} }

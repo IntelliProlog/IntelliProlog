@@ -10,7 +10,7 @@ import static java.util.Arrays.asList;
  * This should be a temporary solution only.
  * Constants hardcoded in this class should rather be dynamic, obtained from a proper Prolog query.
  */
-public class Constants {
+class Constants {
 
     public static final Set<String> KEYWORDS = new HashSet<>(asList("dynamic", "public", "multifile", "discontiguous",  //newHashSet
             "ensure_linked", "built_in", "built_in_fd", "include", "ensure_loaded", "op", "char_conversion",

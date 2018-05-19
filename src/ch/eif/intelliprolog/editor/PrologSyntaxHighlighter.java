@@ -26,25 +26,25 @@ public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey CUT =
             createTextAttributesKey("CUT", DefaultLanguageHighlighterColors.CONSTANT);
 
-    public static final TextAttributesKey STRING =
+    private static final TextAttributesKey STRING =
             createTextAttributesKey("STRING_TERM", DefaultLanguageHighlighterColors.DOC_COMMENT_TAG_VALUE);
 
-    public static final TextAttributesKey INTEGER =
+    private static final TextAttributesKey INTEGER =
             createTextAttributesKey("INTEGER_TERM", DefaultLanguageHighlighterColors.NUMBER);
 
-    public static final TextAttributesKey FLOAT =
+    private static final TextAttributesKey FLOAT =
             createTextAttributesKey("FLOAT_TERM", DefaultLanguageHighlighterColors.NUMBER);
 
-    public static final TextAttributesKey BIN_NUMBER =
+    private static final TextAttributesKey BIN_NUMBER =
             createTextAttributesKey("BIN_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
-    public static final TextAttributesKey OCT_NUMBER =
+    private static final TextAttributesKey OCT_NUMBER =
             createTextAttributesKey("OCT_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
-    public static final TextAttributesKey HEX_NUMBER =
+    private static final TextAttributesKey HEX_NUMBER =
             createTextAttributesKey("HEX_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
-    public static final TextAttributesKey CHAR_CODE =
+    private static final TextAttributesKey CHAR_CODE =
             createTextAttributesKey("CHAR_CODE", DefaultLanguageHighlighterColors.NUMBER);
 
     public static final TextAttributesKey QUOTED_ATOM =
@@ -77,7 +77,7 @@ public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
     public static final TextAttributesKey BRACKETS =
             createTextAttributesKey("BRACKETS", DefaultLanguageHighlighterColors.BRACKETS);
 
-    public static final TextAttributesKey COMMENT =
+    private static final TextAttributesKey COMMENT =
             createTextAttributesKey("PROLOG_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
     public static final TextAttributesKey BAD_CHARACTER =

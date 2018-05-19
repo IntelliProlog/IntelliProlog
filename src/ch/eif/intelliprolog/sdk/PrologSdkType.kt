@@ -31,7 +31,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             for (name in prologPaths) {
                 prologDirs.add(SDKInfo(name))
             }
-            Collections.sort(prologDirs, object: Comparator<SDKInfo> {
+            Collections.sort(prologDirs, object : Comparator<SDKInfo> {
                 override fun compare(o1: SDKInfo, o2: SDKInfo): Int {
                     return o1.version.compareTo(o2.version)
                 }
@@ -57,7 +57,7 @@ class PrologSdkType : SdkType("GPROLOG") {
 
         fun isProlog(name: String): Boolean = name == "gprolog" || name == "gprolog.exe" || name.matches("gprolog-[.0-9*]+".toRegex())
 
-        fun getPrologVersion(prologPath: File):String? {
+        fun getPrologVersion(prologPath: File): String? {
             if (prologPath.isDirectory) {
                 return null
             }
@@ -70,7 +70,7 @@ class PrologSdkType : SdkType("GPROLOG") {
 
         companion object {
             fun getVersion(name: String?): PrologVersion {
-                val versionStr : List<String> = if (name == null) {
+                val versionStr: List<String> = if (name == null) {
                     listOf<String>()
                 } else {
                     name.split("[^0-9]+".toRegex()).filter { !it.isEmpty() }
@@ -145,7 +145,7 @@ class PrologSdkType : SdkType("GPROLOG") {
         } else if (SystemInfo.isMac) {
             val macVersions = ArrayList<File>()
             val brewVersionsRoot = File("/usr/local/Cellar/gnu-prolog")
-            if (brewVersionsRoot.isDirectory()) {
+            if (brewVersionsRoot.isDirectory) {
                 macVersions.addAll(brewVersionsRoot.listFiles()?.toList() ?: listOf())
             }
             versions = macVersions

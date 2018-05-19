@@ -33,7 +33,7 @@ public class SequenceDecorator extends PsiElementDecorator {
         return getMembers().size();
     }
 
-    public List<PsiElement> getMembers() {
+    private List<PsiElement> getMembers() {
         List<PsiElement> members = new ArrayList<>();
         PsiElement sequence = getDecoratedPsiElement();
         while (sequence != null) {

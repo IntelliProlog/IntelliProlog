@@ -2,10 +2,10 @@
 
 A parser for the IntelliJ Platform is composed of three elements, these elements being:
 
-+ A token type, represented by a class that extends [`IElementType`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-5a00c10a69088737a364efbc82a082207a598b45/platform/core-api/src/com/intellij/psi/tree/IElementType.java), used for the lexer which we will see soon but
++ A token type, represented by a class that extends `IElementType` [@IElType], used for the lexer which we will see soon but
   it is easier to define it now.
 + An element type, also represented by a class extending `IElementType`, used for the parser.
-+ A grammar in the [Backus-Naur Form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form).
++ A grammar in the Backus-Naur Form [@BNF].
 
 ### Token and element type
 
@@ -18,7 +18,7 @@ of this tutorial. We also override the `toString` method and return the string r
 class appended to `PrologTokenType`, this mainly helps when debugging the parser and lexer.
 
 \begin{listing}[h]
-\inputminted[firstline=7, lastline=16, breaklines]{java}{code-source/ch/eif/intelliprolog/psi/PrologTokenType.java}
+\inputminted[firstline=7, lastline=16, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/psi/PrologTokenType.java}
 \caption{PrologTokenType class}
 \label{code:prologtokentype}
 \end{listing}
@@ -35,7 +35,7 @@ the syntax highlighting. These methods are:
 These two methods are helper functions, and therefore not necessary in your own plugin.
 
 \begin{listing}[h]
-\inputminted[firstline=7, lastline=19, breaklines]{java}{code-source/ch/eif/intelliprolog/psi/PrologElementType.java}
+\inputminted[firstline=7, lastline=19, breaklines, autogobble, fontsize=\footnotesize]{java}{code-source/ch/eif/intelliprolog/psi/PrologElementType.java}
 \caption{PrologElementType class}
 \label{code:prologelementtype}
 \end{listing}
@@ -44,22 +44,22 @@ These two methods are helper functions, and therefore not necessary in your own 
 
 We are now getting to the meat of the parser, defining our context-free grammar for our language.
 
-A [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar), for people who haven't
+A context-free grammar [@CFG], for people who haven't
 attended a computation theory course at university, is a type of formal grammar, a way of describing
-a language that has a strict rules.
+a language that has a set of strict rules.
 
 In our case we write the context-free grammar using the Backus-Naur Form, which is a formal way of
 describing a context-free grammar.
 
 #### Grammar-kit parser options
 
-To generate our parser definition for the IntelliJ Platform we are going to use the [Grammar-Kit plugin](https://github.com/JetBrains/Grammar-Kit) we installed during the setup of our project.
+To generate our parser definition for the IntelliJ Platform we are going to use the Grammar-Kit plugin [@GKP] we installed during the setup part of our project.
 
 So that Grammar-Kit can produce the parser definition correctly, we need to define a couple of parts
 not directly related to the grammar definition. These elements are:
 
 + The name of the parser class, in our plugin this is `PrologParser`.
-+ The class the parser class extends, for the IntelliJ Platform this is [`ASTWrapperPsiElement`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-dba03e40ff8fc26feb037493ca72af40c273dfa4/platform/core-impl/src/com/intellij/extapi/psi/ASTWrapperPsiElement.java).
++ The class the parser class extends, for the IntelliJ Platform this is `ASTWrapperPsiElement` [@ASTWE].
 + The PSI class prefix, in our plugin this is `Prolog`.
 + The PSI implementation class suffix, which is `Impl`.
 + The package where the generated PSI elements should be stored, for our plugin this is `ch.eif.intelliprolog.psi`.
@@ -69,41 +69,41 @@ not directly related to the grammar definition. These elements are:
   well as a factory for creating these elements when they are encountered during the parsing
   process, in our own plugin this is `ch.eif.intelliprolog.psi.PrologTypes`.
 + The element type class, the class we created earlier.
-+ The token type class, the class we create earlier.
++ The token type class, the class we created earlier.
 
 The definition of these values are written between braces at the top of our grammar definition file,
 the definition from our plugin is depicted in listing \ref{code:grammarkit-options}.
 
 \begin{listing}[h]
-\inputminted[firstline=1, lastline=14, breaklines]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
+\inputminted[firstline=1, lastline=14, breaklines, autogobble, fontsize=\footnotesize]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
 \caption{Grammar-Kit parser options}
 \label{code:grammarkit-options}
 \end{listing}
 
 #### Grammar-kit grammar definition
 
-The grammar definition for our plugin is taken from the [logtalk3 intellij plugin](https://github.com/LogtalkDotOrg/logtalk3/tree/master/coding/idea) and adapted for our plugin.
+The grammar definition for our plugin is taken from the logtalk3 intellij plugin [@lgt3plug] and adapted for our plugin.
 
 The reason we used the grammar definition from the logtalk plugin is because logtalk as is discussed
 in the prolog implementations comparison, logtalks syntax is a superset of GNU-Prolog and creating a
 correct and efficient grammar definition is a long and difficult task that can take a lot of time.
 
-We did try to write our own grammar definition based on a [Prolog BNF grammar](https://gist.github.com/kuoe0/6191706)
-found on GitHub. The problem with this BNF grammar is that is uses left recursion, which is not fully
+We did try to write our own grammar definition based on a Prolog BNF grammar [@ProBNF]
+found on GitHub. The problem with this BNF grammar is that it uses left recursion, which is not fully
 supported in Grammar-Kit, so we fell back on the logtalk grammar definition.
 
 The logtalk grammar definition most likely could be improved, but decided we would not try to during
 this project and leave it for future improvements.
 
 In this grammar definition we do not use some of the more advanced features of Grammar-Kit, if you
-want more information about these features visit the [GitHub repository](https://github.com/JetBrains/Grammar-Kit), we will not cover these more advanced features since they
+want more information about these features visit the GitHub repository [@GKP]-GH, we will not cover these more advanced features since they
 are outside the scope of this project.
 
-The final grammar definition for our Prolog plugin, can be found in listing \ref{code:bnfgrammar}.
+An extract of the final grammar definition for our Prolog plugin, can be found in listing \ref{code:bnfgrammar}.
 
 \begin{listing}[h]
-\inputminted[linenos, breaklines]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
-\caption{BNF grammar definition}
+\inputminted[linenos, breaklines, autogobble, fontsize=\footnotesize, firstline=1, lastline=24]{BNF}{code-source/ch/eif/intelliprolog/Prolog.bnf}
+\caption{Extract from the BNF grammar definition}
 \label{code:bnfgrammar}
 \end{listing}
 

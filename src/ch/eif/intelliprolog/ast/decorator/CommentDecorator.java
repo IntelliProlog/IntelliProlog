@@ -4,7 +4,7 @@ import ch.eif.intelliprolog.psi.PrologTypes;
 import com.intellij.lang.ASTNode;
 
 public class CommentDecorator extends AstNodeDecorator {
-    protected CommentDecorator(ASTNode node) {
+    private CommentDecorator(ASTNode node) {
         super(node);
     }
 

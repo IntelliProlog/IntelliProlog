@@ -19,4 +19,4 @@ type `TokenType.BAD_CHARACTER`. In the syntax highlighter, when we encounter a
 
 ### Highlighting parser errors
 
-The highlighting of parser errors is achieved, as far as I understand after looking through the [IntelliJ Platform SDK DevGuide](http://www.jetbrains.org/intellij/sdk/docs/reference_guide/custom_language_support/syntax_highlighting_and_error_highlighting.html), the source files and other plugins that have implemented this feature, during the parsing in the `ParserClass` by calling the [`PsiBuilder.error()`](https://upsource.jetbrains.com/idea-ce/file/idea-ce-d00d8b4ae3ed33097972b8a4286b336bf4ffcfab/platform/core-api/src/com/intellij/lang/PsiBuilder.java?nav=8173:8178:focused&line=277&preview=false) when a sequence of tokens does not conform to the grammar of the language.
+The highlighting of parser errors is achieved, as far as I understand after looking through the IntelliJ Platform SDK DevGuide [@SYNERR], the source files and other plugins that have implemented this feature, during the parsing in the `ParserClass` by calling the `PsiBuilder.error()` [@PSIERR] when a sequence of tokens does not conform to the grammar of the language.

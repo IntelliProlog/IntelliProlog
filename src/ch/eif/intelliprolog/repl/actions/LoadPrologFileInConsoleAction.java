@@ -1,10 +1,8 @@
 package ch.eif.intelliprolog.repl.actions;
 
 import ch.eif.intelliprolog.PrologIcons;
-import ch.eif.intelliprolog.repl.PrologConsoleProcessHandler;
 import ch.eif.intelliprolog.repl.PrologConsoleRunner;
 import ch.eif.intelliprolog.repl.PrologREPLUtils;
-import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;

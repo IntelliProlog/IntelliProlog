@@ -64,7 +64,7 @@ public class PrologREPLUtils {
             return null;
         }
         PsiFile psiFile = PsiDocumentManager.getInstance(editor.getProject()).getPsiFile(editor.getDocument());
-        if (psiFile == null || !(psiFile instanceof PrologFile)) {
+        if (!(psiFile instanceof PrologFile)) {
             return null;
         }
         VirtualFile virtualFile = psiFile.getVirtualFile();

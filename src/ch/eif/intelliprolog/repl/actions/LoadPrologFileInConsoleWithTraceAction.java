@@ -1,25 +1,16 @@
 package ch.eif.intelliprolog.repl.actions;
 
 import ch.eif.intelliprolog.PrologIcons;
-import ch.eif.intelliprolog.psi.PrologFile;
-import ch.eif.intelliprolog.repl.PrologConsoleProcessHandler;
 import ch.eif.intelliprolog.repl.PrologConsoleRunner;
 import ch.eif.intelliprolog.repl.PrologREPLUtils;
-import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.Presentation;
-import com.intellij.openapi.editor.CaretModel;
-import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.testFramework.LightVirtualFile;
 
 import java.io.File;
 

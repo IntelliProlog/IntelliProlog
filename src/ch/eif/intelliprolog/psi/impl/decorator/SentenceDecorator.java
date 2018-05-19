@@ -5,7 +5,7 @@ import com.intellij.psi.PsiElement;
 
 public class SentenceDecorator extends PsiElementDecorator {
 
-    protected SentenceDecorator(PsiElement psiElement) {
+    private SentenceDecorator(PsiElement psiElement) {
         super(psiElement);
     }
 

@@ -1,6 +1,5 @@
 package ch.eif.intelliprolog.module
 
-import ch.eif.intelliprolog.PrologFileType
 import ch.eif.intelliprolog.PrologIcons
 import com.intellij.openapi.module.ModuleType
 import javax.swing.Icon
