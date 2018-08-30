@@ -34,6 +34,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final String workingDir;
     private final String sourceFilePath;
     private final boolean withTrace;
+    private final boolean withSeparateShellWindow;
     private GeneralCommandLine cmdLine;
 
     private PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, boolean withTrace) {
@@ -45,6 +46,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         this.workingDir = workingDir;
         this.sourceFilePath = sourceFilePath;
         this.withTrace = withTrace;
+        this.withSeparateShellWindow = false;
     }
 
     public static void run(@NotNull Module module, String sourceFilePath, boolean withTrace) {
@@ -59,30 +61,92 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         }
     }
 
-    private static GeneralCommandLine createCommandLine(Module module, String workingDir, @Nullable String sourceFilePath, boolean withTrace) throws CantRunException {
+    private static GeneralCommandLine createCommandLine(Module module, String workingDir,
+                                                        @Nullable String sourceFilePath,
+                                                        boolean withTrace,
+                                                        boolean withSeparateShellWindow) throws CantRunException {
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
             throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly.");
-        } else {
-            homePath = sdk.getHomeDirectory();
         }
+        homePath = sdk.getHomeDirectory();
+        String prologInterpreter = new File(homePath.getPath()).getAbsolutePath();
         GeneralCommandLine line = new GeneralCommandLine();
-        if (SystemInfo.isWindows) {
-            line.withEnvironment("LINEDIT", "gui=no");
+        final ParametersList lineParameters = line.getParametersList();
+        boolean separateShellWindow = withSeparateShellWindow;
+        if (SystemInfo.isWindows)
+            separateShellWindow = true; // gprolog interpreter inside console seems buggy on Windows...
+
+        if (separateShellWindow) {
+            if (SystemInfo.isWindows) {
+                line.setExePath("cmd");
+                lineParameters.addParametersString("/C");
+                lineParameters.addParametersString("start");
+                lineParameters.addParametersString(prologInterpreter);
+            } else {
+                String[] cmd = openShellPossibleCommand(prologInterpreter, consultGoal(sourceFilePath));
+                line.setExePath(cmd[0]);
+                for(int i=1; i<cmd.length; i++) {
+                    lineParameters.addParametersString(cmd[i]);
+                }
+            }
+        } else {  // inside IDEA console
+            if (SystemInfo.isWindows) {
+                line.withEnvironment("LINEDIT", "gui=no");
+            }
+            line.setExePath(prologInterpreter);
         }
-        line.setExePath(new File(homePath.getPath()).getAbsolutePath());
         line.withWorkDirectory(workingDir);
 
         if (sourceFilePath != null) {
-            final ParametersList list = line.getParametersList();
+            // using "--query-goal" instead of "--consult-file" just to
+            // have a visible trace of the consult goal
+            lineParameters.addParametersString("--query-goal " + consultGoal(sourceFilePath));
+//            lineParameters.addParametersString("--consult-file " + sourceFilePath);
             if (withTrace) {
-                list.addParametersString("--entry-goal " + "trace");
+//                lineParameters.addParametersString("--entry-goal " + "trace");
+                lineParameters.addParametersString("--query-goal " + "trace");
             }
-            list.addParametersString("--consult-file " + sourceFilePath);
         }
 
         return line;
+    }
+
+    private static String consultGoal(String sourceFile) {
+        return "consult('"+sourceFile+"')";
+    }
+
+    private static String[] openShellPossibleCommand(String prologInterpreter,
+                                                     String consultGoal) {
+        String queryFlag = "--query-goal ";
+        String[][] commands = {
+                {"gnome-terminal", "-x", prologInterpreter, queryFlag, consultGoal},
+                // xterm was universal some years ago...
+                {"xterm", "-e", prologInterpreter, queryFlag, consultGoal},
+                {"konsole", "-e", prologInterpreter, queryFlag, consultGoal},
+                {"lxterminal", "-e", prologInterpreter, queryFlag, consultGoal}
+                // any other suggestions?
+        };
+        if (SystemInfo.isMac) {
+            String appleScript = "tell app \"Terminal\" to do script "
+                    + "\""
+                    +   prologInterpreter +" --query-goal "
+                    +   "\\\""
+                    +     consultGoal
+                    +   "\\\" "
+                    + "\"";
+
+            commands = new String[][] {
+                    {"osascript", "-e", appleScript},
+                    {"xterm", "-e", prologInterpreter, queryFlag, consultGoal}
+                    // MacOS: open -a Terminal.app scriptfile : probably doesn't work here
+                    // MacOS: open -b com.apple.terminal test.sh : probably doesn't work here
+            };
+
+        }
+        // TODO: how to choose the right option, the one that won't fail???
+        return commands[0];
     }
 
     @Override
@@ -93,7 +157,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @Nullable
     @Override
     protected Process createProcess() throws ExecutionException {
-        cmdLine = createCommandLine(module, workingDir, this.sourceFilePath, this.withTrace);
+        cmdLine = createCommandLine(module, workingDir, this.sourceFilePath,
+                this.withTrace, this.withSeparateShellWindow);
         return cmdLine.createProcess();
     }
 
