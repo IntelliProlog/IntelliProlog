@@ -41,7 +41,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private final boolean withSeparateShellWindow;
     private GeneralCommandLine cmdLine;
 
-    private PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, boolean withTrace) {
+    private PrologConsoleRunner(@NotNull Module module, @NotNull String consoleTitle, @Nullable String workingDir, @Nullable String sourceFilePath, boolean inExternalTerminal) {
         super(module.getProject(), consoleTitle, workingDir);
 
         this.module = module;
@@ -49,14 +49,14 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         this.consoleTitle = consoleTitle;
         this.workingDir = workingDir;
         this.sourceFilePath = sourceFilePath;
-        this.withTrace = withTrace;
-        this.withSeparateShellWindow = false;
+        this.withTrace = false;
+        this.withSeparateShellWindow = inExternalTerminal;
     }
 
-    public static void run(@NotNull Module module, String sourceFilePath, boolean withTrace) {
+    public static void run(@NotNull Module module, String sourceFilePath, boolean inExternalTerminal) {
         String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String path = srcRoot + File.separator + "src";
-        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, sourceFilePath, withTrace);
+        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, sourceFilePath, inExternalTerminal);
         try {
             runner.initAndRun();
             runner.getProcessHandler();
@@ -79,8 +79,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         GeneralCommandLine line = new GeneralCommandLine();
         final ParametersList lineParameters = line.getParametersList();
         boolean separateShellWindow = withSeparateShellWindow;
-        if (SystemInfo.isWindows)
-            separateShellWindow = true; // gprolog interpreter inside console seems buggy on Windows...
+//        if (SystemInfo.isWindows)
+//            separateShellWindow = true; // gprolog interpreter inside console seems buggy on Windows...
 
         if (separateShellWindow) {
             if (SystemInfo.isWindows) {

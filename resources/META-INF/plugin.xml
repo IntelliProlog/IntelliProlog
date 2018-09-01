@@ -2,7 +2,7 @@
     <id>ch.eif.intelliprolog</id>
     <name>IntelliProlog</name>
     <version>1.0</version>
-    <vendor email="owenedward.mcgill@edu.hefr.ch" url="https://heia-fr.ch/">HEIA-FR</vendor>
+    <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
 
     <description><![CDATA[
       IntelliJ plugin to add support for GNUProlog, possibly other Prolog implementations in the future
@@ -48,16 +48,17 @@
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
-        <action id="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleWithTraceAction"
-                class="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleWithTraceAction"
-                text="Load/Reload Current File in REPL with trace...">
+        LoadPrologFileInExternalTerminal
+        <action id="ch.eif.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+                class="ch.eif.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+                text="Load current file in an external terminal...">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift T"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
         <action id="ch.eif.intelliprolog.repl.actions.RunPrologConsoleAction"
                 class="ch.eif.intelliprolog.repl.actions.RunPrologConsoleAction"
-                text="Run Prolog REPL...">
+                text="Run gProlog REPL...">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift R"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="RunMenu" anchor="first"/>

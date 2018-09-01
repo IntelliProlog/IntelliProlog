@@ -14,9 +14,9 @@ import com.intellij.psi.PsiDocumentManager;
 
 import java.io.File;
 
-public final class LoadPrologFileInConsoleAction extends AnAction {
+public final class LoadPrologFileInExternalTerminal extends AnAction {
 
-    public LoadPrologFileInConsoleAction() {
+    public LoadPrologFileInExternalTerminal() {
         getTemplatePresentation().setIcon(PrologIcons.FILE);
     }
 
@@ -37,7 +37,7 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
         PsiDocumentManager.getInstance(project).commitAllDocuments();
         FileDocumentManager.getInstance().saveAllDocuments();
 
-        PrologConsoleRunner.run(PrologREPLUtils.getModule(project), filePath, false);
+        PrologConsoleRunner.run(PrologREPLUtils.getModule(project), filePath, true);
     }
 
     @Override
@@ -49,7 +49,7 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
         } else {
             File file = new File(filePath);
             presentation.setVisible(true);
-            presentation.setText(String.format("Load \"%s\" in gProlog within IDE console", file.getName()));
+            presentation.setText(String.format("Load \"%s\" in gProlog within an external terminal", file.getName()));
         }
     }
 }
