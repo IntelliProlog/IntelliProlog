@@ -21,7 +21,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<PrologConsole> {
 
@@ -120,6 +124,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private static String[] openShellPossibleCommand(String prologInterpreter,
                                                      String consultGoal) {
         String queryFlag = "--query-goal ";
+        // Some options... Not easy to choose the one that won't fail!
         String[][] commands = {
                 {"gnome-terminal", "-x", prologInterpreter, queryFlag, consultGoal},
                 // xterm was universal some years ago...
@@ -143,10 +148,20 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                     // MacOS: open -a Terminal.app scriptfile : probably doesn't work here
                     // MacOS: open -b com.apple.terminal test.sh : probably doesn't work here
             };
-
+            // Let's bet on the script...
+            return commands[0];
+        } else {
+            for(String[] c:commands) {
+                String exec = c[0];
+                boolean existsInPath = Stream.of(System.getenv("PATH")
+                        .split(Pattern.quote(File.pathSeparator)))
+                        .map(Paths::get)
+                        .anyMatch(path -> Files.exists(path.resolve(exec)));
+                if (existsInPath) return c;
+            }
+            // Let's bet on the old xterm...
+            return commands[1];
         }
-        // TODO: how to choose the right option, the one that won't fail???
-        return commands[0];
     }
 
     @Override
