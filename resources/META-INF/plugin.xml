@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>ch.eif.intelliprolog</id>
     <name>IntelliProlog</name>
-    <version>1.0</version>
+    <version>0.7</version>
     <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
 
     <description><![CDATA[
