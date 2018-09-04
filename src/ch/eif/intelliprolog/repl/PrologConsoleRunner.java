@@ -72,7 +72,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
-            throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly.");
+            throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly. " +
+                    (sdk==null ?  "null" :  (sdk.getSdkType()+" "+sdk.getHomePath()) ));
         }
         homePath = sdk.getHomeDirectory();
         String prologInterpreter = new File(homePath.getPath()).getAbsolutePath();

@@ -11,7 +11,9 @@ import org.jdom.Element
 import java.io.File
 import java.io.FileFilter
 import java.io.FilenameFilter
+import java.io.IOException
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.swing.Icon
 
 class PrologSdkType : SdkType("GPROLOG") {
@@ -55,13 +57,38 @@ class PrologSdkType : SdkType("GPROLOG") {
             }
         }
 
-        fun isProlog(name: String): Boolean = name == "gprolog" || name == "gprolog.exe" || name.matches("gprolog-[.0-9*]+".toRegex())
+        fun isProlog(name: String): Boolean =
+                name == "gprolog" ||
+                name == "gprolog.exe" ||
+                name.matches("gprolog-[.0-9*]+".toRegex())
+
+        private fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
+            return try {
+                val proc = ProcessBuilder(cmd, arg)
+                        // .directory(workingDir)
+                        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                        .redirectError(ProcessBuilder.Redirect.PIPE)
+                        .start()
+                proc.waitFor(2, TimeUnit.SECONDS)
+                proc.inputStream.bufferedReader().readText()
+            } catch(e: IOException) {
+                e.printStackTrace()
+                null
+            }
+        }
 
         fun getPrologVersion(prologPath: File): String? {
             if (prologPath.isDirectory) {
                 return null
             }
-            return "1.4.4"
+            return "1.4.5" // TODO determine version instead of hard-coding it!!
+            // This won't work: on Windows,  "gprolog.exe --version" writes
+            // something on the console, but not on the process stdout...
+//            val versionFlag = "--version"
+//            val output = runCommand(prologPath.absolutePath, versionFlag) ?: return "1.4.x(?)"
+//            val eolIndex = output.indexOf("\n")
+//            val firstLine = if (eolIndex > 0) output.substring(0, eolIndex) else output
+//            return firstLine
         }
     }
 
