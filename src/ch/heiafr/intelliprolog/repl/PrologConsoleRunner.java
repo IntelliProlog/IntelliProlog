@@ -7,6 +7,7 @@ import com.intellij.execution.ExecutionHelper;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.console.ConsoleHistoryController;
+import com.intellij.execution.console.ConsoleRootType;
 import com.intellij.execution.console.ProcessBackedConsoleExecuteActionHandler;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.AbstractConsoleRunnerWithHistory;
@@ -186,7 +187,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @NotNull
     @Override
     protected ProcessBackedConsoleExecuteActionHandler createExecuteActionHandler() {
-        new ConsoleHistoryController(myType, "", getConsoleView()).install();
+        ConsoleRootType rootType = new ConsoleRootType(myType, myType) {};
+        new ConsoleHistoryController(rootType, "", getConsoleView()).install();
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
     }
 }
