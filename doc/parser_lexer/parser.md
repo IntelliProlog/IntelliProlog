@@ -67,7 +67,7 @@ not directly related to the grammar definition. These elements are:
   this is `ch.eif.intelliprolog.psi.impl`.
 + The element type holder class, an interface containing references to all the types in our parser as
   well as a factory for creating these elements when they are encountered during the parsing
-  process, in our own plugin this is `ch.eif.intelliprolog.psi.PrologTypes`.
+  process, in our own plugin this is `PrologTypes`.
 + The element type class, the class we created earlier.
 + The token type class, the class we created earlier.
 

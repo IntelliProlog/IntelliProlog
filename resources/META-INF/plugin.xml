@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>ch.eif.intelliprolog</id>
+    <id>ch.heiafr.intelliprolog</id>
     <name>IntelliProlog</name>
     <version>0.7</version>
     <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
@@ -19,45 +19,45 @@
 
     <project-components>
         <component>
-            <implementation-class>ch.eif.intelliprolog.PrologProjectComponent</implementation-class>
+            <implementation-class>ch.heiafr.intelliprolog.PrologProjectComponent</implementation-class>
         </component>
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <moduleType id="PROLOG_MODULE" implementationClass="ch.eif.intelliprolog.module.PrologModuleType"/>
-        <fileTypeFactory implementation="ch.eif.intelliprolog.PrologFileTypeFactory"/>
-        <sdkType id="PROLOG" implementation="ch.eif.intelliprolog.sdk.PrologSdkType"/>
-        <lang.parserDefinition language="Prolog" implementationClass="ch.eif.intelliprolog.PrologParserDefinition"/>
+        <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
+        <fileTypeFactory implementation="ch.heiafr.intelliprolog.PrologFileTypeFactory"/>
+        <sdkType id="PROLOG" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType"/>
+        <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Prolog"
-                                       implementationClass="ch.eif.intelliprolog.editor.PrologSyntaxHighlighterFactory"/>
-        <annotator language="Prolog" implementationClass="ch.eif.intelliprolog.editor.PrologAnnotator"/>
-        <colorSettingsPage implementation="ch.eif.intelliprolog.PrologColorSettingsPage"/>
+                                       implementationClass="ch.heiafr.intelliprolog.editor.PrologSyntaxHighlighterFactory"/>
+        <annotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologAnnotator"/>
+        <colorSettingsPage implementation="ch.heiafr.intelliprolog.PrologColorSettingsPage"/>
         <lang.braceMatcher language="Prolog"
-                           implementationClass="ch.eif.intelliprolog.editor.PrologPairedBraceMatcher"/>
-        <lang.commenter language="Prolog" implementationClass="ch.eif.intelliprolog.editor.PrologCommenter"/>
-        <lang.foldingBuilder language="Prolog" implementationClass="ch.eif.intelliprolog.editor.PrologFoldingBuilder"/>
+                           implementationClass="ch.heiafr.intelliprolog.editor.PrologPairedBraceMatcher"/>
+        <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter"/>
+        <lang.foldingBuilder language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder"/>
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
-                class="ch.eif.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+                class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
                 text="Load/Reload Current File in REPL...">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift L"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
         LoadPrologFileInExternalTerminal
-        <action id="ch.eif.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
-                class="ch.eif.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+                class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
                 text="Load current file in an external terminal...">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift T"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
             <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
-        <action id="ch.eif.intelliprolog.repl.actions.RunPrologConsoleAction"
-                class="ch.eif.intelliprolog.repl.actions.RunPrologConsoleAction"
+        <action id="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction"
+                class="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction"
                 text="Run gProlog REPL...">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift R"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
