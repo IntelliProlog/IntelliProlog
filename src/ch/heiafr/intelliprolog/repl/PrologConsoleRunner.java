@@ -131,7 +131,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                     + "\"";
 
             String[][] commands = new String[][] {
-                    {"open", "-a", "Terminal", prologInterpreter, queryFlag, consultGoal},
+                    {"open", "-a", "Terminal", prologInterpreter, "--args", queryFlag, consultGoal},
                     {"osascript", "-e", appleScript},
                     {"xterm", "-e", prologInterpreter, queryFlag, consultGoal}
                     // MacOS: open -a Terminal.app scriptfile : probably doesn't work here
