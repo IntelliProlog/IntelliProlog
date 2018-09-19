@@ -33,6 +33,9 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private static final String INTERPRETER_TITLE = "gprolog";
 
     private final String myType = "gprolog";
+    // using "--query-goal" instead of "--consult-file" just to
+    // have a visible trace of the consult goal
+    private static final String queryFlag = "--query-goal ";
     private final Module module;
     private final Project project;
     private final String consoleTitle;
@@ -55,9 +58,10 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     }
 
     public static void run(@NotNull Module module, String sourceFilePath, boolean inExternalTerminal) {
-        String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
-        String path = srcRoot + File.separator + "src";
-        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, path, sourceFilePath, inExternalTerminal);
+        // String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
+        String parentDirName = new File(sourceFilePath).getParent();
+        String workingDirPath = parentDirName; // srcRoot + File.separator + "src";
+        PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, workingDirPath, sourceFilePath, inExternalTerminal);
         try {
             runner.initAndRun();
             runner.getProcessHandler();
@@ -84,75 +88,69 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 //        if (SystemInfo.isWindows)
 //            separateShellWindow = true; // gprolog interpreter inside console seems buggy on Windows...
 
+        String[] cmd;
         if (separateShellWindow) {
-            if (SystemInfo.isWindows) {
-                line.setExePath("cmd");
-                lineParameters.addParametersString("/C");
-                lineParameters.addParametersString("start");
-                lineParameters.addParametersString(prologInterpreter);
-            } else {
-                String[] cmd = openShellPossibleCommand(prologInterpreter, consultGoal(sourceFilePath));
-                line.setExePath(cmd[0]);
-                for(int i=1; i<cmd.length; i++) {
-                    lineParameters.addParametersString(cmd[i]);
-                }
-            }
+            cmd = openShellPossibleCommand(prologInterpreter, consultGoal(sourceFilePath));
         } else {  // inside IDEA console
             if (SystemInfo.isWindows) {
                 line.withEnvironment("LINEDIT", "gui=no");
             }
+            cmd = new String[] {prologInterpreter, queryFlag, consultGoal(sourceFilePath)};
             line.setExePath(prologInterpreter);
         }
         line.withWorkDirectory(workingDir);
-
-        if (sourceFilePath != null) {
-            // using "--query-goal" instead of "--consult-file" just to
-            // have a visible trace of the consult goal
-            lineParameters.addParametersString("--query-goal " + consultGoal(sourceFilePath));
-//            lineParameters.addParametersString("--consult-file " + sourceFilePath);
-            if (withTrace) {
-//                lineParameters.addParametersString("--entry-goal " + "trace");
-                lineParameters.addParametersString("--query-goal " + "trace");
-            }
+        line.setExePath(cmd[0]);
+        for(int i=1; i<cmd.length; i++) {
+            lineParameters.addParametersString(cmd[i]);
         }
+//        if (withTrace) {
+//            lineParameters.addParametersString("--query-goal " + "trace");
+//        }
 
         return line;
     }
 
     private static String consultGoal(String sourceFile) {
+        if(sourceFile==null) return "write(no_source_file)";
         return "consult('"+sourceFile+"')";
     }
 
     private static String[] openShellPossibleCommand(String prologInterpreter,
                                                      String consultGoal) {
-        String queryFlag = "--query-goal ";
-        // Some options... Not easy to choose the one that won't fail!
-        String[][] commands = {
-                {"gnome-terminal", "-x", prologInterpreter, queryFlag, consultGoal},
-                // xterm was universal some years ago...
-                {"xterm", "-e", prologInterpreter, queryFlag, consultGoal},
-                {"konsole", "-e", prologInterpreter, queryFlag, consultGoal},
-                {"lxterminal", "-e", prologInterpreter, queryFlag, consultGoal}
-                // any other suggestions?
-        };
+        // distinguish 3 platforms: Win, Mac, Linux
+        if (SystemInfo.isWindows) {
+            return new String[] {"cmd", "/C", "start", prologInterpreter, queryFlag, consultGoal};
+        }
         if (SystemInfo.isMac) {
             String appleScript = "tell app \"Terminal\" to do script "
                     + "\""
-                    +   prologInterpreter +" --query-goal "
+                    +   prologInterpreter +" "+queryFlag
                     +   "\\\""
                     +     consultGoal
                     +   "\\\" "
                     + "\"";
 
-            commands = new String[][] {
+            String[][] commands = new String[][] {
+                    {"open", "-a", "Terminal", prologInterpreter, queryFlag, consultGoal},
                     {"osascript", "-e", appleScript},
                     {"xterm", "-e", prologInterpreter, queryFlag, consultGoal}
                     // MacOS: open -a Terminal.app scriptfile : probably doesn't work here
                     // MacOS: open -b com.apple.terminal test.sh : probably doesn't work here
             };
-            // Let's bet on the script...
+
+            // Let's bet on the "open -a Terminal"...
             return commands[0];
         } else {
+            // Linux-based, some options... Not easy to choose the one that won't fail!
+            String[][] commands = {
+                    {"gnome-terminal", "-x", prologInterpreter, queryFlag, consultGoal},
+                    // xterm was universal some years ago...
+                    {"xterm", "-e", prologInterpreter, queryFlag, consultGoal},
+                    {"konsole", "-e", prologInterpreter, queryFlag, consultGoal},
+                    {"lxterminal", "-e", prologInterpreter, queryFlag, consultGoal}
+                    // any other suggestions?
+            };
+
             for(String[] c:commands) {
                 String exec = c[0];
                 boolean existsInPath = Stream.of(System.getenv("PATH")
