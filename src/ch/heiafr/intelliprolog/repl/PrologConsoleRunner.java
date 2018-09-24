@@ -90,7 +90,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
         String[] cmd;
         if (separateShellWindow) {
-            cmd = openShellPossibleCommand(prologInterpreter, consultGoal(sourceFilePath));
+            cmd = openShellPossibleCommand(prologInterpreter, sourceFilePath);
         } else {  // inside IDEA console
             if (SystemInfo.isWindows) {
                 line.withEnvironment("LINEDIT", "gui=no");
@@ -116,29 +116,53 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     }
 
     private static String[] openShellPossibleCommand(String prologInterpreter,
-                                                     String consultGoal) {
+                                                     String sourceFilePath) {
+        String consultGoal = consultGoal(sourceFilePath);
         // distinguish 3 platforms: Win, Mac, Linux
         if (SystemInfo.isWindows) {
-            return new String[] {"cmd", "/C", "start", prologInterpreter, queryFlag, consultGoal};
+            String quotedPl = "\"" + prologInterpreter + "\"";
+            String windowTitle = "\"\"";
+            return new String[] {"cmd", "/C", "start", windowTitle, quotedPl, queryFlag, consultGoal};
         }
         if (SystemInfo.isMac) {
-            String appleScript = "tell app \"Terminal\" to do script "
+//            String appleScript = "tell app \"Terminal\" to do script "
+//                    + "\""
+//                    +   prologInterpreter +" "+queryFlag
+//                    +   "\\\""
+//                    +     consultGoal
+//                    +   "\\\" "
+//                    + "\"";
+//            String[][] commands = new String[][] {
+//                    {"osascript", "-e", appleScript},
+
+            // osascript -e 'tell application "Terminal"'
+            //           -e 'do script "/xyz/gprolog  --consult-file \"/xyz/bulle.pl\" "'
+            //           -e 'end tell'
+
+            String osascript = "osascript";
+            String consultFlag = " --consult-file ";
+            String sep = " -e ";
+            String appleScript1 = "'tell application \"Terminal\"'";
+            String appleScript2 = "'do script "
                     + "\""
-                    +   prologInterpreter +" "+queryFlag
+                    +   prologInterpreter +" "+consultFlag+" "
                     +   "\\\""
-                    +     consultGoal
+                    +     sourceFilePath
                     +   "\\\" "
-                    + "\"";
+                    + "\"'";
+            String appleScript3 = "'end tell'";
 
             String[][] commands = new String[][] {
-                    {"open", "-a", "Terminal", prologInterpreter, "--args", queryFlag, consultGoal},
-                    {"osascript", "-e", appleScript},
+                    {osascript, sep, appleScript1, sep, appleScript2, sep, appleScript3},
+                    // "open -a Terminal gprolog..." doesn't fully work:
+                    //  there's an "; exit" added somewhere, and I don't know why
+                    //{"open", "-a", "Terminal", prologInterpreter, "--args", queryFlag, consultGoal},
                     {"xterm", "-e", prologInterpreter, queryFlag, consultGoal}
                     // MacOS: open -a Terminal.app scriptfile : probably doesn't work here
                     // MacOS: open -b com.apple.terminal test.sh : probably doesn't work here
             };
 
-            // Let's bet on the "open -a Terminal"...
+            // Let's bet on the script...
             return commands[0];
         } else {
             // Linux-based, some options... Not easy to choose the one that won't fail!
