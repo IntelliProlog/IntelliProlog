@@ -67,6 +67,7 @@ public class PrologFoldingBuilder implements FoldingBuilder {
         String text = collapseWhiteSpace(psi.getText());
         int len = Math.min(text.length(), 10);
         return text.substring(0, len) + "...";
+
     }
 
     private String collapseWhiteSpace(String text) {

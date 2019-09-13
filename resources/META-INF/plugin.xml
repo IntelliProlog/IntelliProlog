@@ -26,7 +26,9 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
-        <fileTypeFactory implementation="ch.heiafr.intelliprolog.PrologFileTypeFactory"/>
+        <fileType name="Simple file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
+                  language="Prolog" extensions="simple"/>
+<!--        <fileTypeFactory implementation="ch.heiafr.intelliprolog.PrologFileTypeFactory"/>-->
         <sdkType id="PROLOG" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType"/>
         <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition"/>
         <lang.syntaxHighlighterFactory language="Prolog"

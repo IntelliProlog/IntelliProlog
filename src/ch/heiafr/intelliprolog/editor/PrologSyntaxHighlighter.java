@@ -20,6 +20,7 @@ import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAtt
 
 public class PrologSyntaxHighlighter extends SyntaxHighlighterBase {
 
+    // BAPST: maybe consider getOrCreate (?)
     public static final TextAttributesKey OPERATOR =
             createTextAttributesKey("OPERATOR", DefaultLanguageHighlighterColors.CONSTANT);
 

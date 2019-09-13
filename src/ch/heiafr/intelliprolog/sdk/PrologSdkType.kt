@@ -121,7 +121,7 @@ class PrologSdkType : SdkType("GPROLOG") {
         val isWindows = SystemInfo.isWindows
         return object : FileChooserDescriptor(true, false, false, false, false, false) {
             @Throws(Exception::class)
-            override fun validateSelectedFiles(files: Array<VirtualFile>?) {
+            override fun validateSelectedFiles(files: Array<out VirtualFile>) {
                 if (files!!.size != 0) {
                     if (!isValidSdkHome(files[0].path)) {
                         throw Exception("Not valid gprolog " + files[0].name)
@@ -222,7 +222,7 @@ class PrologSdkType : SdkType("GPROLOG") {
     override fun saveAdditionalData(additionalData: SdkAdditionalData, additional: Element) {
     }
 
-    override fun loadAdditionalData(additional: Element?): SdkAdditionalData? {
+    override fun loadAdditionalData(additional: Element): SdkAdditionalData? {
         return null
     }
 

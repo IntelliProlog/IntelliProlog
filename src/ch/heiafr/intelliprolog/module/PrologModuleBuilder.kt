@@ -32,7 +32,7 @@ class PrologModuleBuilder : ModuleBuilder() {
         return PrologModuleType.INSTANCE
     }
 
-    override fun setupRootModel(rootModel: ModifiableRootModel?) {
+    override fun setupRootModel(rootModel: ModifiableRootModel) {
         if (myJdk != null) {
             rootModel!!.sdk = myJdk
         } else {
