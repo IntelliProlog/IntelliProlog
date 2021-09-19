@@ -1,5 +1,5 @@
 Sep 2021:
 
-- apparently not able to get the SDK from a "Prolog module"
+- apparently not able to see the SDK from a "Prolog module"; not sure it really works
 - there is a warning that lib/kotlin… have version 1.4 while this is now 1.5
 - I updated lib/kotlin-std-lib-jdk8.jar but not the …-sources.jar

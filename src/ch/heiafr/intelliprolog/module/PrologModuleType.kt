@@ -1,8 +1,12 @@
 package ch.heiafr.intelliprolog.module
 
 import ch.heiafr.intelliprolog.PrologIcons
+import com.intellij.ide.util.projectWizard.*
 import com.intellij.openapi.module.ModuleType
+import com.intellij.openapi.projectRoots.SdkTypeId
+import com.intellij.openapi.util.Condition
 import javax.swing.Icon
+
 
 class PrologModuleType : ModuleType<PrologModuleBuilder>("PROLOG_MODULE") {
 
@@ -30,4 +34,9 @@ class PrologModuleType : ModuleType<PrologModuleBuilder>("PROLOG_MODULE") {
         val INSTANCE: PrologModuleType = PrologModuleType()
     }
 
+    override fun modifyProjectTypeStep(settingsStep: SettingsStep, moduleBuilder: ModuleBuilder): ModuleWizardStep? {
+        val cond: Condition<SdkTypeId?>
+        cond = Condition { t -> moduleBuilder.isSuitableSdkType(t) }
+        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, cond)
+    }
 }

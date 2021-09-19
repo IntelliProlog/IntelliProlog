@@ -1,14 +1,13 @@
 package ch.heiafr.intelliprolog.module
 
 import ch.heiafr.intelliprolog.sdk.PrologSdkType
-import com.intellij.ide.util.projectWizard.ModuleBuilder
-import com.intellij.ide.util.projectWizard.ModuleWizardStep
-import com.intellij.ide.util.projectWizard.SettingsStep
-import com.intellij.ide.util.projectWizard.WizardContext
+import com.intellij.ide.util.projectWizard.*
 import com.intellij.openapi.module.StdModuleTypes
+import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.projectRoots.SdkTypeId
 import com.intellij.openapi.roots.ModifiableRootModel
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
+import com.intellij.openapi.util.Condition
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import java.io.File
@@ -20,6 +19,13 @@ class PrologModuleBuilder : ModuleBuilder() {
     override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? =
             StdModuleTypes.JAVA!!.modifySettingsStep(settingsStep, this)
 
+//    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
+//        val moduleBuilder: ModuleBuilder
+//        moduleBuilder = this
+//        val cond: Condition<SdkTypeId?>
+//        cond = Condition { t -> moduleBuilder.isSuitableSdkType(t) }
+//        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, cond)
+//    }  // BAP: this does not seem to be working...
 
     override fun getGroupName(): String? = "Prolog"
 
@@ -36,7 +42,13 @@ class PrologModuleBuilder : ModuleBuilder() {
         if (myJdk != null) {
             rootModel!!.sdk = myJdk
         } else {
-            rootModel!!.inheritSdk()
+            val candidates = ProjectJdkTable.getInstance().getSdksOfType(PrologSdkType.INSTANCE)
+            if (candidates.isEmpty()) {
+                rootModel!!.inheritSdk()
+            } else {
+                // BAP: not sure it's reasonable...
+                rootModel.sdk = candidates.get(0)
+            }
         }
 
         val contentEntry = doAddContentEntry(rootModel)

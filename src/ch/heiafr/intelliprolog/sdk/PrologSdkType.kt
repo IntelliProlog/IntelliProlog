@@ -81,7 +81,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             if (prologPath.isDirectory) {
                 return null
             }
-            return "1.4.5" // TODO determine version instead of hard-coding it!!
+            return "1.5.0" // TODO determine version instead of hard-coding it!!
             // This won't work: on Windows,  "gprolog.exe --version" writes
             // something on the console, but not on the process stdout...
 //            val versionFlag = "--version"
