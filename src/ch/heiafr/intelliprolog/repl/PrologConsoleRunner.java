@@ -65,8 +65,13 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
     public static void run(@NotNull Module module, String sourceFilePath, boolean inExternalTerminal) {
         // String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
-        String parentDirName = new File(sourceFilePath).getParent();
-        String workingDirPath = parentDirName; // srcRoot + File.separator + "src";
+        String workingDirPath;
+        if(sourceFilePath == null) {
+            workingDirPath = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
+        } else {
+            String parentDirName = new File(sourceFilePath).getParent();
+            workingDirPath = parentDirName; // srcRoot + File.separator + "src";
+        }
         PrologConsoleRunner runner = new PrologConsoleRunner(module, INTERPRETER_TITLE, workingDirPath, sourceFilePath, inExternalTerminal);
         try {
             runner.initAndRun();
@@ -81,12 +86,15 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                                                         boolean withTrace,
                                                         boolean withSeparateShellWindow) throws CantRunException {
         Sdk sdk = ProjectRootManager.getInstance(module.getProject()).getProjectSdk();
-        VirtualFile homePath;
+        if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType)) {
+            ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(module);
+            sdk = moduleRootManager.getSdk();
+        }
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
             throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly. " +
                     (sdk==null ?  "null" :  (sdk.getSdkType()+" "+sdk.getHomePath()) ));
         }
-        homePath = sdk.getHomeDirectory();
+        VirtualFile homePath = sdk.getHomeDirectory();
         String prologInterpreter = new File(homePath.getPath()).getAbsolutePath();
         GeneralCommandLine gCmdLine = new GeneralCommandLine()
         {

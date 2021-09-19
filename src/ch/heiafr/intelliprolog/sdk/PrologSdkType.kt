@@ -184,11 +184,16 @@ class PrologSdkType : SdkType("GPROLOG") {
         return latestVersion?.prologPath?.absolutePath
     }
 
-    override fun isValidSdkHome(path: String?): Boolean {
+    override fun isValidSdkHome(path: String): Boolean {
         return checkForProlog(path!!)
     }
 
-    override fun suggestSdkName(currentSdkName: String?, sdkHome: String?): String {
+//    override fun isValidSdkHome(path: String?): Boolean {
+//        return checkForProlog(path!!)
+//    }
+
+//  override fun suggestSdkName(currentSdkName: String?, sdkHome: String?): String {
+    override fun suggestSdkName(currentSdkName: String?, sdkHome: String): String {
         val suggestedName: String
         if (currentSdkName != null && currentSdkName.isNotEmpty()) {
             suggestedName = currentSdkName

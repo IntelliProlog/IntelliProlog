@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>ch.heiafr.intelliprolog</id>
     <name>IntelliProlog</name>
-    <version>0.8.6</version>
+    <version>0.8.7</version>
     <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
 
     <description><![CDATA[
@@ -16,6 +16,7 @@
     <idea-version since-build="173.0"/>
     }}}}
     <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.java</depends>
 
     <project-components>
         <component>
@@ -26,8 +27,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
         <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
-        <fileType name="Simple file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
-                  language="Prolog" extensions="simple"/>
+        <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
+                  language="Prolog" extensions="pl"/>
 <!--        <fileTypeFactory implementation="ch.heiafr.intelliprolog.PrologFileTypeFactory"/>-->
         <sdkType id="PROLOG" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType"/>
         <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition"/>
