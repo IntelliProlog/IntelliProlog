@@ -1,8 +1,6 @@
 package ch.heiafr.intelliprolog.editor;
 
-import com.intellij.lang.annotation.Annotation;
-import com.intellij.lang.annotation.AnnotationHolder;
-import com.intellij.lang.annotation.Annotator;
+import com.intellij.lang.annotation.*;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
@@ -22,11 +20,15 @@ public class PrologAnnotator implements Annotator {
 
     private static void highlightTokens(PsiElement element, AnnotationHolder holder, PrologSyntaxHighlighter highlighter) {
         TextAttributesKey[] keys = highlighter.getTokenHighlights(element);
-        Annotation annotation = holder.createInfoAnnotation(element.getNode(), getMessage(element));
+
+        AnnotationBuilder ab = holder.newAnnotation(HighlightSeverity.INFORMATION, getMessage(element));
         for (TextAttributesKey key : keys) {
             TextAttributes attributes = EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key);
-            annotation.setEnforcedTextAttributes(attributes);
+            ab = ab.enforcedTextAttributes(attributes);
         }
+        ab.create();
+
+
     }
 
     private static String getMessage(PsiElement element) {

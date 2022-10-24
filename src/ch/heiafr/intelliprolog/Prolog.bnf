@@ -1,5 +1,6 @@
 {
   parserClass="ch.heiafr.intelliprolog.PrologParser"
+  parserUtilClass="ch.heiafr.intelliprolog.PrologParserUtil"
 
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
