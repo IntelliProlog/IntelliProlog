@@ -27,8 +27,6 @@ public class PrologAnnotator implements Annotator {
             ab = ab.enforcedTextAttributes(attributes);
         }
         ab.create();
-
-
     }
 
     private static String getMessage(PsiElement element) {
