@@ -1,4 +1,3 @@
-
   /** This character denotes the end of file */
   public static final int YYEOF = -1;
 
@@ -82,7 +81,7 @@
   /**
    * Refills the input buffer.
    *
-   * @return      {@code false}, iff there was new input.
+   * @return      <code>false</code>, iff there was new input.
    *
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
@@ -118,7 +117,7 @@
 
 
   /**
-   * Returns the character at position {@code pos} from the
+   * Returns the character at position <tt>pos</tt> from the
    * matched text.
    *
    * It is equivalent to yytext().charAt(pos), but faster
@@ -142,7 +141,7 @@
 
 
   /**
-   * Reports an error that occurred while scanning.
+   * Reports an error that occured while scanning.
    *
    * In a wellformed scanner (no or only correct usage of
    * yypushback(int) and a match-all fallback rule) this method

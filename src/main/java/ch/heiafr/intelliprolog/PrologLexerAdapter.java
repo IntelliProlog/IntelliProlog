@@ -4,6 +4,6 @@ import com.intellij.lexer.FlexAdapter;
 
 public class PrologLexerAdapter extends FlexAdapter {
     public PrologLexerAdapter() {
-        super(new PrologLexer());
+        super(new PrologLexer(null));
     }
 }

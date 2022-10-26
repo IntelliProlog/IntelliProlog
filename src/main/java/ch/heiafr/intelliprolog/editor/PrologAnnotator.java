@@ -21,8 +21,6 @@ public class PrologAnnotator implements Annotator {
     private static void highlightTokens(PsiElement element, AnnotationHolder holder, PrologSyntaxHighlighter highlighter) {
         TextAttributesKey[] keys = highlighter.getTokenHighlights(element);
 
-        System.out.println(element);
-
         AnnotationBuilder ab = holder.newAnnotation(HighlightSeverity.INFORMATION, getMessage(element));
         for (TextAttributesKey key : keys) {
             TextAttributes attributes = EditorColorsManager.getInstance().getGlobalScheme().getAttributes(key);
@@ -47,7 +45,6 @@ public class PrologAnnotator implements Annotator {
 
     @Override
     public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
-        System.out.println("Annotating " + element);
         if (shouldAnnotate(element)) {
             highlightTokens(element, holder, new PrologSyntaxHighlighter());
         }
