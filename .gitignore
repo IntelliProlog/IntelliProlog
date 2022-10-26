@@ -113,8 +113,9 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-gen
+src/gen/
 documents
 
 .idea/
 *.iml
+.gradle/
