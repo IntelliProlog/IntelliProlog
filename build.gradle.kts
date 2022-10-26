@@ -3,8 +3,10 @@ fun properties(key: String) = project.findProperty(key).toString()
 plugins {
     // Java support
     id("java")
+    // Kotlin support
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.3.0"
+    id("org.jetbrains.intellij") version "1.9.0" //Latest version
     id("org.jetbrains.grammarkit") version "2021.2.2"
 }
 group = properties("pluginGroup")
@@ -58,13 +60,14 @@ tasks {
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
-        untilBuild.set(properties("pluginUntilBuild"))
     }
 
     generateLexer(){
-        source.set("src/main/java/ch/heiafr/intelliprolog/PrologLexer.flex")
+        source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
         targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
         targetClass.set("PrologLexer")
+        skeleton.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.skeleton"))
+        purgeOldFiles.set(true)
     }
 
     generateParser(){
@@ -77,8 +80,7 @@ tasks {
     }
 
     // Generate the Lexer and Parser BEFORE building the plugin
-    build(){
-        dependsOn(generateParser)
-        dependsOn(generateLexer)
+    compileJava(){
+        dependsOn(compileKotlin)
     }
 }
