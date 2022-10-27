@@ -96,9 +96,4 @@ tasks {
         dependsOn(compileKotlin)
     }
 
-   // test {
-        //systemProperty("idea.home.path", "/Users/erwansturzenegger/community_sources")
-        //useJUnit()
-  //  }
-
 }
