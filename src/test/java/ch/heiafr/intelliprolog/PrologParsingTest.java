@@ -13,7 +13,7 @@ public class PrologParsingTest extends ParsingTestCase {
 
   @Test
   public void testParsingTestData() {
-    doTest(true);
+    doTest(true, true);
   }
 
   /**
