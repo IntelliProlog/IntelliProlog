@@ -2,16 +2,17 @@ stages:
   - build
   - test
 
+image: registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:7.3-jdk11
+
 build:
     stage: build
-    image: gradle:7.3-jdk11
     script:
         # Init the parser and lexer
-        - ./gradlew generateParser
-        - ./gradlew generateLexer
+        - gradle generateParser
+        - gradle generateLexer
         # Build the project
-        - ./gradlew build
-        - ./gradlew buildPlugin
+        - gradle build
+        - gradle buildPlugin
     artifacts:
         paths:
           - build/libs/*.jar
@@ -19,13 +20,12 @@ build:
 
 test:
     stage: test
-    image: gradle:7.3-jdk11
     script:
       # Init the parser and lexer
-      - ./gradlew generateParser
-      - ./gradlew generateLexer
+      - gradle generateParser
+      - gradle generateLexer
       # Run the tests
-      - ./gradlew test
+      - gradle test
     artifacts:
         paths:
           - build/reports/tests/test
