@@ -12,15 +12,20 @@ plugins {
 group = properties("pluginGroup")
 version = properties("pluginVersion")
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(properties("kotlinTargetVersion")))
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
 sourceSets{
     main {
         java {
-            srcDir("src/gen/java") // Generated sources
-        }
-    }
-    test {
-        java {
-            srcDir("src/gen/java") // Generated sources
+            srcDirs("src/gen/java") // Generated sources
         }
     }
 }
@@ -29,6 +34,11 @@ sourceSets{
 repositories {
     mavenCentral()
 }
+
+dependencies {
+    testImplementation("junit:junit:4.13.2")
+}
+
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
 intellij {
     pluginName.set(properties("pluginName"))
@@ -44,6 +54,7 @@ grammarKit {
 }
 
 
+
 tasks {
     // Set the JVM compatibility versions
     properties("javaVersion").let {
@@ -51,6 +62,7 @@ tasks {
             sourceCompatibility = it
             targetCompatibility = it
         }
+
     }
     wrapper {
         gradleVersion = properties("gradleVersion")
@@ -83,4 +95,10 @@ tasks {
     compileJava(){
         dependsOn(compileKotlin)
     }
+
+   // test {
+        //systemProperty("idea.home.path", "/Users/erwansturzenegger/community_sources")
+        //useJUnit()
+  //  }
+
 }
