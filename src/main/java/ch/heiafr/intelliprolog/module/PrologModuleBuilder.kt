@@ -40,11 +40,11 @@ class PrologModuleBuilder : ModuleBuilder() {
 
     override fun setupRootModel(rootModel: ModifiableRootModel) {
         if (myJdk != null) {
-            rootModel!!.sdk = myJdk
+            rootModel.sdk = myJdk
         } else {
             val candidates = ProjectJdkTable.getInstance().getSdksOfType(PrologSdkType.INSTANCE)
             if (candidates.isEmpty()) {
-                rootModel!!.inheritSdk()
+                rootModel.inheritSdk()
             } else {
                 // BAP: not sure it's reasonable...
                 rootModel.sdk = candidates.get(0)

@@ -18,14 +18,13 @@
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.java</depends>
 
-  <project-components>
-    <component>
-      <implementation-class>ch.heiafr.intelliprolog.PrologProjectComponent</implementation-class>
-    </component>
-  </project-components>
 
   <extensions defaultExtensionNs="com.intellij">
     <!-- Add your extensions here -->
+    <!-- Replacement of projet component -->
+    <postStartupActivity implementation="ch.heiafr.intelliprolog.PrologProjectComponent"/>
+
+
     <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
     <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
               language="Prolog" extensions="pl"/>

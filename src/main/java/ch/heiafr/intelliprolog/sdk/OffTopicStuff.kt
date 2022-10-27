@@ -38,7 +38,7 @@ fun getPrologVersion(prologPath: File): String? {
     return firstLine // firstLine.split("\\s".toRegex()).last()
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val v = "E:\\_apps\\GNU-Prolog\\bin\\gprolog.exe"
     println(getPrologVersion(File(v)))
     println("ab cd ef".split("\\s".toRegex()).last())

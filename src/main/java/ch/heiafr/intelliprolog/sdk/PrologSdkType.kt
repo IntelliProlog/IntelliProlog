@@ -122,7 +122,7 @@ class PrologSdkType : SdkType("GPROLOG") {
         return object : FileChooserDescriptor(true, false, false, false, false, false) {
             @Throws(Exception::class)
             override fun validateSelectedFiles(files: Array<out VirtualFile>) {
-                if (files!!.size != 0) {
+                if (files.size != 0) {
                     if (!isValidSdkHome(files[0].path)) {
                         throw Exception("Not valid gprolog " + files[0].name)
                     }
@@ -131,7 +131,7 @@ class PrologSdkType : SdkType("GPROLOG") {
 
             override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
                 if (!file.isDirectory) {
-                    if (!file.name.toLowerCase().startsWith("gprolog")) {
+                    if (!file.name.lowercase().startsWith("gprolog")) {
                         return false
                     }
                     if (isWindows) {
@@ -160,7 +160,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             }
             versions = (versionsRoot.listFiles(object : FilenameFilter {
                 override fun accept(dir: File, name: String): Boolean {
-                    return !File(dir, name).isDirectory && isProlog(name.toLowerCase())
+                    return !File(dir, name).isDirectory && isProlog(name.lowercase())
                 }
             })?.toList() ?: listOf())
         } else if (SystemInfo.isWindows) {
@@ -185,7 +185,7 @@ class PrologSdkType : SdkType("GPROLOG") {
     }
 
     override fun isValidSdkHome(path: String): Boolean {
-        return checkForProlog(path!!)
+        return checkForProlog(path)
     }
 
 //    override fun isValidSdkHome(path: String?): Boolean {
