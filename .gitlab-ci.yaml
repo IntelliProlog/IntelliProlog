@@ -1,0 +1,33 @@
+stages:
+  - build
+  - test
+
+build:
+    stage: build
+    image: gradle:7.3-jdk11
+    script:
+        # Init the parser and lexer
+        - ./gradlew generateParser
+        - ./gradlew generateLexer
+        # Build the project
+        - ./gradlew build
+        - ./gradlew buildPlugin
+    artifacts:
+        paths:
+          - build/libs/*.jar
+        expire_in: 1 hour
+
+test:
+    stage: test
+    image: gradle:7.3-jdk11
+    script:
+      # Init the parser and lexer
+      - ./gradlew generateParser
+      - ./gradlew generateLexer
+      # Run the tests
+      - ./gradlew test
+    artifacts:
+        paths:
+          - build/reports/tests/test
+        expire_in: 1 hour
+
