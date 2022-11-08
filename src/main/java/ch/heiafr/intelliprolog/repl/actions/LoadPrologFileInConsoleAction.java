@@ -10,6 +10,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.SystemInfo;
 import com.intellij.psi.PsiDocumentManager;
 
 import java.io.File;
@@ -44,7 +45,9 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
     public void update(AnActionEvent e) {
         Presentation presentation = e.getPresentation();
         String filePath = PrologREPLUtils.getActionFile(e);
-        if (filePath == null) {
+
+        //Disable option on Windows because of a bug in the Prolog Console
+        if (filePath == null || SystemInfo.isWindows) {
             presentation.setVisible(false);
         } else {
             File file = new File(filePath);

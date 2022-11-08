@@ -66,7 +66,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     public static void run(@NotNull Module module, String sourceFilePath, boolean inExternalTerminal) {
         // String srcRoot = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         String workingDirPath;
-        if(sourceFilePath == null) {
+        if (sourceFilePath == null) {
             workingDirPath = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
         } else {
             String parentDirName = new File(sourceFilePath).getParent();
@@ -92,12 +92,11 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         }
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
             throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly. " +
-                    (sdk==null ?  "null" :  (sdk.getSdkType()+" "+sdk.getHomePath()) ));
+                    (sdk == null ? "null" : (sdk.getSdkType() + " " + sdk.getHomePath())));
         }
         VirtualFile homePath = sdk.getHomeDirectory();
         String prologInterpreter = new File(homePath.getPath()).getAbsolutePath();
-        GeneralCommandLine gCmdLine = new GeneralCommandLine()
-        {
+        GeneralCommandLine gCmdLine = new GeneralCommandLine() {
             // Override and don't escape anything (use command+prms as is)
             protected List<String> prepareCommandLine(@NotNull String command,
                                                       @NotNull List<String> parameters,
@@ -120,12 +119,12 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             if (SystemInfo.isWindows) {
                 gCmdLine.withEnvironment("LINEDIT", "gui=no");
             }
-            cmd = new String[] {prologInterpreter, queryFlag, consultGoal(sourceFilePath)};
+            cmd = new String[]{prologInterpreter, queryFlag, consultGoal(sourceFilePath)};
             gCmdLine.setExePath(prologInterpreter);
         }
         gCmdLine.withWorkDirectory(workingDir);
         gCmdLine.setExePath(cmd[0]);
-        for(int i=1; i<cmd.length; i++) {
+        for (int i = 1; i < cmd.length; i++) {
             lineParameters.addParametersString(cmd[i]);
         }
 //        String after = gCmdLine.getPreparedCommandLine(Platform.UNIX);
@@ -137,8 +136,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     }
 
     private static String consultGoal(String sourceFile) {
-        if(sourceFile==null) return "write(no_source_file)";
-        return "consult('"+sourceFile+"')";
+        if (sourceFile == null) return "write(no_source_file)";
+        return SystemInfo.isWindows ? "\"consult('" + sourceFile + "')\"" : "consult('" + sourceFile + "')";
     }
 
     private static String[] openShellPossibleCommand(String prologInterpreter,
@@ -151,7 +150,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             // inescapableQuote is considered only for non-windows platforms!!
             //String protectedQuotedPl = GeneralCommandLine.inescapableQuote(quotedPl);
             //String protectedWindowTitle = GeneralCommandLine.inescapableQuote(windowTitle);
-            return new String[] {"cmd", "/C", "start", windowTitle, quotedPl, queryFlag, consultGoal};
+            return new String[]{"cmd", "/C", "start", windowTitle, quotedPl, queryFlag, consultGoal};
         }
         if (SystemInfo.isMac) {
             // BUGGY: after hours of tedious attempts, I'm still unable to produce a valid
@@ -163,17 +162,17 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             // leads finally to two ones "" ?!?!
             String appleScript0 = " \" tell app \\\"Terminal\\\" \" to do script "
                     + "\""
-                    +   prologInterpreter +" "+queryFlag
-                    +   "\\\""
-                    +     consultGoal
-                    +   "\\\" "
+                    + prologInterpreter + " " + queryFlag
+                    + "\\\""
+                    + consultGoal
+                    + "\\\" "
                     + "\"";
             String appleScript = " \" tell app \\\"Terminal\\\" \" "
                     + " to do script "
                     + "\""
-                    +   prologInterpreter +" "+queryFlag
+                    + prologInterpreter + " " + queryFlag
 //                    +   "\\\""
-                    +     consultGoal
+                    + consultGoal
 //                    +   "\\\" "
                     + "\"";
 //            String[][] commands = new String[][] {
@@ -193,18 +192,18 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             String consultFlag = " --consult-file ";
             String sep = " -e ";
             //String appleScript1 = "'tell app \" \bTerminal \b\" '" ;
-            String appleScript1 = " \" tell app \\\"Terminal\\\" \"" ;
+            String appleScript1 = " \" tell app \\\"Terminal\\\" \"";
             //String appleScript1 = "'tell app \"Terminal\" ' ";
             String appleScript2 = "'do script "
                     + "\""
-                    +   prologInterpreter +" "+consultFlag+" "
-                    +   "\\\""
-                    +     sourceFilePath
-                    +   "\\\" "
+                    + prologInterpreter + " " + consultFlag + " "
+                    + "\\\""
+                    + sourceFilePath
+                    + "\\\" "
                     + "\" '";
             String appleScript3 = "'end tell'";
 
-            String[][] commands = new String[][] {
+            String[][] commands = new String[][]{
                     {osascript, appleScript},
                     {osascript, sep, appleScript1, sep, appleScript2, sep, appleScript3},
                     // "open -a Terminal gprolog..." doesn't fully work:
@@ -221,36 +220,36 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             String appleScript8 = " \" tell app \\\"Terminal\\\" \" "
                     + " to do script "
                     + "\""
-                    +   prologInterpreter +" "+queryFlag
+                    + prologInterpreter + " " + queryFlag
 //                    +   "\\\""
-                    +     consultGoal
+                    + consultGoal
 //                    +   "\\\" "
                     + "\"";
             String appleScript9 = " \" tell app \\\"Terminal\\\" \" "
                     + " to do script "
                     + "\""
-                    +   prologInterpreter +" "+queryFlag
-                    +   "\\\""
-                    +     consultGoal
-                    +   "\\\" "
+                    + prologInterpreter + " " + queryFlag
+                    + "\\\""
+                    + consultGoal
+                    + "\\\" "
                     + "\"";
 
             String consultFlag = " --consult-file ";
             String sep = " -e ";
             //String appleScript1 = "'tell app \" \bTerminal \b\" '" ;
-            String appleScript1 = " \" tell app \\\"Terminal\\\" \"" ;
+            String appleScript1 = " \" tell app \\\"Terminal\\\" \"";
             //String appleScript1 = "'tell app \"Terminal\" ' ";
             String appleScript2 = "'do script "
                     + "\""
-                    +   prologInterpreter +" "+consultFlag+" "
-                    +   "\\\""
-                    +     sourceFilePath
-                    +   "\\\" "
+                    + prologInterpreter + " " + consultFlag + " "
+                    + "\\\""
+                    + sourceFilePath
+                    + "\\\" "
                     + "\" '";
             String appleScript3 = "'end tell'";
 
-            String script1 = "'tell app \" \bTerminal \b\" '" ;
-            String script2  = "' tell app \" \b/Applications/Utilities/Terminal.app \b\" '" ; //"p \" Terminal \" ";
+            String script1 = "'tell app \" \bTerminal \b\" '";
+            String script2 = "' tell app \" \b/Applications/Utilities/Terminal.app \b\" '"; //"p \" Terminal \" ";
             String script3 = " aa\"\" \\ \\\" \" \" bb ";
             // Linux-based, some options... Not easy to choose the one that won't fail!
             String[][] commands = {
@@ -262,10 +261,10 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                     // any other suggestions?
             };
 
-            for(String[] c:commands) {
+            for (String[] c : commands) {
                 String exec = c[0];
                 boolean existsInPath = Stream.of(System.getenv("PATH")
-                        .split(Pattern.quote(File.pathSeparator)))
+                                .split(Pattern.quote(File.pathSeparator)))
                         .map(Paths::get)
                         .anyMatch(path -> Files.exists(path.resolve(exec)));
                 if (existsInPath) return c;
@@ -281,17 +280,17 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         VirtualFile homePath;
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
             throw new CantRunException("Invalid SDK Home path set. Please set your SDK path correctly. " +
-                    (sdk==null ?  "null" :  (sdk.getSdkType()+" "+sdk.getHomePath()) ));
+                    (sdk == null ? "null" : (sdk.getSdkType() + " " + sdk.getHomePath())));
         }
         homePath = sdk.getHomeDirectory();
         String prologInterpreter = new File(homePath.getPath()).getAbsolutePath();
 
         String appleScript = "tell app \"Terminal\" to do script "
                 + "\""
-                +   prologInterpreter +" --query-goal "
-                +   "\\\""
-                +     consultGoal(sourceFilePath)
-                +   "\\\" "
+                + prologInterpreter + " --query-goal "
+                + "\\\""
+                + consultGoal(sourceFilePath)
+                + "\\\" "
                 + "\"";
 
         String[] command = {"osascript", "-e", appleScript};
@@ -301,10 +300,10 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             this.macOsHackStr = String.join(" ", pb.command());
             pb.directory(new File(workingDir));
             Process p = pb.start();
-            if (p!=null) return p;
+            if (p != null) return p;
         } catch (IOException e) {
             throw new CantRunException("IOException problem in macOsHack...", e);
-       }
+        }
         throw new CantRunException("problem in macOsHack...");
     }
 
@@ -316,7 +315,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @Nullable
     @Override
     protected Process createProcess() throws ExecutionException {
-        if(SystemInfo.isMac && this.withSeparateShellWindow) {
+        if (SystemInfo.isMac && this.withSeparateShellWindow) {
             return macOsHack(module, workingDir, this.sourceFilePath);
         }
         cmdLine = createCommandLine(module, workingDir, this.sourceFilePath,
@@ -333,7 +332,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     @NotNull
     @Override
     protected ProcessBackedConsoleExecuteActionHandler createExecuteActionHandler() {
-        ConsoleRootType rootType = new ConsoleRootType(myType, myType) {};
+        ConsoleRootType rootType = new ConsoleRootType(myType, myType) {
+        };
         new ConsoleHistoryController(rootType, "", getConsoleView()).install();
         return new ProcessBackedConsoleExecuteActionHandler(getProcessHandler(), false);
     }
