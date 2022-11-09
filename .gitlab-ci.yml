@@ -1,0 +1,53 @@
+stages:
+  - build
+  - test
+  - release
+
+image: registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:7.3-jdk11
+
+build:
+  stage: build
+  script:
+    # Init the parser and lexer
+    - gradle generateParser
+    - gradle generateLexer
+    # Build the project
+    - gradle build
+    - gradle buildPlugin
+  cache: {}
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 hour
+
+test:
+  stage: test
+  script:
+    # Init the parser and lexer
+    - gradle generateParser
+    - gradle generateLexer
+    # Run the tests
+    - gradle test
+  artifacts:
+    paths:
+      - build/reports/tests/test
+    expire_in: 1 hour
+
+release:
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  variables:
+    ZIP: https://gitlab.forge.hefr.ch/frederic.bapst/intelli-prolog-2/-/jobs/$CI_JOB_ID/artifacts/raw/build/distributions
+  stage: release
+  script:
+    - echo "Release"
+    - release-cli create --name "Release $VERSION" --description "Ceci est la version \"$VERSION\" du plugin Intelli-Prolog" --tag-name "$CI_COMMIT_TAG" --ref "$CI_COMMIT_SHORT_SHA" --assets-link "{\"url\":\"$ZIP_FILE\",\"name\":\"ZIP file\"}"
+  before_script:
+    - export VERSION=`cat gradle.properties | grep "pluginVersion" | cut -d '=' -f2`
+    - export VERSION=`echo $VERSION | xargs`
+    - export ZIP_FILE=$ZIP/IntelliProlog-$VERSION.zip?inline=true
+  only:
+    - tags
+  artifacts:
+    paths:
+      - build/distributions/*.zip
+    expire_in: never
