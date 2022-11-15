@@ -13,7 +13,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="202.0"/>
+  <idea-version since-build="202.6397.94"/>
   }}}}
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.java</depends>
@@ -24,6 +24,7 @@
     <!-- Replacement of projet component -->
     <postStartupActivity implementation="ch.heiafr.intelliprolog.PrologProjectComponent"/>
 
+    <gotoDeclarationHandler implementation="ch.heiafr.intelliprolog.reference.PrologGotoDeclarationHandler" />
 
     <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
     <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"

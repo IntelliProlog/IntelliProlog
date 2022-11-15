@@ -27,9 +27,9 @@ class PrologModuleBuilder : ModuleBuilder() {
 //        return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, cond)
 //    }  // BAP: this does not seem to be working...
 
-    override fun getGroupName(): String? = "Prolog"
+    override fun getGroupName(): String = "Prolog"
 
-    override fun getPresentableName(): String? = "Prolog"
+    override fun getPresentableName(): String = "Prolog"
 
     override fun createWizardSteps(wizardContext: WizardContext, modulesProvider: ModulesProvider): Array<ModuleWizardStep> =
             moduleType.createWizardSteps(wizardContext, this, modulesProvider)

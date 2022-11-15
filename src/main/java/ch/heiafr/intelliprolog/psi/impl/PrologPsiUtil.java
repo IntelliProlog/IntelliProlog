@@ -32,4 +32,12 @@ public class PrologPsiUtil {
     public static boolean isCompoundNameKeyword(PsiElement element) {
         return getElementType(element).equals(PrologTypes.COMPOUND_NAME) && Constants.KEYWORDS.contains(element.getText());
     }
+
+    public static boolean isCompoundName(PsiElement element) {
+        return getElementType(element).equals(PrologTypes.COMPOUND_NAME);
+    }
+
+    public static boolean isUserCompoundName(PsiElement element) {
+        return isCompoundName(element) && !isCompoundNameKeyword(element);
+    }
 }

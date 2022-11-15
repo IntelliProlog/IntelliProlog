@@ -74,7 +74,7 @@ tasks {
         sinceBuild.set(properties("pluginSinceBuild"))
     }
 
-    generateLexer(){
+    generateLexer {
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
         targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
         targetClass.set("PrologLexer")
@@ -82,7 +82,7 @@ tasks {
         purgeOldFiles.set(true)
     }
 
-    generateParser(){
+    generateParser {
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
         pathToParser.set("PrologParser.java")
@@ -92,8 +92,12 @@ tasks {
     }
 
     // Generate the Lexer and Parser BEFORE building the plugin
-    compileJava(){
+    compileJava {
         dependsOn(compileKotlin)
+    }
+
+    runIde {
+        autoReloadPlugins.set(true)
     }
 
 }
