@@ -11,7 +11,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nullable;
@@ -45,11 +44,12 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
 
         //Get all psi elements related to the current element
         Collection<PsiElement> files = findEveryImportedFile(elt, new ArrayList<>());
+        files.add(elt); //Don't forget the current file
 
         //Find all declarations of any type
         Collection<PrologSentence> declarations = new ArrayList<>();
         for (PsiElement file : files) {
-            declarations.addAll(PsiTreeUtil.findChildrenOfType(file, PrologSentence.class));
+            declarations.addAll(PsiTreeUtil.findChildrenOfType(file.getContainingFile(), PrologSentence.class));
         }
 
         //For each sentence, find the first compound name => the predicate name
