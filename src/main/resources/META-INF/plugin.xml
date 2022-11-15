@@ -26,6 +26,9 @@
 
     <gotoDeclarationHandler implementation="ch.heiafr.intelliprolog.reference.PrologGotoDeclarationHandler" />
     <lang.findUsagesProvider language="Prolog" implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider"/>
+
+    <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher"/>
+
     <psi.referenceContributor language="Prolog" implementation="ch.heiafr.intelliprolog.reference.PrologReferenceContributor"/>
 
     <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>x

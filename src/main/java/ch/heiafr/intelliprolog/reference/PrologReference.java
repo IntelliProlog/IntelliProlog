@@ -17,9 +17,10 @@ import java.util.List;
 public class PrologReference extends PsiReferenceBase<PsiElement> implements PsiPolyVariantReference {
     private final String name;
 
-    public PrologReference(@NotNull PsiElement element, TextRange textRange) {
-        super(element, textRange);
-        name = element.getText().substring(textRange.getStartOffset(), textRange.getEndOffset());
+    public PrologReference(@NotNull PsiElement element) {
+        super(element, element.getTextRange());
+        name = element.getText();
+        System.out.println("PrologReference: " + name);
     }
 
     @Override

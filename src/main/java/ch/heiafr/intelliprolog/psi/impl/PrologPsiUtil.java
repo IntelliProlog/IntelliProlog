@@ -1,17 +1,16 @@
 package ch.heiafr.intelliprolog.psi.impl;
 
 import ch.heiafr.intelliprolog.PrologFileType;
-import ch.heiafr.intelliprolog.psi.PrologCompoundName;
-import ch.heiafr.intelliprolog.psi.PrologElementFactory;
-import ch.heiafr.intelliprolog.psi.PrologFile;
-import ch.heiafr.intelliprolog.psi.PrologTypes;
+import ch.heiafr.intelliprolog.psi.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 
@@ -54,7 +53,7 @@ public class PrologPsiUtil {
     }
 
     public static boolean isUserCompoundName(PsiElement element) {
-        return isCompoundName(element) && !isCompoundNameKeyword(element);
+        return (isCompoundName(element) && !isCompoundNameKeyword(element));
     }
 
 
@@ -87,9 +86,15 @@ public class PrologPsiUtil {
         REFERENCE UTILITIES
      */
     public static List<PrologCompoundName> findCompoundNames(Project project, String searchName) {
+        return findCompoundNames(project, GlobalSearchScope.allScope(project), searchName);
+    }
+
+    public static List<PrologCompoundName> findCompoundNames(Project project, GlobalSearchScope scope, String searchName) {
         List<PrologCompoundName> result = new ArrayList<>();
+
         Collection<VirtualFile> virtualFiles =
-                FileTypeIndex.getFiles(PrologFileType.INSTANCE, GlobalSearchScope.allScope(project));
+                FileTypeIndex.getFiles(PrologFileType.INSTANCE, scope);
+
         for (VirtualFile virtualFile : virtualFiles) {
             PrologFile prologFile = (PrologFile) PsiManager.getInstance(project).findFile(virtualFile);
             if (prologFile != null) {
@@ -108,5 +113,15 @@ public class PrologPsiUtil {
             }
         }
         return result;
+    }
+
+    public static boolean isDefinition(PsiElement elt) {
+        var sentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
+        if(sentence == null) {
+            return false;
+        }
+        //If elt is the first compound name of the sentence, then it is a definition,
+        // otherwise it is a reference to a definition
+        return PsiTreeUtil.findChildOfType(sentence, PrologCompoundName.class) == elt;
     }
 }

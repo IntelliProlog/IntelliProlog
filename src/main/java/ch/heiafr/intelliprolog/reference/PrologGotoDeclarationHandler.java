@@ -1,10 +1,7 @@
 package ch.heiafr.intelliprolog.reference;
 
 import ch.heiafr.intelliprolog.PrologLanguage;
-import ch.heiafr.intelliprolog.psi.PrologAtom;
-import ch.heiafr.intelliprolog.psi.PrologCompound;
-import ch.heiafr.intelliprolog.psi.PrologCompoundName;
-import ch.heiafr.intelliprolog.psi.PrologSentence;
+import ch.heiafr.intelliprolog.psi.*;
 import ch.heiafr.intelliprolog.psi.impl.PrologPsiUtil;
 import com.intellij.codeInsight.navigation.actions.GotoDeclarationHandler;
 import com.intellij.openapi.editor.Editor;
@@ -12,6 +9,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,19 +50,24 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
             declarations.addAll(PsiTreeUtil.findChildrenOfType(file.getContainingFile(), PrologSentence.class));
         }
 
+        //Stop here if current element is a declaration
+        PrologSentence currentSentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
+        if (currentSentence != null && this.findDefinition(currentSentence).equals(elt)) {
+            return null;
+        }
+
         //For each sentence, find the first compound name => the predicate name
-        Collection<PrologCompound> compoundNames = declarations.stream()
-                .map(this::findCompoundAndName)//Find the first compound name which is the predicate name
-                .filter(Objects::nonNull) //Prevent null values
-                .filter(c -> PrologPsiUtil.isUserCompoundName(c.compoundName)) //Filter out keywords
-                .filter(c -> c.compoundName.getText().equals(elt.getText())) //Filter by name
-                .filter(c -> !elt.equals(c.compoundName)) //Filter by not being the same element
-                .map(c -> c.compound) //Get the compound name
-                .collect(Collectors.toList()); //Collect to list
+        Collection<PsiElement> names = declarations.stream()
+                .map(this::findDefinition)
+                .filter(Objects::nonNull)
+                .filter(c -> c instanceof PrologCompound ?
+                        Objects.equals(((PrologCompound) c).getCompoundName().getName(), elt.getText()) :
+                        Objects.equals(c.getText(), elt.getText()))
+                .collect(Collectors.toList());
 
 
         //Find the compound name that matches the current one
-        return compoundNames.toArray(PsiElement.EMPTY_ARRAY);
+        return names.toArray(PsiElement.EMPTY_ARRAY);
     }
 
     /**
@@ -80,10 +83,8 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
         }
 
         Collection<String> paths = PsiTreeUtil.collectElementsOfType(elt.getContainingFile(), PrologSentence.class).stream()
-                .map(this::findCompoundAndName)// Find the first compound name which is the predicate name
+                .map(this::findIncludeStatement)// Find the first compound name which is the predicate name
                 .filter(Objects::nonNull) //Prevent null values
-                .filter(c -> c.compoundName.getText().equals("include")) //Keep only include
-                .map(c -> c.compound) //Get the compound name
                 .map(this::extractQuotedString)//Extract the quoted string
                 .filter(Objects::nonNull)//Prevent null values
                 .filter(s -> !files.contains(s)) //Filter out already visited files
@@ -99,6 +100,15 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
         }
         return psiFiles;
     }
+
+    private PsiElement findIncludeStatement(PrologSentence sentence) {
+        return PsiTreeUtil.collectElementsOfType(sentence, PrologCompound.class).stream()
+                .filter(Objects::nonNull)
+                .filter(c -> Objects.equals(c.getCompoundName().getName(), "include"))
+                .findFirst()
+                .orElse(null);
+    }
+
 
     /**
      * Extract PsiElement from a relative path
@@ -124,7 +134,7 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
      * @param compound The compound
      * @return The String without the quotes or null if no string was found
      */
-    private String extractQuotedString(PrologCompound compound) {
+    private String extractQuotedString(PsiElement compound) {
         PrologAtom atom = PsiTreeUtil.findChildOfType(compound, PrologAtom.class);
         if (atom == null) {
             return null;
@@ -141,44 +151,84 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
      * @param sentence The sentence to search in
      * @return The compound name or null if not found
      */
-    private CompoundWithCompoundName findCompoundAndName(PrologSentence sentence) {
-        //Find the first compound name
-        PrologCompound compound = PsiTreeUtil.findChildOfType(sentence, PrologCompound.class);
-
-        //If there is no compound, return null
-        if (compound == null) {
+    private PsiElement findDefinition(PrologSentence sentence) {
+        if (sentence == null) {
             return null;
         }
 
-        //Find the first compound name
-        PrologCompoundName compoundName = PsiTreeUtil.findChildOfType(compound, PrologCompoundName.class);
+        //Multiple cases
+        // 1. test :- test2. => atom used as predicate name
+        Class<?>[] atomAsPredicateWithDefinitionPsiPattern = new Class[]{
+                PrologSentence.class,
+                PrologOperation.class,
+                PrologNativeBinaryOperation.class,
+                PrologBasicTerm.class,
+                PrologAtom.class
+        };
 
-        //If there is no compound name, return null
-        if (compoundName == null) {
-            return null;
+        if (patternFitPsiElement(sentence, atomAsPredicateWithDefinitionPsiPattern)) {
+            return findWithPattern(sentence, atomAsPredicateWithDefinitionPsiPattern);
+        }
+
+        // 2. test() :- test2. => compound used as predicate name
+        Class<?>[] compoundAsPredicateWithDefinitionPsiPattern = new Class[]{
+                PrologSentence.class,
+                PrologOperation.class,
+                PrologNativeBinaryOperation.class,
+                PrologBasicTerm.class,
+                PrologCompound.class
+        };
+
+        if (patternFitPsiElement(sentence, compoundAsPredicateWithDefinitionPsiPattern)) {
+            return findWithPattern(sentence, compoundAsPredicateWithDefinitionPsiPattern);
         }
 
 
-        return new CompoundWithCompoundName(compoundName, compound);
+        // 3. test(X). => compound without definition
+        Class<?>[] compoundAsPredicateWithoutDefinitionPsiPattern = new Class[]{
+                PrologSentence.class,
+                PrologCompound.class
+        };
+
+        if (patternFitPsiElement(sentence, compoundAsPredicateWithoutDefinitionPsiPattern)) {
+            return findWithPattern(sentence, compoundAsPredicateWithoutDefinitionPsiPattern);
+        }
+
+        // 4. test. => atom without definition
+        Class<?>[] atomAsPredicateWithoutDefinitionPsiPattern = new Class[]{
+                PrologSentence.class,
+                PrologAtom.class
+        };
+
+        if (patternFitPsiElement(sentence, atomAsPredicateWithoutDefinitionPsiPattern)) {
+            return findWithPattern(sentence, atomAsPredicateWithoutDefinitionPsiPattern);
+        }
+
+
+        //ALL OTHER CASE ARE NOT HANDLED FOR NOW
+        //TODO: Find all existing cases and handle them
+
+        return null;
     }
 
-    /**
-     * A simple class to store a compound name and its parent compound
-     * This is used to avoid having to find the compound name again
-     */
-    private class CompoundWithCompoundName {
-        PrologCompoundName compoundName; //The compound name
-        PrologCompound compound; //The compound
-
-        /**
-         * Create a new compound with compound name
-         *
-         * @param compoundName The compound name
-         * @param compound     The compound
-         */
-        public CompoundWithCompoundName(PrologCompoundName compoundName, PrologCompound compound) {
-            this.compoundName = compoundName;
-            this.compound = compound;
+    private PsiElement findWithPattern(PsiElement elt, Class[] pattern) {
+        for (Class<?> aClass : pattern) {
+            elt = elt.getFirstChild();
         }
+        return elt instanceof PrologCompoundName ? elt.getParent() : elt; //Return the compound if the name is found
+    }
+
+
+    private boolean patternFitPsiElement(PsiElement elt, Class[] pattern) {
+        for (Class<?> aClass : pattern) {
+            if (!aClass.isInstance(elt)) {
+                return false;
+            }
+            elt = elt.getFirstChild();
+            if (elt == null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

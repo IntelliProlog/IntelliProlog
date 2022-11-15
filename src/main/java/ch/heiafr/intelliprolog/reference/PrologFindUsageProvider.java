@@ -1,6 +1,7 @@
 package ch.heiafr.intelliprolog.reference;
 
 import ch.heiafr.intelliprolog.PrologLexerAdapter;
+import ch.heiafr.intelliprolog.PrologParserDefinition;
 import ch.heiafr.intelliprolog.psi.PrologCompoundName;
 import ch.heiafr.intelliprolog.psi.PrologTokenType;
 import ch.heiafr.intelliprolog.psi.PrologTypes;
@@ -32,7 +33,7 @@ public class PrologFindUsageProvider implements FindUsagesProvider {
 
     @Override
     public @Nls @NotNull String getType(@NotNull PsiElement element) {
-        if(element instanceof PrologCompoundName) {
+        if (element instanceof PrologCompoundName) {
             return "Prolog predicate";
         }
         return "";
@@ -45,25 +46,16 @@ public class PrologFindUsageProvider implements FindUsagesProvider {
 
     @Override
     public @Nls @NotNull String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-        System.out.println(element.getText());
         return element.getText();
     }
 
     @Override
     public @Nullable WordsScanner getWordsScanner() {
-        return (fileText, processor) -> {
-            PrologLexerAdapter lexer = new PrologLexerAdapter();
-            lexer.start(fileText);
-            IElementType tokenType;
-            while ((tokenType = lexer.getTokenType()) != null) {
-                if (tokenType == PrologTypes.UNQUOTED_COMPOUND_NAME) {
-                    CharSequence text = fileText.subSequence(lexer.getTokenStart(), lexer.getTokenEnd());
-                    processor.process(new WordOccurrence(text, 0, text.length(), WordOccurrence.Kind.CODE));
-                    System.out.println("Found word: " + fileText.subSequence(lexer.getTokenStart(), lexer.getTokenEnd()));
-                }
-                lexer.advance();
-            }
-        };
+        PrologParserDefinition parserDefinition = new PrologParserDefinition();
+        return new DefaultWordsScanner(parserDefinition.createLexer(null),
+                TokenSet.create(PrologTypes.COMPOUND_NAME),
+                TokenSet.create(PrologTypes.COMMENT),
+                TokenSet.create(PrologTypes.STRING));
     }
 
 }
