@@ -170,7 +170,7 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
             return findWithPattern(sentence, atomAsPredicateWithDefinitionPsiPattern);
         }
 
-        // 2. test() :- test2. => compound used as predicate name
+        // 2. test(A) :- test2. => compound used as predicate name
         Class<?>[] compoundAsPredicateWithDefinitionPsiPattern = new Class[]{
                 PrologSentence.class,
                 PrologOperation.class,

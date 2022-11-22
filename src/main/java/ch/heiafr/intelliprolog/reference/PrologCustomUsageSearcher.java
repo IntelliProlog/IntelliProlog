@@ -8,6 +8,8 @@ import com.intellij.find.findUsages.CustomUsageSearcher;
 import com.intellij.find.findUsages.FindUsagesOptions;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
@@ -17,12 +19,14 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
+import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.usageView.UsageInfo;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageInfo2UsageAdapter;
 import com.intellij.usages.UsageInfoToUsageConverter;
 import com.intellij.util.Processor;
+import io.grpc.util.GracefulSwitchLoadBalancer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -67,8 +71,13 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
 
         @Override
         public void run() {
+
+
+
             //Find every file in the selected scope
-            var filenames = FilenameIndex.getAllFilesByExt(element.getProject(), PrologFileType.INSTANCE.getDefaultExtension(), (GlobalSearchScope) options.searchScope);
+            var filenames = FilenameIndex.getAllFilesByExt(element.getProject(), PrologFileType.INSTANCE.getDefaultExtension());
+
+            GlobalSearchScope scope = findScope();
 
             //For each file, check if it contains the element
             for (VirtualFile file : filenames) {
@@ -84,6 +93,31 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
                         .map(compoundName -> new UsageInfo2UsageAdapter(new UsageInfo(compoundName)))//Create a Usage from the compoundName
                         .forEach(processor::process); //Process the Usage
             }
+        }
+
+
+        private GlobalSearchScope findScope() {
+            Project p = element.getProject();
+            Module m = ModuleUtil.findModuleForFile(element.getContainingFile().getVirtualFile(), p);
+            if (m == null) {
+                return GlobalSearchScope.allScope(p);
+            }
+            GlobalSearchScope [] scopes = new GlobalSearchScope[]{
+                    GlobalSearchScope.allScope(element.getProject()),
+                    GlobalSearchScope.projectScope(element.getProject()),
+                    GlobalSearchScope.moduleScope(m),
+                    GlobalSearchScope.fileScope(element.getContainingFile()),
+                    GlobalSearchScope.EMPTY_SCOPE
+            };
+
+            //ALL OTHER SCOPES ARE NOT SUPPORTED YET
+            for (GlobalSearchScope scope : scopes) {
+                if (scope.toString().equals(options.searchScope.toString())) {
+                    return scope;
+                }
+            }
+            //If the scope is not supported, return the default scope
+            return GlobalSearchScope.allScope(p);
         }
     }
 }
