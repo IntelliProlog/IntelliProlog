@@ -94,8 +94,7 @@ tasks {
                 files("build/classes/java/main/")
             classpath.from(compiledFilesSources)
         } catch (e: Exception) {
-            println("Error: ${e.message}")
-            println("Please run the 'build' task before running this task")
+            // Ignore => no compiled files when running the task for the first time
         }
 
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")

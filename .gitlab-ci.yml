@@ -9,10 +9,8 @@ build:
   stage: build
   script:
     # Init the parser and lexer
-    - gradle generateParser
-    - gradle generateLexer
+    - gradle initProject
     # Build the project
-    - gradle build
     - gradle buildPlugin
   cache: {}
   artifacts:
@@ -24,8 +22,7 @@ test:
   stage: test
   script:
     # Init the parser and lexer
-    - gradle generateParser
-    - gradle generateLexer
+    - gradle initProject
     # Run the tests
     - gradle test
   artifacts:
