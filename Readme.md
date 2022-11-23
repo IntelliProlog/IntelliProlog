@@ -15,7 +15,8 @@
 ### Setup
 1. Clone the repository
 2. Open the project in IntelliJ Idea
-3. Open the Gradle tab and run the `generateParser` task followed by the `generateLexer` task
+3. Open the Gradle tab and run the `initProject` task
+   * This will generate the parser and lexer files and compile source files
 4. Open the `Run/Debug Configurations` and add a new `Gradle` configuration with the following settings:
    * Name: `IntelliProlog`
    * Gradle project: `intelli-prolog-2`
@@ -30,7 +31,7 @@
 ## Pipeline
 
 ### Informations
-* The pipeline is configured to run on all branch. The release job is only triggered on the `master` branch.
+* The pipeline is configured to run on all branch. The release job is only triggered when a tag is pushed.
 * The pipeline use a custom docker image to run the tests. The Dockerfile is located in the `docker` folder.
 * The docker image is located in the [Private Docker Registry](https://gitlab.forge.hefr.ch/frederic.bapst/intelli-prolog-2/container_registry) of the project
 
