@@ -47,7 +47,7 @@ compound_name ::= (
                     UNQUOTED_COMPOUND_NAME|
                     QUOTED_COMPOUND_NAME
                   ){
-                    mixin="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementImpl"
+                    extends="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementHelperImpl"
                     implements="ch.heiafr.intelliprolog.psi.PrologNamedElement"
                     methods=[getName setName getNameIdentifier]
                   }
