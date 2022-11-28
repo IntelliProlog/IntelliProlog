@@ -49,8 +49,8 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
         }
 
 
-        PrologSentence currentSentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
-        int arity = ReferenceHelper.getArityFromSentence(currentSentence);
+
+        int arity = ReferenceHelper.getArityFromClicked(elt);
 
         //For each sentence, find the first compound name => the predicate name
         Collection<PsiElement> names = declarations.stream()
@@ -63,6 +63,11 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
                 .collect(Collectors.toList());
 
 
+        for(PsiElement name : names){
+            System.out.println(name.getText()+ "\t => \t" + ReferenceHelper.getArity(name));
+        }
+
+        PrologSentence currentSentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
         if(names.contains(ReferenceHelper.findDefinition(currentSentence))) {
             return null; //Display usage instead of declaration
         }

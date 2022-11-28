@@ -93,7 +93,8 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
 
                 //Find sentence to compute arity
                 PrologSentence sentence = PsiTreeUtil.getParentOfType(element, PrologSentence.class);
-                int eltArity = ReferenceHelper.getArityFromSentence(sentence);
+
+                int eltArity = ReferenceHelper.getArityFromClicked(element);
 
                 if (eltArity > 0) {
                     //Arity > 0 => compound
@@ -102,7 +103,6 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
                             //If the compoundName is the same as the element
                             .filter(compound -> Objects.equals(ReferenceHelper.compoundNameFromCompound(compound), element.getText()))
 
-                            .filter(compound -> !Objects.equals(PsiTreeUtil.getParentOfType(compound, PrologSentence.class), sentence))
                             //If the arity is the same as the element
                             .filter(compound -> eltArity == ReferenceHelper.getArity(compound))
 

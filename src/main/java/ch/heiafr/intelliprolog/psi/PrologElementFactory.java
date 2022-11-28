@@ -17,4 +17,8 @@ public class PrologElementFactory {
                 createFileFromText(name, PrologFileType.INSTANCE, text);
     }
 
+    public static PrologAtom createAtom(Project project, String name) {
+        PrologFile file = createFile(project, name);
+        return (PrologAtom) file.getFirstChild();
+    }
 }

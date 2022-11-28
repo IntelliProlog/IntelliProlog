@@ -122,20 +122,12 @@ public class ReferenceHelper {
         return term;
     }
 
-
     public static PrologCompound compoundFromClickedElement(PsiElement clickedElement) {
-        System.out.println("compoundFromClickedElement");
-        System.out.println(clickedElement);
-        System.out.println(clickedElement.getClass());
-        return null;
-    }
-
-    public static int getArityFromSentence(PrologSentence currentSentence) {
-        PrologCompound compound = PsiTreeUtil.findChildOfType(currentSentence, PrologCompound.class);
-        if (compound == null) {
-            return 0;
+        if(clickedElement.getNode().getElementType() == PrologTypes.UNQUOTED_COMPOUND_NAME
+        || clickedElement instanceof PrologCompoundName){
+            return PsiTreeUtil.getParentOfType(clickedElement, PrologCompound.class);
         }
-        return getArity(compound);
+        return null;
     }
 
     public static String compoundNameFromCompound(PrologCompound compound) {
@@ -144,5 +136,9 @@ public class ReferenceHelper {
             return null;
         }
         return compoundName.getText();
+    }
+
+    public static int getArityFromClicked(PsiElement elt) {
+        return getArity(compoundFromClickedElement(elt));
     }
 }

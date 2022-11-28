@@ -38,7 +38,11 @@ atom ::= (
             UNQUOTED_ATOM|
             SYMBOLIC_ATOM|
             QUOTED_ATOM
-         )
+         ){
+          extends="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementHelperImpl"
+          implements="ch.heiafr.intelliprolog.psi.PrologNamedElement"
+          methods=[getName setName getNameIdentifier]
+        }
 
 
 compound ::= compound_name LPAREN term RPAREN
