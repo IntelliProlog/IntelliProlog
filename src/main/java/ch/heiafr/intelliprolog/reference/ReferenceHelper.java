@@ -1,0 +1,148 @@
+package ch.heiafr.intelliprolog.reference;
+
+import ch.heiafr.intelliprolog.psi.*;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.lucene.index.Term;
+
+import java.util.Objects;
+
+public class ReferenceHelper {
+
+    /**
+     * Find the definition of a sentence if it exists
+     *
+     * @param sentence The sentence to search in
+     * @return The definition of the sentence if it exists, null otherwise
+     */
+    public static PsiElement findDefinition(PrologSentence sentence) {
+
+        if (sentence == null) {
+            return null;
+        }
+
+        //Multiple cases
+        Class<?>[][] searchPatterns = new Class[][]{{
+                // 1. test :- test2. => atom used as predicate name
+                PrologSentence.class, PrologOperation.class, PrologNativeBinaryOperation.class, PrologBasicTerm.class, PrologAtom.class}, {
+                // 2. test(A) :- test2. => compound used as predicate name
+                PrologSentence.class, PrologOperation.class, PrologNativeBinaryOperation.class, PrologBasicTerm.class, PrologCompound.class}, {
+                // 3. test(X). => compound without definition
+                PrologSentence.class, PrologCompound.class}, {
+                // 4. test. => atom without definition
+                PrologSentence.class, PrologAtom.class}};
+
+
+        for (Class<?>[] searchPattern : searchPatterns) {
+            var definition = patternFitPsiElement(sentence, searchPattern);
+
+            if (definition != null) {
+                return definition; //Found a definition
+            }
+        }
+
+        //If not found, return null
+        return null;
+    }
+
+    private static PsiElement patternFitPsiElement(PsiElement elt, Class[] pattern) {
+        for (Class<?> aClass : pattern) {
+            if (!aClass.isInstance(elt)) {
+                return null;
+            }
+            elt = elt.getFirstChild();
+            if (elt == null) {
+                return null;
+            }
+        }
+
+        return elt instanceof PrologCompoundName ? elt.getParent() : elt; //Return the compound if the name is found
+    }
+
+    /**
+     * Extract the quoted string from a compound
+     *
+     * @param compound The compound
+     * @return The String without the quotes or null if no string was found
+     */
+    public static String extractQuotedString(PsiElement compound) {
+        PrologAtom atom = PsiTreeUtil.findChildOfType(compound, PrologAtom.class);
+        if (atom == null) {
+            return null;
+        }
+        String name = atom.getText();
+        name = name.replaceAll("'", "");
+        name = name.replaceAll("\"", "");
+        return name;
+    }
+
+
+    public static int getArity(PsiElement compound) {
+
+        if (!(compound instanceof PrologCompound)) {
+            return 0;
+        }
+
+        PsiElement term = PsiTreeUtil.findChildOfType(compound, PrologTerm.class);
+
+        Class<?>[][] singleParameterPattern = new Class<?>[][]{{PrologTerm.class}, {PrologOperation.class}, {PrologNativeBinaryOperation.class}, {PrologBasicTerm.class, PrologKnownBinaryOperator.class, PrologTerm.class}};
+
+        int count = 0;
+
+        while (term != null) {
+            count++;
+            term = applyIfPossible(term, singleParameterPattern);
+        }
+
+        return count;
+    }
+
+    private static PsiElement applyIfPossible(PsiElement term, Class<?>[][] pattern) {
+        if (term == null) {
+            return null;
+        }
+        for (int i = 0; i < pattern.length; i++) {
+            for (int j = 0; j < pattern[i].length; j++) {
+                if (!pattern[i][j].isInstance(term)) {
+                    return null;
+                }
+                if (j == pattern[i].length - 1) {
+                    continue;
+                }
+                term = term.getNextSibling();
+                if (term == null) {
+                    return null;
+                }
+            }
+            if (i == pattern.length - 1) {
+                return term;
+            }
+            term = term.getFirstChild();
+        }
+        return term;
+    }
+
+
+    public static PrologCompound compoundFromClickedElement(PsiElement clickedElement) {
+        System.out.println("compoundFromClickedElement");
+        System.out.println(clickedElement);
+        System.out.println(clickedElement.getClass());
+        return null;
+    }
+
+    public static int getArityFromSentence(PrologSentence currentSentence) {
+        PrologCompound compound = PsiTreeUtil.findChildOfType(currentSentence, PrologCompound.class);
+        if (compound == null) {
+            return 0;
+        }
+        return getArity(compound);
+    }
+
+    public static String compoundNameFromCompound(PrologCompound compound) {
+        PrologCompoundName compoundName = PsiTreeUtil.findChildOfType(compound, PrologCompoundName.class);
+        if (compoundName == null) {
+            return null;
+        }
+        return compoundName.getText();
+    }
+}

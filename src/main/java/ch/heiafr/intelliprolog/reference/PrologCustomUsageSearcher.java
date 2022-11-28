@@ -1,7 +1,10 @@
 package ch.heiafr.intelliprolog.reference;
 
 import ch.heiafr.intelliprolog.PrologFileType;
+import ch.heiafr.intelliprolog.psi.PrologAtom;
+import ch.heiafr.intelliprolog.psi.PrologCompound;
 import ch.heiafr.intelliprolog.psi.PrologCompoundName;
+import ch.heiafr.intelliprolog.psi.PrologSentence;
 import ch.heiafr.intelliprolog.psi.impl.PrologPsiUtil;
 import com.google.common.collect.Lists;
 import com.intellij.find.findUsages.CustomUsageSearcher;
@@ -31,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class PrologCustomUsageSearcher extends CustomUsageSearcher {
     @Override
@@ -59,9 +63,10 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
 
         /**
          * Constructor
-         * @param elt the element to search for
+         *
+         * @param elt       the element to search for
          * @param processor the processor to use
-         * @param options the options to use
+         * @param options   the options to use
          */
         public FindPrologCompoundNameRunnable(PsiElement elt, Processor<? super Usage> processor, FindUsagesOptions options) {
             element = elt;
@@ -71,7 +76,6 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
 
         @Override
         public void run() {
-
 
 
             //Find every file in the selected scope
@@ -87,11 +91,35 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
                     continue; //If the file is not a PsiFile, skip it
                 }
 
-                //Find every PrologCompoundName in the file
-                PsiTreeUtil.findChildrenOfType(psiFile, PrologCompoundName.class).stream()
-                        .filter(compoundName -> compoundName.getText().equals(element.getText())) //If the compoundName is the same as the element
-                        .map(compoundName -> new UsageInfo2UsageAdapter(new UsageInfo(compoundName)))//Create a Usage from the compoundName
-                        .forEach(processor::process); //Process the Usage
+                //Find sentence to compute arity
+                PrologSentence sentence = PsiTreeUtil.getParentOfType(element, PrologSentence.class);
+                int eltArity = ReferenceHelper.getArityFromSentence(sentence);
+
+                if (eltArity > 0) {
+                    //Arity > 0 => compound
+                    //Find every PrologCompoundName in the file
+                    PsiTreeUtil.findChildrenOfType(psiFile, PrologCompound.class).stream()
+                            //If the compoundName is the same as the element
+                            .filter(compound -> Objects.equals(ReferenceHelper.compoundNameFromCompound(compound), element.getText()))
+
+                            .filter(compound -> !Objects.equals(PsiTreeUtil.getParentOfType(compound, PrologSentence.class), sentence))
+                            //If the arity is the same as the element
+                            .filter(compound -> eltArity == ReferenceHelper.getArity(compound))
+
+                            //Create a Usage from the compoundName
+                            .map(compound -> new UsageInfo2UsageAdapter(new UsageInfo(compound)))
+                            .forEach(processor::process); //Process the Usage
+                } else {
+                    // No arity => Atom
+                    PsiTreeUtil.findChildrenOfType(psiFile, PrologAtom.class).stream()
+                            //If the compoundName is the same as the element
+                            .filter(atom -> atom.getText().equals(element.getText()))
+                            //Create a Usage from the compoundName
+                            .map(atom -> new UsageInfo2UsageAdapter(new UsageInfo(atom)))
+                            .forEach(processor::process); //Process the Usage
+                }
+
+
             }
         }
 
@@ -102,7 +130,7 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
             if (m == null) {
                 return GlobalSearchScope.allScope(p);
             }
-            GlobalSearchScope [] scopes = new GlobalSearchScope[]{
+            GlobalSearchScope[] scopes = new GlobalSearchScope[]{
                     GlobalSearchScope.allScope(element.getProject()),
                     GlobalSearchScope.projectScope(element.getProject()),
                     GlobalSearchScope.moduleScope(m),
