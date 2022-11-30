@@ -13,7 +13,7 @@
   </change-notes>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="202.0"/>
+  <idea-version since-build="220.*"/>
   }}}}
   <depends>com.intellij.modules.lang</depends>
   <depends>com.intellij.java</depends>
@@ -24,8 +24,14 @@
     <!-- Replacement of projet component -->
     <postStartupActivity implementation="ch.heiafr.intelliprolog.PrologProjectComponent"/>
 
+    <gotoDeclarationHandler implementation="ch.heiafr.intelliprolog.reference.PrologGotoDeclarationHandler" />
+    <lang.findUsagesProvider language="Prolog" implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider"/>
 
-    <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
+    <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher"/>
+
+    <psi.referenceContributor language="Prolog" implementation="ch.heiafr.intelliprolog.reference.PrologReferenceContributor"/>
+
+    <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>x
     <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
               language="Prolog" extensions="pl"/>
     <!--        <fileTypeFactory implementation="ch.heiafr.intelliprolog.PrologFileTypeFactory"/>-->

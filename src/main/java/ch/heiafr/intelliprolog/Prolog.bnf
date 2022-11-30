@@ -11,6 +11,8 @@
   elementTypeHolderClass="ch.heiafr.intelliprolog.psi.PrologTypes"
   elementTypeClass="ch.heiafr.intelliprolog.psi.PrologElementType"
   tokenTypeClass="ch.heiafr.intelliprolog.psi.PrologTokenType"
+
+  psiImplUtilClass="ch.heiafr.intelliprolog.psi.impl.PrologPsiUtil"
 }
 
 prologFile ::= item_*
@@ -36,7 +38,11 @@ atom ::= (
             UNQUOTED_ATOM|
             SYMBOLIC_ATOM|
             QUOTED_ATOM
-         )
+         ){
+          extends="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementHelperImpl"
+          implements="ch.heiafr.intelliprolog.psi.PrologNamedElement"
+          methods=[getName setName getNameIdentifier]
+        }
 
 
 compound ::= compound_name LPAREN term RPAREN
@@ -44,7 +50,11 @@ compound ::= compound_name LPAREN term RPAREN
 compound_name ::= (
                     UNQUOTED_COMPOUND_NAME|
                     QUOTED_COMPOUND_NAME
-                  )
+                  ){
+                    extends="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementHelperImpl"
+                    implements="ch.heiafr.intelliprolog.psi.PrologNamedElement"
+                    methods=[getName setName getNameIdentifier]
+                  }
 
 list ::= LBRACKET term? RBRACKET
 

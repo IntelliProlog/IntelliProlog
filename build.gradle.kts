@@ -9,6 +9,8 @@ plugins {
     id("org.jetbrains.intellij") version "1.9.0" //Latest version
     id("org.jetbrains.grammarkit") version "2021.2.2"
 }
+
+
 group = properties("pluginGroup")
 version = properties("pluginVersion")
 
@@ -22,10 +24,11 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
-sourceSets{
+sourceSets {
     main {
         java {
             srcDirs("src/gen/java") // Generated sources
+            runtimeClasspath += files("build/classes/java/main") // Generated resources
         }
     }
 }
@@ -74,7 +77,8 @@ tasks {
         sinceBuild.set(properties("pluginSinceBuild"))
     }
 
-    generateLexer(){
+
+    generateLexer {
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
         targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
         targetClass.set("PrologLexer")
@@ -82,18 +86,52 @@ tasks {
         purgeOldFiles.set(true)
     }
 
-    generateParser(){
+
+    generateParser {
+
+        try {
+            val compiledFilesSources =
+                files("build/classes/java/main/")
+            classpath.from(compiledFilesSources)
+        } catch (e: Exception) {
+            // Ignore => no compiled files when running the task for the first time
+        }
+
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
         pathToParser.set("PrologParser.java")
         pathToPsiRoot.set("psi")
-        purgeOldFiles.set(true)
-
+        purgeOldFiles.set(false)
     }
 
-    // Generate the Lexer and Parser BEFORE building the plugin
-    compileJava(){
-        dependsOn(compileKotlin)
+
+    compileJava {
+        dependsOn("compileKotlin")
+    }
+
+    runIde {
+        autoReloadPlugins.set(true)
+    }
+
+    register("compileAndRegenerate") {
+        dependsOn("compileJava")
+        finalizedBy("generateParser")
+    }
+
+    register("initProject") {
+
+        doFirst {
+            generateParser.get().generateParser()
+            generateLexer.get().generateLexer()
+            println("Classes generated")
+        }
+        finalizedBy("compileAndRegenerate")
     }
 
 }
+
+
+
+
+
+

@@ -77,7 +77,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             runner.initAndRun();
             runner.getProcessHandler();
         } catch (ExecutionException e) {
-            ExecutionHelper.showErrors(module.getProject(), Arrays.<Exception>asList(e), INTERPRETER_TITLE, null);
+            ExecutionHelper.showErrors(module.getProject(), List.<Exception>of(e), INTERPRETER_TITLE, null);
         }
     }
 

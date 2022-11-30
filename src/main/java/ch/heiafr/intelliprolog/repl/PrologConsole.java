@@ -11,11 +11,11 @@ import java.io.OutputStreamWriter;
 
 public class PrologConsole extends LanguageConsoleImpl {
 
-    private ConsoleRootType consoleRootType = new ConsoleRootType("prolog", "Prolog") {
+    private final ConsoleRootType consoleRootType = new ConsoleRootType("prolog", "Prolog") {
     };
     private ConsoleHistoryController historyController;
     private OutputStreamWriter outputStreamWriter;
-    private String lastCommmand = null;
+    private final String lastCommmand = null;
 
     public PrologConsole(@NotNull Project project, @NotNull String title) {
         super(project, title, PrologFileType.INSTANCE.getLanguage());
