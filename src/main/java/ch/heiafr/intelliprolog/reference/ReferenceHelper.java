@@ -4,7 +4,6 @@ import ch.heiafr.intelliprolog.psi.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.apache.lucene.index.Term;
 
 import java.util.Objects;
 

@@ -1,6 +1,5 @@
 package ch.heiafr.intelliprolog.psi.impl;
 
-import ch.heiafr.intelliprolog.psi.PrologCompoundName;
 import ch.heiafr.intelliprolog.psi.PrologNamedElement;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;

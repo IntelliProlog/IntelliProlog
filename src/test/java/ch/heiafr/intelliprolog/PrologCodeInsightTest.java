@@ -1,6 +1,5 @@
 package ch.heiafr.intelliprolog;
 
-import ch.heiafr.intelliprolog.psi.PrologFile;
 import com.intellij.codeInsight.generation.actions.CommentByBlockCommentAction;
 import com.intellij.codeInsight.generation.actions.CommentByLineCommentAction;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
