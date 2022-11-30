@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PrologCustomUsageSearcher extends CustomUsageSearcher {
+
     @Override
     public void processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super Usage> processor, @NotNull FindUsagesOptions options) {
 
@@ -118,8 +119,6 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
                             .map(atom -> new UsageInfo2UsageAdapter(new UsageInfo(atom)))
                             .forEach(processor::process); //Process the Usage
                 }
-
-
             }
         }
 

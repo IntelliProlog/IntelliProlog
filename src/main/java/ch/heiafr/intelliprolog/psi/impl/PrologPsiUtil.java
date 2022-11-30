@@ -56,7 +56,6 @@ public class PrologPsiUtil {
         return (isCompoundName(element) && !isCompoundNameKeyword(element));
     }
 
-
     /*
         NAMED ELEMENT UTILITIES
      */
@@ -66,7 +65,7 @@ public class PrologPsiUtil {
     }
 
     public static PsiElement setName(PrologCompoundName element, String newName) {
-        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.COMPOUND_NAME);
+        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.UNQUOTED_COMPOUND_NAME);
         if (keyNode != null) {
             PrologCompoundName property =
                     PrologElementFactory.createCompoundName(element.getProject(), newName);
@@ -83,6 +82,57 @@ public class PrologPsiUtil {
     }
 
 
+    public static String getName(PrologAtom element) {
+        return element.getText();
+    }
+
+    public static PsiElement setName(PrologAtom element, String newName) {
+        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.UNQUOTED_ATOM);
+        if (keyNode != null) {
+            PrologAtom property =
+                    PrologElementFactory.createAtom(element.getProject(), newName);
+            ASTNode newKeyNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(keyNode, newKeyNode);
+        }
+        return element;
+    }
+
+    public static PsiElement getNameIdentifier(PrologAtom element) {
+        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.UNQUOTED_ATOM);
+        return keyNode != null ? keyNode.getPsi() : null;
+        //return element;
+    }
+
+
+    public static String getName(PrologVariable element) {
+        return element.getText();
+    }
+
+    public static PsiElement setName(PrologVariable element, String newName) {
+
+        //Check if the first letter must be uppercase => we don't change the type but only the name
+        if(!Character.isUpperCase(newName.charAt(0))){
+            return element; //No change
+        }
+        if(newName.charAt(0) == '_'){ //We don't change the type
+            return element; //No change
+        }
+
+        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.NAMED_VARIABLE);
+        if (keyNode != null) {
+            PrologVariable property =
+                    PrologElementFactory.createVariable(element.getProject(), newName);
+            ASTNode newKeyNode = property.getFirstChild().getNode();
+            element.getNode().replaceChild(keyNode, newKeyNode);
+        }
+        return element;
+    }
+
+    public static PsiElement getNameIdentifier(PrologVariable element) {
+        ASTNode keyNode = element.getNode().findChildByType(PrologTypes.NAMED_VARIABLE);
+        return keyNode != null ? keyNode.getPsi() : null;
+        //return element;
+    }
 
     /*
         REFERENCE UTILITIES
@@ -115,15 +165,5 @@ public class PrologPsiUtil {
             }
         }
         return result;
-    }
-
-    public static boolean isDefinition(PsiElement elt) {
-        var sentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
-        if(sentence == null) {
-            return false;
-        }
-        //If elt is the first compound name of the sentence, then it is a definition,
-        // otherwise it is a reference to a definition
-        return PsiTreeUtil.findChildOfType(sentence, PrologCompoundName.class) == elt;
     }
 }

@@ -4,6 +4,9 @@ import ch.heiafr.intelliprolog.psi.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.lucene.index.Term;
+
+import java.util.Objects;
 
 public class ReferenceHelper {
 
@@ -87,8 +90,6 @@ public class ReferenceHelper {
      * @return The arity of the compound, 0 if this is not a compound
      */
     public static int getArity(PsiElement compound) {
-
-        //TODO: ERROR when predicate is predicate(A, B, C - D) => arity = 4 instead of 3
 
         if (!(compound instanceof PrologCompound)) {
             return 0;
@@ -213,5 +214,18 @@ public class ReferenceHelper {
      */
     public static int getArityFromClicked(PsiElement elt) {
         return getArity(compoundFromClickedElement(elt));
+    }
+
+    /**
+     * Test if two PSIElemnts are the same PrologSentence
+     * @param e1 The first element
+     * @param e2 The second element
+     * @return True if they are the same, false otherwise
+     */
+    public static boolean areInSameSentence(PsiElement e1, PsiElement e2) {
+        PrologSentence s1  = PsiTreeUtil.getParentOfType(e1, PrologSentence.class);
+        PrologSentence s2  = PsiTreeUtil.getParentOfType(e2, PrologSentence.class);
+
+        return Objects.equals(s1, s2);
     }
 }

@@ -64,7 +64,11 @@ parenthesized_block ::= LPAREN term RPAREN
 
 number ::= (INTEGER|FLOAT|BIN_NUMBER|OCT_NUMBER|HEX_NUMBER|CHAR_CODE)
 
-variable ::= (ANONYMOUS_VARIABLE|NAMED_VARIABLE)
+variable ::= (ANONYMOUS_VARIABLE|NAMED_VARIABLE){
+                                                    extends="ch.heiafr.intelliprolog.psi.impl.PrologNamedElementHelperImpl"
+                                                    implements="ch.heiafr.intelliprolog.psi.PrologNamedElement"
+                                                    methods=[getName setName getNameIdentifier]
+                                                  }
 
 valid_operator ::= UNQUOTED_ATOM|SYMBOLIC_ATOM
 

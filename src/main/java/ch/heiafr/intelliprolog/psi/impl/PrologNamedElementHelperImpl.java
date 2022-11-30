@@ -10,7 +10,7 @@ import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class PrologNamedElementHelperImpl extends ASTWrapperPsiElement implements PrologCompoundName {
+public class PrologNamedElementHelperImpl extends ASTWrapperPsiElement implements PrologNamedElement {
 
   public PrologNamedElementHelperImpl(@NotNull ASTNode node) {
     super(node);

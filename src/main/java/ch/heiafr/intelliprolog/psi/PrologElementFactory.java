@@ -3,12 +3,17 @@ package ch.heiafr.intelliprolog.psi;
 import ch.heiafr.intelliprolog.PrologFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFileFactory;
+import com.intellij.psi.util.PsiTreeUtil;
 
 public class PrologElementFactory {
 
     public static PrologCompoundName createCompoundName(Project project, String name) {
-        PrologFile file = createFile(project, name);
-        return (PrologCompoundName) file.getFirstChild();
+        // Add (a,b). to the end of the file to make sure the parser doesn't fail
+        PrologFile file = createFile(project, name+"(a,b).");
+        // Find the sentence...
+        PrologSentence sentenceRoot = (PrologSentence) file.getFirstChild();
+        // ...and find/return the compound name (if any)
+        return PsiTreeUtil.findChildOfType(sentenceRoot, PrologCompoundName.class);
     }
 
     public static PrologFile createFile(Project project, String text) {
@@ -17,8 +22,21 @@ public class PrologElementFactory {
                 createFileFromText(name, PrologFileType.INSTANCE, text);
     }
 
-    public static PrologAtom createAtom(Project project, String name) {
-        PrologFile file = createFile(project, name);
-        return (PrologAtom) file.getFirstChild();
+    public static PrologAtom createAtom(Project project, String newName) {
+        // Add (a,b). to the end of the file to make sure the parser doesn't fail
+        PrologFile file = createFile(project, newName+".");
+        // Find the sentence...
+        PrologSentence sentenceRoot = (PrologSentence) file.getFirstChild();
+        // ...and find/return the atom (if any)
+        return PsiTreeUtil.findChildOfType(sentenceRoot, PrologAtom.class);
+    }
+
+    public static PrologVariable createVariable(Project project, String newName) {
+        // Add (a,b). to the end of the file to make sure the parser doesn't fail
+        PrologFile file = createFile(project, "variable("+newName+").");
+        // Find the sentence...
+        PrologSentence sentenceRoot = (PrologSentence) file.getFirstChild();
+        // ...and find/return the variable (if any)
+        return PsiTreeUtil.findChildOfType(sentenceRoot, PrologVariable.class);
     }
 }
