@@ -63,10 +63,6 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
                 .collect(Collectors.toList());
 
 
-        for(PsiElement name : names){
-            System.out.println(name.getText()+ "\t => \t" + ReferenceHelper.getArity(name));
-        }
-
         PrologSentence currentSentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);
         if(names.contains(ReferenceHelper.findDefinition(currentSentence))) {
             return null; //Display usage instead of declaration

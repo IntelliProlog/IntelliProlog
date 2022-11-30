@@ -17,9 +17,9 @@
         <lang.findUsagesProvider language="Prolog" implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider" />
         <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher" />
         <renamePsiElementProcessor implementation="ch.heiafr.intelliprolog.reference.PrologRenamePsiElementProcessor" />
-        <moduleType id="PROLOG_MODULE" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType" />
+        <moduleType id="Prolog_Module" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType" />
         <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE" language="Prolog" extensions="pl" />
-        <sdkType id="PROLOG" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType" />
+        <sdkType id="Prolog" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType" />
         <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition" />
         <lang.syntaxHighlighterFactory language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologSyntaxHighlighterFactory" />
         <annotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologAnnotator" />
@@ -27,6 +27,7 @@
         <lang.braceMatcher language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologPairedBraceMatcher" />
         <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter" />
         <lang.foldingBuilder language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder" />
+        <refactoring.safeDeleteProcessor implementation="ch.heiafr.intelliprolog.reference.PrologSafeDeleteProcessor" />
     </extensions>
     <actions>
         <!-- Add your actions here -->

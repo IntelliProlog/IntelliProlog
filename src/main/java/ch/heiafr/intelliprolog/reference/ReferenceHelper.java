@@ -100,18 +100,11 @@ public class ReferenceHelper {
 
         int count = 0;
 
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Arity of " + compound.getText());
-
         while (term != null) {
             count++;
             term = skipComposed(term);
-            System.out.println("End of skipComposed: " + term.getText());
             term = applyIfPossible(term, singleParameterPattern);
         }
-
-        System.out.printf("Arity of %s is %d%n", compound.getText(), count);
-        System.out.println("------------------------------------------------------------");
         return count;
     }
 
@@ -125,7 +118,6 @@ public class ReferenceHelper {
         Class<?>[][] findOperator = new Class<?>[][]{{PrologTerm.class}, {PrologOperation.class}, {PrologNativeBinaryOperation.class},{PrologBasicTerm.class, PrologKnownBinaryOperator.class}};
         PsiElement initial = term;
 
-        System.out.println("Skip composed: " + term.getText());
 
         var op = applyIfPossible(term, findOperator);
         if(op == null){
