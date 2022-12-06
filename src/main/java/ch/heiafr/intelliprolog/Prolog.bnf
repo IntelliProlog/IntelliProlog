@@ -95,7 +95,8 @@ known_binary_operator ::= &valid_operator (
                             '^'|
                             '::'|
                             '^^'|
-                            '<<'
+                            '<<' |
+                            '~~>'
                             )
 
 
