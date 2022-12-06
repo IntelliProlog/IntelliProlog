@@ -292,4 +292,42 @@ public class ReferenceHelper {
         return PsiManager.getInstance(elt.getProject()).findFile(file);
     }
 
+    /**
+     * Return a list of all PsiElement that are related to the given element
+     * @param element The element to search in
+     * @return A list of all PsiElement that are related to the given element
+     */
+    public static Collection<PsiElement> findAllRelatedFiles(PsiElement element) {
+        List<String> visited = new ArrayList<>();
+        Collection<PsiElement> included = findEveryImportedFile(element, visited);
+        Collection<PsiElement> thatInclude = findEveryFileThatInclude(element.getContainingFile(), visited);
+
+        included.addAll(thatInclude);
+
+        return included;
+    }
+
+    /**
+     * Find all the files that include the given file
+     * @param file The file to search in
+     * @param visited The list of files that have already been visited
+     * @return A list of all the files that include the given file
+     */
+    private static Collection<PsiElement> findEveryFileThatInclude(PsiFile file, List<String> visited) {
+        var filenames = FilenameIndex.getAllFilesByExt(file.getProject(), PrologFileType.INSTANCE.getDefaultExtension());
+
+        return filenames.stream()
+                .filter(f -> !visited.contains(f.getName()))
+                .map(f -> PsiManager.getInstance(file.getProject()).findFile(f))
+                .filter(Objects::nonNull)
+                .filter(f -> PsiTreeUtil.collectElementsOfType(f, PrologSentence.class).stream()
+                        .map(ReferenceHelper::findIncludeStatement)
+                        .filter(Objects::nonNull)
+                        .map(ReferenceHelper::extractQuotedString)
+                        .filter(Objects::nonNull)
+                        .anyMatch(s -> s.equals(file.getName())))
+                .collect(Collectors.toList());
+
+    }
+
 }
