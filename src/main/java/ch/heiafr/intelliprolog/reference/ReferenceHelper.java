@@ -301,7 +301,8 @@ public class ReferenceHelper {
         List<String> visited = new ArrayList<>();
         Collection<PsiElement> included = findEveryImportedFile(element, visited);
         Collection<PsiElement> thatInclude = findEveryFileThatInclude(element.getContainingFile(), visited);
-
+        //Add the current file to the list
+        included.add(element.getContainingFile());
         included.addAll(thatInclude);
 
         return included;

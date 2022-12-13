@@ -47,11 +47,7 @@ public class PrologRenamePsiElementProcessor extends RenamePsiElementProcessor {
                             .filter(e -> Objects.equals(e.getName(), element.getText()))
                             .filter(e -> ReferenceHelper.getArityFromClicked(e) == arity)
                             .forEach(e -> {
-                                if (e instanceof PrologCompoundName) {
-                                    allRenames.put(e.getParent(), newName);
-                                } else {
-                                    allRenames.put(e, newName);
-                                }
+                                allRenames.put(e, newName);
                             }));
         } else {
             //Case 2
