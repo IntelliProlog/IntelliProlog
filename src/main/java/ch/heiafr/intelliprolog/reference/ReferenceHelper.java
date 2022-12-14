@@ -317,7 +317,9 @@ public class ReferenceHelper {
     private static Collection<PsiElement> findEveryFileThatInclude(PsiFile file, List<String> visited) {
         var filenames = FilenameIndex.getAllFilesByExt(file.getProject(), PrologFileType.INSTANCE.getDefaultExtension());
 
-        return filenames.stream()
+        Collection<PsiElement> result = new ArrayList<>();
+
+        Collection<PsiElement> allFiles =  filenames.stream()
                 .filter(f -> !visited.contains(f.getName()))
                 .map(f -> PsiManager.getInstance(file.getProject()).findFile(f))
                 .filter(Objects::nonNull)
@@ -329,6 +331,15 @@ public class ReferenceHelper {
                         .anyMatch(s -> s.equals(file.getName())))
                 .collect(Collectors.toList());
 
+        visited.add(file.getName());
+        result.addAll(allFiles);
+
+        for(var f : allFiles){
+            var files = findEveryFileThatInclude(f.getContainingFile(), visited);
+            result.addAll(files);
+        }
+
+        return result;
     }
 
 }
