@@ -27,6 +27,7 @@
         <lang.braceMatcher language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologPairedBraceMatcher" />
         <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter" />
         <lang.foldingBuilder language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder" />
+        <externalAnnotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologExternalAnnotator"/>
     </extensions>
     <actions>
         <!-- Add your actions here -->
