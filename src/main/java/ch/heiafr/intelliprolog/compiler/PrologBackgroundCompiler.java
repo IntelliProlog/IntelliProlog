@@ -60,6 +60,9 @@ public class PrologBackgroundCompiler implements Runnable {
             String cmd = CompilerHelper.commandFromFilePath(filePath, module);
 
             if(cmd == null) {
+
+                System.out.println("cmd is null");
+
                 //Null if no sdk is configured
                 sendFeedback(new ArrayList<>());
                 return;
@@ -113,8 +116,11 @@ public class PrologBackgroundCompiler implements Runnable {
 
             sendFeedback(result);
 
+            System.out.println("Compilation done");
+
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Compilation failed");
         }
 
     }

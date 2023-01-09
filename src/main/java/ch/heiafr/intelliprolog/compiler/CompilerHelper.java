@@ -8,6 +8,7 @@ import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
+import org.apache.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -55,6 +56,7 @@ public class CompilerHelper {
             sdk = moduleRootManager.getSdk();
         }
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
+            System.out.println("sdk is null");
             return null;
         }
 
