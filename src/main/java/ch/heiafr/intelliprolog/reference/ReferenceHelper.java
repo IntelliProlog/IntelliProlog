@@ -7,17 +7,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
+import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
+import org.apache.lucene.index.Term;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ReferenceHelper {
@@ -265,6 +267,10 @@ public class ReferenceHelper {
         return psiFiles;
     }
 
+    public static Collection<PsiElement> findEveryImportedFile(PsiElement elt) {
+        return findEveryImportedFile(elt, new ArrayList<>());
+    }
+
     public static PsiElement findIncludeStatement(PrologSentence sentence) {
         return PsiTreeUtil.collectElementsOfType(sentence, PrologCompound.class).stream()
                 .filter(Objects::nonNull)
@@ -341,5 +347,4 @@ public class ReferenceHelper {
 
         return result;
     }
-
 }

@@ -28,6 +28,7 @@
         <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter" />
         <lang.foldingBuilder language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder" />
         <externalAnnotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologExternalAnnotator"/>
+      <completion.contributor language="Prolog" implementationClass="ch.heiafr.intelliprolog.completion.PrologCompletionContributor" />
     </extensions>
     <actions>
         <!-- Add your actions here -->
