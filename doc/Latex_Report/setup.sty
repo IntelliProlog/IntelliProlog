@@ -1,0 +1,253 @@
+\usepackage[table]          {xcolor}    % table row color
+\usepackage                 {caption}   % allow table caption on tabular    
+\usepackage[utf8]           {inputenc}  % encoding
+\usepackage[]               {geometry}	% layout
+\usepackage[T1]             {fontenc}   %             
+\usepackage{titlesec, blindtext, color} % title numbering
+\usepackage[super]          {natbib}    % bibliographie
+\usepackage[french]         {babel}		% langage rules
+\usepackage                 {graphicx}	% image
+\usepackage                 {fancyhdr}	% header
+\usepackage                 {float}     % Correct floating
+\usepackage[hidelinks]      {hyperref}  % clickable ref
+\usepackage                 {tocloft}   % custom table of contents
+\usepackage                 {listings}  % code coloration
+\usepackage                 {wrapfig}   %
+\usepackage                 {amsmath}   % Math
+\usepackage                 {dirtytalk} % Add quotes on doc
+\usepackage                 {everypage} % Package to stop first paragraph indentation
+\usepackage                 {minted}    % Display C++ code
+\usepackage                 {xcolor}    % to access the named colour LightGray
+\usepackage[nottoc]         {tocbibind}
+
+\definecolor{LightGray}{gray}{0.9}      % Color used for displaying C++ code
+\definecolor{gray75}{gray}{0.75}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\newcommand{\hsp}{\hspace{20pt}}
+
+% used for bibliography
+\def\UrlBreaks{\do\/\do-}
+\bibliographystyle{ieeetr}
+
+\renewcommand\familydefault{\sfdefault}% set default font to sans serial
+
+
+
+%Default Geometrie
+\newgeometry{left=2.5cm, right=2.5cm, top=3cm, bottom=2.5cm}
+
+% table of contents custom
+\setlength{\cftbeforesecskip}{0cm}
+\setlength{\cftbeforetoctitleskip}{1cm}
+\setlength{\cftaftertoctitleskip}{0.5cm}
+
+%Table of contents
+\setcounter{tocdepth}{2} %montre combien de sous-titre
+\setcounter{secnumdepth}{4} %jusqu'à combien de sous-titre numéroter
+
+%Set header
+\fancyhf{}
+\fancypagestyle{plain}{}
+\rhead{Projet de semestre 5} 
+\lhead{Plugin IntelliJ pour GNU Prolog}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{1pt}
+\setlength{\headheight}{14pt}
+
+% space before, after chapter
+\titlespacing*{\chapter}{0pt}{-0pt}{15pt}
+\titlespacing*{\section}{0pt}{17pt}{12pt} %Attention Taille texte !
+\titlespacing*{\subsection}{0pt}{14pt}{10pt} %Attention Taille texte !
+\titlespacing*{\subsubsection}{0pt}{12pt}{8pt} %Attention Taille texte !
+
+
+%Custome Title
+%-------------------------------------------------------------
+
+%Title 1.
+\titleformat{\chapter}[block]{\LARGE\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\LARGE\bfseries}
+
+% title 1.1
+\titleformat{\section}[block]
+{\Large\bfseries}{\thesection\hsp}{0pt}{\Large\bfseries}
+
+
+% title 1.1.1
+\titleformat{\subsection}[block]
+{\large\bfseries}{\thesubsection\hsp}{0pt}{\large\bfseries}
+
+
+% title 1.1.1.1
+\titleformat{\subsubsection}[block]
+{\large\bfseries}{\thesubsubsection\hsp}{0pt}{\large\bfseries}
+
+
+% title paragraph
+\titleformat{\paragraph}[block]
+{\large\bfseries}
+{}{0em}{}
+
+% title subparagraph
+\titleformat{\subparagraph}
+[block]{\large\bfseries}
+{}{2em}{}
+
+
+
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Custom colors Python
+\usepackage{color}
+\definecolor{codegreen}{RGB}{90, 134, 117}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\definecolor{backcolourlight}{RGB}{240,240,240}
+
+
+%Custom colors Java
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+commentstyle=\color{codegreen},
+backgroundcolor=\color{backcolourlight},
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+numberstyle=\tiny\color{codegray},
+numbers=left,
+numbersep=5pt,
+stringstyle=\color{codepurple},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=none,                         % Any extra options here
+breaklines=true,
+showstringspaces=false,            %
+belowskip=2em,
+framextopmargin=40em,
+keepspaces=true
+}}
+
+% Java style for highlighting
+\lstset{language=Java,
+  showspaces=false,
+  showtabs=false,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\ttfamily,
+  moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%}
+}
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Java environment
+\lstnewenvironment{java}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+% Adding double line insertion
+\newcommand{\newdoubleline}{
+    \newline
+    \newline
+    \noindent
+}
+
+\newcommand*{\figref}[2][]{%
+  \hyperref[{#2}]{%
+    figure~\ref*{#2}%
+    \ifx\\#1\\%
+    \else
+      \,#1%
+    \fi
+  }%
+}
+
+\counterwithout{table}{chapter}
+\counterwithout{figure}{chapter}	% avoid reset at new chapter
+\AtBeginDocument{% the counter is defined later
+  \counterwithout{lstlisting}{chapter}%
+}
+
+% use case description box
+\usepackage[most]{tcolorbox}
+\definecolor{bg}{RGB}{235,235,236}
+
+\newtcolorbox{usecasebox}[1][]{%
+    enhanced,
+    breakable,
+    colback=bg,
+    overlay={%
+      \ifcase\tcbsegmentstate
+        % 0 = Box contains only an upper part
+      \or%
+        % 1 = Box contains an upper and a lower part
+        \path[draw=red] (segmentation.west)--(frame.south east);
+      \else%
+        % 2 = Box contains only a lower part
+        \path[draw=red] (frame.north west)--(frame.south east);
+      \fi%
+    }
+    #1
+}
+
+%New colors defined below
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
