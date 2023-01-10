@@ -1,5 +1,6 @@
 package ch.heiafr.intelliprolog.compiler;
 
+import com.intellij.execution.CantRunException;
 import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.module.Module;
 import com.intellij.psi.PsiFile;
@@ -57,9 +58,9 @@ public class PrologBackgroundCompiler implements Runnable {
     @Override
     public void run() {
         try {
-            String cmd = CompilerHelper.commandFromFilePath(filePath, module);
+            Path path = CompilerHelper.getInterpreterPath(module);
 
-            if(cmd == null) {
+            if(path == null) {
 
                 System.out.println("cmd is null");
 
@@ -68,7 +69,7 @@ public class PrologBackgroundCompiler implements Runnable {
                 return;
             }
 
-            Process p = Runtime.getRuntime().exec(cmd);
+            Process p = CompilerHelper.getProcess(path, filePath);
 
             //Print output
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -103,8 +104,8 @@ public class PrologBackgroundCompiler implements Runnable {
             // ====> Export them as List<CompilerResult>
             for (var l : lines) {
                 for (var key : severityMap.keySet()) {
-                    if (l.contains(key + ":")) {
-                        String[] parts = l.split(":");
+                    if (l.contains(key + ":") && l.trim().length() > 0) {
+                        String[] parts = CompilerHelper.autoSplit(l);
                         //Structure of parts: [file, line, warning/error, message]
                         int lineNb = Integer.parseInt(parts[1].split("-")[0]);
                         String message = parts[2] + ":" + parts[3];
@@ -116,11 +117,8 @@ public class PrologBackgroundCompiler implements Runnable {
 
             sendFeedback(result);
 
-            System.out.println("Compilation done");
-
-        } catch (IOException e) {
+        } catch (IOException | CantRunException e) {
             e.printStackTrace();
-            System.out.println("Compilation failed");
         }
 
     }
