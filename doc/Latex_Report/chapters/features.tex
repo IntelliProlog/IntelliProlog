@@ -183,25 +183,131 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
     \label{fig:usage}
 \end{figure}
 
+
 \section{Refactoring}
 \noindent Le refactoring est une fonctionnalité qui permet de modifier le code de manière automatique comme par exemple renommer une variable, une méthode, etc.
 C'est une fonctionnalité très appréciée des développeurs car elle permet de gagner du temps et d'éviter les erreurs de frappe ou simplement les oublis lors de la modification du code.
 \newdoubleline
-Le but du refactoring est de pouvoir renommer un prédicat et de modifier tous les appels à ce prédicat dans le code, y compris dans les fichiers inclus ou dans les fichiers qui incluent le fichier contenant le prédicat.
+Dans notre cas, seul la partie renommage d'un prédicat, d'un atome ou d'une variable nous intéresse.
+En effet, il est fréquent de renommer un prédicat ou une variable dans un fichier Prolog et il est important de renommer
+toutes les occurrences de ce prédicat ou de cette variable dans tous les fichiers inclus.
 
 \subsection{Renommer un prédicat}
+\noindent Pour renommer un prédicat, il faut d'abord récupérer le prédicat à renommer.
+Ensuite, il faut récupérer tous les fichiers inclus dans le fichier courant ainsi que tous les fichiers inclus dans ces
+fichiers inclus et ainsi de suite.
+\newdoubleline
+Il faut ensuite remplacer toutes les occurrences du prédicat par le nouveau nom.
+\newdoubleline
 
+Exemple d'un renommage de prédicat:
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/Refactor_window.png}
+    \caption{Fenêtre de renommage d'un prédicat}
+    \label{fig:refactor_window}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/Refactoring_preview.png}
+    \caption{Aperçu du refactoring}
+    \label{fig:refactor_preview}
+\end{figure}
 
 \subsection{Renommer une variable}
 \noindent Pour ce qui est du renommage d'une variable, la portée du refactoring est limitée à la phrase Prolog dans laquelle se trouve la variable.
 \newdoubleline
 Le fonctionnement est similaire à celui du renommage d'un prédicat, à la différence que l'on ne va pas chercher en dehors de la phrase Prolog dans laquelle se trouve la variable.
 
-\section{Auto-complétion}
+\subsection{Fonctionnement du renommage}
+\noindent Le fonctionnement du renommage est le suivant:
+\begin{enumerate}
+    \item On récupère le prédicat ou la variable à renommer
+    \item On récupère tous les fichiers inclus dans le fichier courant
+    \item On récupère tous les fichiers inclus dans ces fichiers inclus et ainsi de suite
+    \item On affiche un aperçu des modifications
+    \item On remplace toutes les occurrences du prédicat ou de la variable par le nouveau nom
+\end{enumerate}
+
+\noindent La classe qui gère le renommage est la suivante \textbf{PrologRenamePsiElementProcessor}.
+Voici une brève description des méthodes de cette classe héritée de \textbf{RenamePsiElementProcessor}:
+\begin{enumerate}
+    \item \textbf{canProcessElement}: Cette méthode permet de vérifier si l'élément peut être renommé. Dans notre cas, on vérifie si l'élément est un prédicat ou une variable.
+    \item \textbf{prepareRenaming}: Cette méthode permet de préparer le renommage. Dans notre cas, on récupère tous les prédicats de tous les fichiers touchés par le renommage.
+    \item \textbf{renameElement}: Cette méthode permet de renommer chaque prédicat/variable.
+\end{enumerate}
 
 
 \section{Affichage des erreurs et warnings}
+\noindent Lors de la compilation d'un fichier Prolog, il est possible que des erreurs ou des warnings apparaissent
+qui ne sont pas détectés plus tôt car ce ne sont pas des erreurs de syntaxe.
+\newdoubleline
+Par exemple, il est possible d'avoir une erreur de prédicats non définis ou une erreur de variables non définies ou simplement des avertissements par rapport à des variables "Singletons".
+
+\subsection{L'idée}
+\noindent L'idée est de récupérer les erreurs et les warnings de la compilation du fichier Prolog et de les afficher dans l'éditeur Prolog.
+\newdoubleline
+Ceci implique différentes contraintes:
+\begin{enumerate}
+    \item Il faut prendre en compte que la compilation doit avoir lieu en temps réel et en arrière plan.
+    \item La compilation doit avoir lieu sur macOS, Linux et Windows.
+    Ce qui implique de mettre en place un système multi-plateforme.
+    \item La compilation doit aussi être dans un thread séparé pour ne pas bloquer l'interface et ne pas ralentir l'éditeur.
+\end{enumerate}
+
+\subsection{La mise en pratique}
+\noindent Pour la compilation, nous utiliserons le SDK relatif au projet ouvert.
+\newdoubleline
+Pour l'aspect compilation en temps réel, JetBrains propose une classe nommée "ExternalAnnotator" qui permet de faire des annotations externes.
+\newdoubleline
+Cette classe permet de faire des annotations externes, notamment à l'aide d'un thread séparé. La classe se présente comme suit:
+\begin{enumerate}
+    \item \textbf{collectInformation}: Cette méthode permet de récupérer les informations afin de générer les annotations.
+    C'est dans cette partie que le lancement de la compilation aura lieu.
+    \item \textbf{doAnnotate}: Cette méthode permet de générer les annotations pour chaque ligne.
+\end{enumerate}
+
+\noindent Voici le code permettant de récupérer un processus de compilation Prolog:
+\begin{lstlisting}[label={lst:get_prolog_process}, caption={Méthode de créer un processus de compilation Prolog}, language=java]
+    public static Process getProcess(Path compiler, Path filePath) throws IOException, CantRunException {
+        Process p;
+        BufferedWriter writer;
+
+        if (SystemInfo.isWindows) {
+            p = Runtime.getRuntime().exec("cmd.exe /min");
+            writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+            writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
+            writer.newLine();
+            writer.write(compiler.toString()); //Launch the compiler
+            writer.newLine();
+            writer.flush(); //Flush the stream
+        } else {
+            p = Runtime.getRuntime().exec(compiler.toString());
+            writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+        }
+
+        writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+        String normalizedFilePath = filePath.toString().replace("\\", "/"); //Mandatory for windows
+        String goal = "consult('" + normalizedFilePath + "').";
+        writer.write(goal);
+        writer.newLine();
+        writer.flush();
+        writer.close();
+        return p;
+    }
+\end{lstlisting}
+
+\noindent Au final, voici le résultat en action dans l'éditeur :
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/background_compilation.png}
+    \caption{Affichage d'avertissement grâce à la compilation}
+    \label{fig:compilation_warnings}
+\end{figure}
+
+\section{Auto-complétion}
 
 
 \section{Formatage du code}

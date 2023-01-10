@@ -45,12 +45,12 @@ public class PrologExternalAnnotator extends ExternalAnnotator<List<CompilerResu
     @Override
     public void apply(@NotNull PsiFile file, List<CompilerResult> annotationResult, @NotNull AnnotationHolder holder) {
 
-            for(CompilerResult res : annotationResult) {
-                var range = lineToOffset(file, res.getLine());
-                AnnotationBuilder ab = holder.newAnnotation(res.getSeverity(), res.getMessage());
-                ab = ab.range(new TextRange(range.getFirst(), range.getSecond()));
-                ab.create();
-            }
+        for (CompilerResult res : annotationResult) {
+            var range = lineToOffset(file, res.getLine());
+            AnnotationBuilder ab = holder.newAnnotation(res.getSeverity(), res.getMessage());
+            ab = ab.range(new TextRange(range.getFirst(), range.getSecond()));
+            ab.create();
+        }
     }
 
 
@@ -63,7 +63,12 @@ public class PrologExternalAnnotator extends ExternalAnnotator<List<CompilerResu
             offset = file.getText().indexOf('\n', offset) + 1;
         }
 
-        return new Pair<>(lastOffset, offset-1);
+        if(offset < lastOffset){
+            offset = file.getTextLength();
+        }
+
+
+        return new Pair<>(lastOffset, Math.max(offset - 1, lastOffset));
     }
 
 }

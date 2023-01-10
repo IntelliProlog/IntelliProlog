@@ -46,28 +46,18 @@ public class CompilerHelper {
             writer.write(compiler.toString()); //Launch the compiler
             writer.newLine();
             writer.flush(); //Flush the stream
-            System.out.println("windows");
         } else {
             p = Runtime.getRuntime().exec(compiler.toString());
             writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
         }
 
-        System.out.println("compiler: " + compiler.toString());
-        System.out.println("filePath: " + filePath.toString());
-
         writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
         String normalizedFilePath = filePath.toString().replace("\\", "/"); //Mandatory for windows
         String goal = "consult('" + normalizedFilePath + "').";
-
-        System.out.println("goal: " + goal);
-
         writer.write(goal);
         writer.newLine();
         writer.flush();
         writer.close();
-
-        System.out.println("File has been compiled in background");
-
         return p;
     }
 
