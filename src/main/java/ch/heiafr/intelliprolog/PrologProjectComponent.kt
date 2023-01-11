@@ -27,7 +27,7 @@ class PrologProjectComponent : StartupActivity {
     }
 
     fun getPrologModules(project: Project): List<Module> {
-        val moduleManager = ModuleManager.getInstance(project)!!
+        val moduleManager = ModuleManager.getInstance(project)
         return moduleManager.modules.filter { ModuleType.get(it) == PrologModuleType.INSTANCE }
     }
 

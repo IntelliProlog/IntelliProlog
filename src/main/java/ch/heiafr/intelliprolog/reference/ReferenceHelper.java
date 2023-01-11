@@ -2,8 +2,6 @@ package ch.heiafr.intelliprolog.reference;
 
 import ch.heiafr.intelliprolog.PrologFileType;
 import ch.heiafr.intelliprolog.psi.*;
-import ch.heiafr.intelliprolog.psi.impl.PrologPsiUtil;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
@@ -12,7 +10,6 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.util.PsiTreeUtil;
-import org.apache.lucene.index.Term;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

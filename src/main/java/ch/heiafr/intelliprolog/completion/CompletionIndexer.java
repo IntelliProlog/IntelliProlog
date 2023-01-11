@@ -1,8 +1,5 @@
 package ch.heiafr.intelliprolog.completion;
 
-import ch.heiafr.intelliprolog.PrologFileType;
-import ch.heiafr.intelliprolog.PrologLexerAdapter;
-import ch.heiafr.intelliprolog.PrologParser;
 import ch.heiafr.intelliprolog.psi.*;
 import ch.heiafr.intelliprolog.reference.ReferenceHelper;
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -10,22 +7,14 @@ import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.codeInsight.completion.InsertionContext;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.impl.PsiBuilderAdapter;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.file.PsiFileImplUtil;
-import com.intellij.psi.impl.source.resolve.reference.PsiReferenceUtil;
-import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.util.ProcessingContext;
-import com.intellij.util.messages.Topic;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class CompletionIndexer {
 

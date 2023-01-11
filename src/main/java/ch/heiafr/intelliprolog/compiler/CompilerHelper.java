@@ -2,17 +2,13 @@ package ch.heiafr.intelliprolog.compiler;
 
 import ch.heiafr.intelliprolog.sdk.PrologSdkType;
 import com.intellij.execution.CantRunException;
-import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
-import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,6 +60,7 @@ public class CompilerHelper {
 
     public static String[] autoSplit(String l) {
 
+        //TODO: Que les 3 derniers !
 
         if(SystemInfo.isWindows){
             //Windows => C:\ interferes with the regex pattern ":"

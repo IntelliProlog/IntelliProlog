@@ -1,19 +1,9 @@
 package ch.heiafr.intelliprolog.completion;
 
-import ch.heiafr.intelliprolog.psi.PrologTypes;
 import com.intellij.codeInsight.completion.*;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.util.NlsContexts;
 import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-
-import static com.intellij.patterns.StandardPatterns.or;
 
 public class PrologCompletionContributor extends CompletionContributor {
 

@@ -3,7 +3,6 @@ package ch.heiafr.intelliprolog.psi;
 import ch.heiafr.intelliprolog.PrologFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.psi.util.PsiTreeUtil;
 

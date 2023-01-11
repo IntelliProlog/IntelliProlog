@@ -2,12 +2,8 @@ package ch.heiafr.intelliprolog;
 
 import com.intellij.codeInsight.generation.actions.CommentByBlockCommentAction;
 import com.intellij.codeInsight.generation.actions.CommentByLineCommentAction;
-import com.intellij.openapi.editor.CaretAction;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
-import com.intellij.usageView.UsageInfo;
 import org.junit.Test;
-
-import java.util.Collection;
 
 public class PrologCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
 

@@ -4,7 +4,6 @@ import ch.heiafr.intelliprolog.psi.PrologAtom;
 import ch.heiafr.intelliprolog.psi.PrologCompoundName;
 import ch.heiafr.intelliprolog.psi.PrologNamedElement;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.refactoring.listeners.RefactoringElementListener;
 import com.intellij.refactoring.rename.RenamePsiElementProcessor;
@@ -14,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
