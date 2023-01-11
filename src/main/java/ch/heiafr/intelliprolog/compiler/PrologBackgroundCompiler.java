@@ -57,19 +57,22 @@ public class PrologBackgroundCompiler implements Runnable {
 
     @Override
     public void run() {
+
         try {
             Path path = CompilerHelper.getInterpreterPath(module);
 
             if(path == null) {
-
-                System.out.println("cmd is null");
-
                 //Null if no sdk is configured
                 sendFeedback(new ArrayList<>());
                 return;
             }
 
             Process p = CompilerHelper.getProcess(path, filePath);
+
+            if(p == null) {
+                return;
+            }
+
 
             //Print output
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -86,6 +89,7 @@ public class PrologBackgroundCompiler implements Runnable {
                 if(line.contains("uncaught exception")){
                     //General error !
                     sendFeedback(new ArrayList<>());
+                    p.destroy();
                     return; //Exit the thread
                 }
                 if (compileEnd.matcher(line).find()) {
@@ -103,12 +107,13 @@ public class PrologBackgroundCompiler implements Runnable {
             // => Extract errors or warnings
             // ====> Export them as List<CompilerResult>
             for (var l : lines) {
+                System.out.println(l);
                 for (var key : severityMap.keySet()) {
                     if (l.contains(key + ":") && l.trim().length() > 0) {
                         String[] parts = CompilerHelper.autoSplit(l);
-                        //Structure of parts: [file, line, warning/error, message]
-                        int lineNb = Integer.parseInt(parts[1].split("-")[0]);
-                        String message = parts[2] + ":" + parts[3];
+                        //Structure of parts: [line, warning/error, message]
+                        int lineNb = Integer.parseInt(parts[0].split("-")[0]);
+                        String message = parts[1] + ":" + parts[2];
                         result.add(new CompilerResult(lineNb, message, severityMap.get(key)));
                         break;
                     }
@@ -120,6 +125,5 @@ public class PrologBackgroundCompiler implements Runnable {
         } catch (IOException | CantRunException e) {
             e.printStackTrace();
         }
-
     }
 }

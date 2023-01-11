@@ -2,6 +2,7 @@ package ch.heiafr.intelliprolog.compiler;
 
 import ch.heiafr.intelliprolog.sdk.PrologSdkType;
 import com.intellij.execution.CantRunException;
+import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -12,6 +13,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class CompilerHelper {
 
@@ -31,43 +33,59 @@ public class CompilerHelper {
     }
 
     public static Process getProcess(Path compiler, Path filePath) throws IOException, CantRunException {
-        Process p;
-        BufferedWriter writer;
-
+        Process p = null;
         if (SystemInfo.isWindows) {
             p = Runtime.getRuntime().exec("cmd.exe /min");
-            writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+            BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
             writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
             writer.newLine();
             writer.write(compiler.toString()); //Launch the compiler
             writer.newLine();
-            writer.flush(); //Flush the stream
-        } else {
-            p = Runtime.getRuntime().exec(compiler.toString());
-            writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+            writer.write("consult('" + filePath.toString().replace("\\", "/") + "')");
+            writer.newLine();
+            writer.flush();
+            writer.close();
+        } else if (SystemInfo.isMac || SystemInfo.isLinux) {
+
+            String[] env = new String[System.getenv().size()];
+            int i = 0;
+            for (String key : System.getenv().keySet()) {
+                env[i++] = key + "=" + System.getenv().get(key);
+                if("PATH".equals(key)){
+                    env[i-1] += ":" + compiler.getParent().toString();
+                }
+            }
+
+            System.out.println("env: " + Arrays.toString(env));
+
+            p = Runtime.getRuntime().exec("/bin/bash", env); //Create a terminal instance
+            BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
+            writer.write(compiler.getFileName().toString()); //Launch the compiler
+            writer.newLine();
+            writer.write("consult('" + filePath.toString().replace(" ", "\\ ") + "').");
+            writer.newLine();
+            writer.flush();
+            writer.close();
         }
 
-        writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
-        String normalizedFilePath = filePath.toString().replace("\\", "/"); //Mandatory for windows
-        String goal = "consult('" + normalizedFilePath + "').";
-        writer.write(goal);
-        writer.newLine();
-        writer.flush();
-        writer.close();
         return p;
     }
 
 
     public static String[] autoSplit(String l) {
 
-        //TODO: Que les 3 derniers !
+        String[] result = l.split(":");
 
-        if(SystemInfo.isWindows){
-            //Windows => C:\ interferes with the regex pattern ":"
-            // => Remove 3 first char of the line
-            l = l.substring(3);
+        if (result.length == 3) {
+            return result;
         }
 
-        return l.split(":", 4);
+        //Take only 3 last values
+        String[] last = new String[3];
+        last[0] = result[result.length - 3];
+        last[1] = result[result.length - 2];
+        last[2] = result[result.length - 1];
+
+        return last;
     }
 }
