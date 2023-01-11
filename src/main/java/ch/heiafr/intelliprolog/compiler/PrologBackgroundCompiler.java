@@ -49,6 +49,9 @@ public class PrologBackgroundCompiler implements Runnable {
     }
 
     public static void compile(PsiFile file, Module module) throws InterruptedException {
+        if(module == null) {
+            return;
+        }
         Path filePath = Paths.get(file.getVirtualFile().getPath());
         Thread thread = new Thread(new PrologBackgroundCompiler(filePath, module));
         thread.start();
@@ -107,7 +110,6 @@ public class PrologBackgroundCompiler implements Runnable {
             // => Extract errors or warnings
             // ====> Export them as List<CompilerResult>
             for (var l : lines) {
-                System.out.println(l);
                 for (var key : severityMap.keySet()) {
                     if (l.contains(key + ":") && l.trim().length() > 0) {
                         String[] parts = CompilerHelper.autoSplit(l);

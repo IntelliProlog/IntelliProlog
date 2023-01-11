@@ -41,7 +41,7 @@ public class CompilerHelper {
             writer.newLine();
             writer.write(compiler.toString()); //Launch the compiler
             writer.newLine();
-            writer.write("consult('" + filePath.toString().replace("\\", "/") + "')");
+            writer.write("consult('" + filePath.toString().replace("\\", "/") + "').");
             writer.newLine();
             writer.flush();
             writer.close();
@@ -55,8 +55,6 @@ public class CompilerHelper {
                     env[i-1] += ":" + compiler.getParent().toString();
                 }
             }
-
-            System.out.println("env: " + Arrays.toString(env));
 
             p = Runtime.getRuntime().exec("/bin/bash", env); //Create a terminal instance
             BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
