@@ -36,7 +36,42 @@ Comme le problème ne se pose pas sous Linux et macOS, il est possible que le pr
 Un test qu'il faudrait faire, serait de faire notre propre programme qui attend des entrées de la console et de voir si le problème se pose également. Si c'est le cas, alors le problème ne vient pas du plugin mais d'IntelliJ Idea. Si le problème ne se pose pas, alors il faudrait chercher la cause du problème dans le plugin ou dans l'intérpréteur prolog.
 \\
 \\
-\textbf{Solution du bug}: Pour le moment, la solution consiste à supprimer l'options du menu contextuel "Load 'xyz' in gProlog within IDE console" sur Windows.
+\textbf{Solution du bug}: Durant l'implémentation de la fonctionnalité permettant d'afficher les erreurs de compilation dans le code, j'ai trouvé une solution fonctionnelle.
+\newdoubleline En lançant un invite de commande invisible, il est possible de lancer des commandes via les InputStream et OutputStream de Java. Voici le code permettant de lancer le script prolog :
+\begin{lstlisting}[language=Java, caption={Code permettant de lancer le script prolog}, label={lst:run_script_prolog}]
+private Process createWindowsProcess(Path interpreterPath) throws IOException {
+    Process p;
+    BufferedWriter writer;
+    command = "cmd.exe /min";
+
+    if (isInExternalWindow) {
+        p = Runtime.getRuntime().exec("cmd.exe /min");
+        writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+        writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
+        writer.newLine();
+        writer.write("set LINEDIT=gui=yes"); //Prevent windows from opening a console
+        writer.newLine();
+        String query = " --query-goal \"consult('" + Path.of(filePath).getFileName() + "')\"";
+        writer.write("start " + interpreterPath.toString() + query); //Launch the compiler
+        writer.newLine();
+    } else {
+        p = Runtime.getRuntime().exec("cmd.exe /min");
+        writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+        writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
+        writer.newLine();
+        writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
+        writer.newLine();
+        writer.write(interpreterPath.toString()); //Launch the compiler
+        writer.newLine();
+        writer.write("consult('" + Path.of(filePath).getFileName() + "').");
+        writer.newLine();
+    }
+
+    writer.flush();
+
+    return p;
+}
+\end{lstlisting}
 
 \subsection{Bug 2 : Opérateur non reconnu lors de la PLC}
 \noindent Le plugin ne reconnaît pas un opérateur lors de la programmation logique par contrainte.
