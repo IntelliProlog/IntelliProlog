@@ -38,7 +38,7 @@ Un test qu'il faudrait faire, serait de faire notre propre programme qui attend 
 \\
 \textbf{Solution du bug}: Durant l'implémentation de la fonctionnalité permettant d'afficher les erreurs de compilation dans le code, j'ai trouvé une solution fonctionnelle.
 \newdoubleline En lançant un invite de commande invisible, il est possible de lancer des commandes via les InputStream et OutputStream de Java. Voici le code permettant de lancer le script prolog :
-\begin{lstlisting}[language=Java, caption={Code permettant de lancer le script prolog}, label={lst:run_script_prolog}]
+\begin{lstlisting}[caption={Code permettant de lancer le script prolog}, label={lst:run_script_prolog}]
 private Process createWindowsProcess(Path interpreterPath) throws IOException {
     Process p;
     BufferedWriter writer;

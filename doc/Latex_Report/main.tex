@@ -5,9 +5,6 @@
 \usepackage[acronym, toc]{glossaries}
 \usepackage{hyperref}
 
-\makeglossaries
-    \loadglsentries{glossary}
-    \loadglsentries{acronym}
 %\usepackage[breakable]{tcolorbox}
 %    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
     \usepackage{iftex}
@@ -389,6 +386,7 @@
     \input{chapters/corrections_bugs_pipeline}
     \input{chapters/unittests}
     \input{chapters/features}
+    \input{chapters/deployment}
     \input{chapters/conclusion}
    
     
@@ -403,10 +401,6 @@
     \newpage
     \listoffigures%
     
-    \renewcommand{\numberline}{\tablename~\oldnumberline}%
-    \newpage
-    \listoftables%
-    
     \renewcommand{\numberline}{\listingsname~\oldnumberline}%
     \newpage
     \addcontentsline{toc}{chapter}{Liste des codes}
@@ -417,10 +411,5 @@
     % add bibliography
     \bibliographystyle{alphabetic}
     \bibliography{bibliography}
-
-    
-    \printglossary[type=\acronymtype]
-    \printglossary
-    
     
 \end{document}
