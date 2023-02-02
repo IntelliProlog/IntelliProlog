@@ -1,6 +1,5 @@
 package ch.heiafr.intelliprolog;
 
-import ch.heiafr.intelliprolog.psi.PrologFile;
 import com.intellij.codeInsight.generation.actions.CommentByBlockCommentAction;
 import com.intellij.codeInsight.generation.actions.CommentByLineCommentAction;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
@@ -44,6 +43,38 @@ public class PrologCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
         myFixture.checkResult("/**/ prolog_atom_name :- a.");
         action.actionPerformedImpl(getProject(), myFixture.getEditor());
         myFixture.checkResult(" prolog_atom_name :- a.");
+    }
+
+    @Test
+    public void testFindUsagesCase1() {
+        var usageInfos = myFixture.testFindUsagesUsingAction("FindUsageTestData1.pl", "FindUsageTestData_included.pl");
+        assertEquals(3, usageInfos.size());
+    }
+
+    @Test
+    public void testFindUsagesCase2() {
+        var usageInfos = myFixture.testFindUsagesUsingAction("FindUsageTestData2.pl", "FindUsageTestData_included.pl");
+        assertEquals(3, usageInfos.size());
+    }
+
+    @Test
+    public void testFindUsagesCase3() {
+        var usageInfos = myFixture.testFindUsagesUsingAction("FindUsageTestData3.pl", "FindUsageTestData_included.pl");
+        assertEquals(3, usageInfos.size());
+    }
+
+    @Test
+    public void testFindUsagesCase4() {
+        var usageInfos = myFixture.testFindUsagesUsingAction("FindUsageTestData4.pl", "FindUsageTestData_included.pl");
+        assertEquals(3, usageInfos.size());
+    }
+
+    public void testRenameRefactor() {
+        myFixture.configureByFiles("RenameTestData1.pl", "RenameTestData2.pl", "RenameTestData3.pl");
+        myFixture.renameElementAtCaretUsingHandler("fifo_new_renamed");
+        myFixture.checkResultByFile("RenameTestData1.pl", "RenameTestData1Renamed.pl", false);
+        myFixture.checkResultByFile("RenameTestData2.pl", "RenameTestData2Renamed.pl", false);
+        myFixture.checkResultByFile("RenameTestData3.pl", "RenameTestData3Renamed.pl", false);
     }
 
 }

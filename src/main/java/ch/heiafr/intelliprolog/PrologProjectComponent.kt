@@ -7,6 +7,7 @@ import com.intellij.openapi.module.Module
 import com.intellij.openapi.module.ModuleManager
 import com.intellij.openapi.module.ModuleType
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.modules
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.startup.StartupActivity
 import com.intellij.util.ui.UIUtil
@@ -27,8 +28,7 @@ class PrologProjectComponent : StartupActivity {
     }
 
     fun getPrologModules(project: Project): List<Module> {
-        val moduleManager = ModuleManager.getInstance(project)!!
-        return moduleManager.modules.filter { ModuleType.get(it) == PrologModuleType.INSTANCE }
+        return project.modules.filter { ModuleType.get(it) == PrologModuleType.INSTANCE }
     }
 
 

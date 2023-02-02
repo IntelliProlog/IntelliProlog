@@ -1,6 +1,5 @@
 package ch.heiafr.intelliprolog;
 
-import ch.heiafr.intelliprolog.PrologParserDefinition;
 import com.intellij.testFramework.ParsingTestCase;
 import org.junit.Test;
 

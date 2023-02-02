@@ -3,7 +3,6 @@ package ch.heiafr.intelliprolog.repl;
 import com.intellij.execution.console.LanguageConsoleImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class PrologConsoleProcessHandler extends ColoredProcessHandler {

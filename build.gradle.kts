@@ -3,10 +3,12 @@ fun properties(key: String) = project.findProperty(key).toString()
 plugins {
     // Java support
     id("java")
+
     // Kotlin support
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
+
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.9.0" //Latest version
+    id("org.jetbrains.intellij") version "1.12.0" //Latest version
     id("org.jetbrains.grammarkit") version "2021.2.2"
 }
 
@@ -75,6 +77,7 @@ tasks {
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
+        //untilBuild.set(properties("pluginUntilBuild"))
     }
 
 

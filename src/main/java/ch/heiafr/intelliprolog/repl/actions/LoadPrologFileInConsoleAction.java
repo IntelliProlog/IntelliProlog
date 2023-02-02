@@ -46,8 +46,8 @@ public final class LoadPrologFileInConsoleAction extends AnAction {
         Presentation presentation = e.getPresentation();
         String filePath = PrologREPLUtils.getActionFile(e);
 
-        //Disable option on Windows because of a bug in the Prolog Console
-        if (filePath == null || SystemInfo.isWindows) {
+        //Disable option on Windows because of a bug in the Prolog Console || SystemInfo.isWindows
+        if (filePath == null) {
             presentation.setVisible(false);
         } else {
             File file = new File(filePath);

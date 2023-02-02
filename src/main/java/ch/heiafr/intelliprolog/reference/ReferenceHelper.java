@@ -1,9 +1,23 @@
 package ch.heiafr.intelliprolog.reference;
 
+import ch.heiafr.intelliprolog.PrologFileType;
 import ch.heiafr.intelliprolog.psi.*;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.util.PsiTreeUtil;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ReferenceHelper {
 
@@ -88,8 +102,6 @@ public class ReferenceHelper {
      */
     public static int getArity(PsiElement compound) {
 
-        //TODO: ERROR when predicate is predicate(A, B, C - D) => arity = 4 instead of 3
-
         if (!(compound instanceof PrologCompound)) {
             return 0;
         }
@@ -100,18 +112,12 @@ public class ReferenceHelper {
 
         int count = 0;
 
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Arity of " + compound.getText());
-
         while (term != null) {
             count++;
             term = skipComposed(term);
-            System.out.println("End of skipComposed: " + term.getText());
             term = applyIfPossible(term, singleParameterPattern);
         }
 
-        System.out.printf("Arity of %s is %d%n", compound.getText(), count);
-        System.out.println("------------------------------------------------------------");
         return count;
     }
 
@@ -125,7 +131,6 @@ public class ReferenceHelper {
         Class<?>[][] findOperator = new Class<?>[][]{{PrologTerm.class}, {PrologOperation.class}, {PrologNativeBinaryOperation.class},{PrologBasicTerm.class, PrologKnownBinaryOperator.class}};
         PsiElement initial = term;
 
-        System.out.println("Skip composed: " + term.getText());
 
         var op = applyIfPossible(term, findOperator);
         if(op == null){
@@ -213,5 +218,130 @@ public class ReferenceHelper {
      */
     public static int getArityFromClicked(PsiElement elt) {
         return getArity(compoundFromClickedElement(elt));
+    }
+
+    /**
+     * Test if two PSIElemnts are the same PrologSentence
+     * @param e1 The first element
+     * @param e2 The second element
+     * @return True if they are the same, false otherwise
+     */
+    public static boolean areInSameSentence(PsiElement e1, PsiElement e2) {
+        PrologSentence s1  = PsiTreeUtil.getParentOfType(e1, PrologSentence.class);
+        PrologSentence s2  = PsiTreeUtil.getParentOfType(e2, PrologSentence.class);
+
+        return Objects.equals(s1, s2);
+    }
+
+    /**
+     * Find all the files that are imported in the current file and all the files that are imported in those files recursively
+     *
+     * @param elt   The current element
+     * @param files The list of files that are imported
+     * @return The list of PsiElements that are used in the current file or in the files that are imported in the current file
+     */
+    public static Collection<PsiElement> findEveryImportedFile(PsiElement elt, Collection<String> files) {
+        if (elt == null) {
+            return new ArrayList<>();
+        }
+
+        Collection<String> paths = PsiTreeUtil.collectElementsOfType(elt.getContainingFile(), PrologSentence.class).stream()
+                .map(ReferenceHelper::findIncludeStatement)// Find the first compound name which is the predicate name
+                .filter(Objects::nonNull) //Prevent null values
+                .map(ReferenceHelper::extractQuotedString)//Extract the quoted string
+                .filter(Objects::nonNull)//Prevent null values
+                .filter(s -> !files.contains(s)) //Filter out already visited files
+                .collect(Collectors.toList()); //Collect to list
+
+        files.addAll(paths); //Add the new paths to the list of visited files to prevent infinite recursion
+
+        Collection<PsiElement> psiFiles = new ArrayList<>(); //Create a new list of psi files
+        for (String path : paths) {
+            PsiElement rootElt = pathToPsi(elt, path); //Get the psi element from the path
+            psiFiles.add(rootElt); //Add the psi element to the list
+            psiFiles.addAll(findEveryImportedFile(rootElt, files)); //Find imported files recursively
+        }
+        return psiFiles;
+    }
+
+    public static Collection<PsiElement> findEveryImportedFile(PsiElement elt) {
+        return findEveryImportedFile(elt, new ArrayList<>());
+    }
+
+    public static PsiElement findIncludeStatement(PrologSentence sentence) {
+        return PsiTreeUtil.collectElementsOfType(sentence, PrologCompound.class).stream()
+                .filter(Objects::nonNull)
+                .filter(c -> Objects.equals(c.getCompoundName().getName(), "include"))
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    /**
+     * Extract PsiElement from a relative path
+     *
+     * @param elt  The element to use as a reference for the path
+     * @param path The relative path
+     * @return The PsiElement of the file at the given path or null if the file does not exist
+     */
+    public static PsiElement pathToPsi(PsiElement elt, String path) {
+
+        Path basePath = Paths.get(elt.getContainingFile().getVirtualFile().getPath()).getParent(); //Get the base path
+        Path filePath = basePath.resolve(path); //Resolve the path
+        VirtualFile file = VirtualFileManager.getInstance().findFileByNioPath(filePath); //Get the virtual file
+        if (file == null) {
+            return null;
+        }
+        return PsiManager.getInstance(elt.getProject()).findFile(file);
+    }
+
+    /**
+     * Return a list of all PsiElement that are related to the given element
+     * @param element The element to search in
+     * @return A list of all PsiElement that are related to the given element
+     */
+    public static Collection<PsiElement> findAllRelatedFiles(PsiElement element) {
+        List<String> visited = new ArrayList<>();
+        Collection<PsiElement> included = findEveryImportedFile(element, visited);
+        Collection<PsiElement> thatInclude = findEveryFileThatInclude(element.getContainingFile(), visited);
+        //Add the current file to the list
+        included.add(element.getContainingFile());
+        included.addAll(thatInclude);
+
+        return included;
+    }
+
+    /**
+     * Find all the files that include the given file
+     * @param file The file to search in
+     * @param visited The list of files that have already been visited
+     * @return A list of all the files that include the given file
+     */
+    private static Collection<PsiElement> findEveryFileThatInclude(PsiFile file, List<String> visited) {
+        var filenames = FilenameIndex.getAllFilesByExt(file.getProject(), PrologFileType.INSTANCE.getDefaultExtension());
+
+        Collection<PsiElement> result = new ArrayList<>();
+
+        Collection<PsiElement> allFiles =  filenames.stream()
+                .filter(f -> !visited.contains(f.getName()))
+                .map(f -> PsiManager.getInstance(file.getProject()).findFile(f))
+                .filter(Objects::nonNull)
+                .filter(f -> PsiTreeUtil.collectElementsOfType(f, PrologSentence.class).stream()
+                        .map(ReferenceHelper::findIncludeStatement)
+                        .filter(Objects::nonNull)
+                        .map(ReferenceHelper::extractQuotedString)
+                        .filter(Objects::nonNull)
+                        .anyMatch(s -> s.equals(file.getName())))
+                .collect(Collectors.toList());
+
+        visited.add(file.getName());
+        result.addAll(allFiles);
+
+        for(var f : allFiles){
+            var files = findEveryFileThatInclude(f.getContainingFile(), visited);
+            result.addAll(files);
+        }
+
+        return result;
     }
 }

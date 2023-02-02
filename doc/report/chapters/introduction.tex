@@ -1,0 +1,56 @@
+% ==========================================================================================================
+%                                               INTRODUCTION
+% ==========================================================================================================
+
+\chapter{Introduction}
+\noindent
+Ce document est le rapport du projet de semestre 5 : \textit{Plugin IntelliJ pour GNU-Prolog}.
+Il a pour but de permettre la compréhension des différentes étapes de la réalisation du projet et du fonctionnement du plugin.
+
+\section{Contexte}
+\noindent
+Dans le cadre d’un projet de semestre (printemps 2018), un plugin IntelliJ-IDEA a été réalisé, permettant ainsi d’aider les étudiants lors du développement de programmes Gnu-Prolog. Actuellement, le plugin est employé en 3ème année pour le cours de programmation logique. Bien que fonctionnel, il n’est pas parfait et n’offre pas certaines fonctions qui seraient très utiles. En outre, un bug empêche les utilisateurs du plugin travaillant sur Windows de lancer l’exécution du programme directement dans le terminal de l’IDE.
+
+\section{Motivations}
+\noindent
+Mes motivations à prendre ce projet sont multiples :
+\begin{itemize}
+    \item \textbf{Apprentissage :} J'ai très envie de découvrir le fonctionnement d'un plugin IntelliJ, et de voir comment il est possible de créer un plugin pour un IDE.
+    \item \textbf{Utilité :} Le plugin sera utilisé par les étudiants de 3ème année de la filière ISC, spécialisés dans l'informatique logicielle.
+    \item \textbf{Projet :} Le projet étant déjà existant, je devrai m'adapter à son fonctionnement et le faire évoluer.
+\end{itemize}
+
+\section{Objectifs}
+\subsection{Mise à jour du plugin}
+\noindent
+Le premier objectif est de mettre à jour le plugin afin qu'il soit compatible avec les dernières versions d'IntelliJ. En effet, le plugin ayant été développé en 2018, il est nécessaire de mettre à jour le plugin afin d'éviter une perte de compatibilité avec les futures versions d'IntelliJ.
+\\ Ceci comprendra :
+\begin{itemize}
+    \item \textbf{Passage du projet sur Gradle}: Le plugin a été développé sans aucune gestion de dépendances, et utilise un système de librairies externes. Il est donc nécessaire de passer le projet sur Gradle afin de gérer les dépendances.
+    \item \textbf{Mise à jour des dépendances}: Changement de la version du SDK d'IntelliJ, mise à jour des dépendances du plugin.
+    \item \textbf{Mise à jour du code}: Mise à jour des classes et méthodes dépréciées.
+    \item \textbf{Corrections des bugs}: Correction des bugs qui empêchent le plugin de fonctionner correctement.
+    \item \textbf{Implémentation des tests unitaires}: Implémentation des tests unitaires pour le plugin.
+    \item \textbf{Mise en place d'une pipeline}: Mise en place d'une pipeline pour effectuer les tests unitaires et la compilation du plugin.
+\end{itemize}
+\subsection{Ajout de fonctionnalités}
+\noindent
+Le second objectif est d'ajouter des fonctionnalités au plugin. En effet, le plugin actuel ne permet pas de faire certaines actions qui seraient très utiles pour les étudiants.
+\\ Ces fonctionnalités sont :
+\begin{itemize}
+    \item \textbf{Navigation}: Ajout de la navigation vers les définitions des prédicats et vers leur usage dans le projet.
+    \item \textbf{Refactoring}: Ajout de la possibilité de renommer les prédicats et les variables.
+    \item \textbf{Autocomplétion}: Ajout de l'autocomplétion des prédicats et des variables.
+    \item \textbf{Affichage des erreurs et des warnings}: Ajout de l'affichage des erreurs et des warnings dans le code.
+    \item \textbf{Déploiement du plugin}: Déploiement du plugin sur le marketplace d'IntelliJ et sur le site de GNU-Prolog.
+\end{itemize}
+
+\section{Structure du rapport}
+\noindent
+Ce rapport est divisé en 4 grandes parties :
+\begin{itemize}
+    \item \textbf{Introduction}: Présentation du projet et de ses objectifs.
+    \item \textbf{Mise à jour du plugin}: Présentation de la mise à jour du plugin, de la correction des bugs et de l'ajout des tests unitaires.
+    \item \textbf{Ajout des fonctionnalités}: Présentation de l'ajout des fonctionnalités au plugin.
+    \item \textbf{Conclusion}: Conclusion du projet.
+\end{itemize}

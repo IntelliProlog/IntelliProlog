@@ -3,10 +3,7 @@ package ch.heiafr.intelliprolog.reference;
 import ch.heiafr.intelliprolog.PrologFileType;
 import ch.heiafr.intelliprolog.psi.PrologAtom;
 import ch.heiafr.intelliprolog.psi.PrologCompound;
-import ch.heiafr.intelliprolog.psi.PrologCompoundName;
 import ch.heiafr.intelliprolog.psi.PrologSentence;
-import ch.heiafr.intelliprolog.psi.impl.PrologPsiUtil;
-import com.google.common.collect.Lists;
 import com.intellij.find.findUsages.CustomUsageSearcher;
 import com.intellij.find.findUsages.FindUsagesOptions;
 import com.intellij.openapi.application.Application;
@@ -15,28 +12,22 @@ import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.SearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.usageView.UsageInfo;
 import com.intellij.usages.Usage;
 import com.intellij.usages.UsageInfo2UsageAdapter;
-import com.intellij.usages.UsageInfoToUsageConverter;
 import com.intellij.util.Processor;
-import io.grpc.util.GracefulSwitchLoadBalancer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public class PrologCustomUsageSearcher extends CustomUsageSearcher {
+
     @Override
     public void processElementUsages(@NotNull PsiElement element, @NotNull Processor<? super Usage> processor, @NotNull FindUsagesOptions options) {
 
@@ -118,8 +109,6 @@ public class PrologCustomUsageSearcher extends CustomUsageSearcher {
                             .map(atom -> new UsageInfo2UsageAdapter(new UsageInfo(atom)))
                             .forEach(processor::process); //Process the Usage
                 }
-
-
             }
         }
 
