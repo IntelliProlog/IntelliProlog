@@ -12,9 +12,7 @@ Ensuite, il faut récupérer tous les fichiers inclus dans le fichier courant ai
 fichiers inclus et ainsi de suite.
 \newdoubleline
 Il faut ensuite remplacer toutes les occurrences du prédicat par le nouveau nom.
-\newdoubleline
-
-Exemple d'un renommage de prédicat:
+\newdoubleline Exemple d'un renommage de prédicat:
 
 \begin{figure}[H]
     \centering
@@ -38,14 +36,14 @@ Le fonctionnement est similaire à celui du renommage d'un prédicat, à la diff
 \subsection{Fonctionnement du renommage}
 \noindent Le fonctionnement du renommage est le suivant:
 \begin{enumerate}
-    \item On récupère le prédicat ou la variable à renommer
-    \item On récupère tous les fichiers inclus dans le fichier courant
-    \item On récupère tous les fichiers inclus dans ces fichiers inclus et ainsi de suite
-    \item On affiche un aperçu des modifications
-    \item On remplace toutes les occurrences du prédicat ou de la variable par le nouveau nom
+    \item On récupère le prédicat ou la variable à renommer.
+    \item On récupère tous les fichiers inclus dans le fichier courant.
+    \item On récupère tous les fichiers inclus dans ces fichiers inclus et ainsi de suite.
+    \item On affiche un aperçu des modifications.
+    \item On remplace toutes les occurrences du prédicat ou de la variable par le nouveau nom.
 \end{enumerate}
 
-\noindent La classe qui gère le renommage est la suivante \textbf{PrologRenamePsiElementProcessor}.
+\noindent La classe qui gère le renommage est \textbf{PrologRenamePsiElementProcessor}.
 Voici une brève description des méthodes de cette classe héritée de \textbf{RenamePsiElementProcessor}:
 \begin{enumerate}
     \item \textbf{canProcessElement}: Cette méthode permet de vérifier si l'élément peut être renommé. Dans notre cas, on vérifie si l'élément est un prédicat ou une variable.

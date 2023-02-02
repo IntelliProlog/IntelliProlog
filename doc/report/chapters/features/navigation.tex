@@ -5,13 +5,13 @@ Dans le cas d'un projet Prolog, il est important de pouvoir naviguer entre les d
 \newdoubleline
 Dans le cas d'un language comme Prolog, il est possible de définir plusieurs prédicats avec le même nom mais avec une arité (nombre d'arguments) différente :
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Exemple de prédicats nommés pareillement}, label={lst:example_prolog_names}]
     predicat(A).
     predicat(A, B).
     predicat(A, B, C).
 \end{lstlisting}
 
-La navigation devra donc être consciente de l'arité du prédicat afin de pouvoir naviguer entre les différentes définitions du prédicat mais aussi lors de la recherche de l'utilisation de celui-ci dans le code.
+\noindent La navigation devra donc être consciente de l'arité du prédicat afin de pouvoir naviguer entre les différentes définitions du prédicat mais aussi lors de la recherche de l'utilisation de celui-ci dans le code.
 \\ Ceci sera également valable plus tard, lors du refactoring.
 
 \subsection{Goto Declaration}
@@ -23,8 +23,7 @@ Si le prédicat est défini à plusieurs endroits, un menu sous forme de popup s
 \newdoubleline
 \noindent \textbf{Réalisation dans le code}
 \\
-\noindent La réalisation n'a pas été de tout repos.
-En effet, le peu de documentation et d'exemples sur le sujet a rendu la tâche difficile mais finalement réalisable.
+\noindent La réalisation n'a pas été de tout repos: en effet, le peu de documentation et d'exemples sur le sujet a rendu la tâche difficile.
 \\
 \\
 
@@ -36,7 +35,7 @@ En effet, le peu de documentation et d'exemples sur le sujet a rendu la tâche d
     \item Méthode de recherche des définitions
     \item Méthode qui permet de \("\)matcher\("\) un prédicat avec une définition
 \end{enumerate}
-
+\\
 \noindent \textbf{Méthode permettant d'extraire le prédicat défini dans la "PrologSentence"}
 
 \begin{lstlisting}[label={lst:method_find_predicate_in_sentence}, caption={Méthode permettant d'extraire le prédicat défini dans la "PrologSentence"}]
@@ -77,12 +76,13 @@ public static PsiElement findDefinition(PrologSentence sentence) {
     \begin{enumerate}
         \item test :- test2. => c'est un simple atom qui est défini
         \item test(A) :- test2. => c'est un compound qui est défini
-        \item test(X). => c'est un compound qui est défini mais enoncé en tant que fait
-        \item test. => c'est un atom qui est défini mais enoncé en tant que fait
+        \item test(X). => c'est un compound qui est défini mais énoncé en tant que fait
+        \item test. => c'est un atom qui est défini mais énoncé en tant que fait
     \end{enumerate}
-    \item Si le cas est trouvé, on récupère le prédicat correspondant
-    \item Sinon, on retourne null
+    \item Si le cas est trouvé, on récupère le prédicat correspondant.
+    \item Sinon, on retourne null.
 \end{enumerate}
+\\
 \textbf{Méthode permettant de trouver tous les fichiers inclus récursivement}
 \begin{lstlisting}[label={lst:method_find_all_included_files}, caption={Méthode permettant de trouver tous les fichiers inclus récursivement}]
 public static Collection<PsiElement> findEveryImportedFile(PsiElement elt, Collection<String> files) {
@@ -112,12 +112,12 @@ public static Collection<PsiElement> findEveryImportedFile(PsiElement elt, Colle
 
 \noindent Le fonctionnement de cette méthode est le suivant:
 \begin{enumerate}
-    \item On recherche toutes les "PrologSentence" du fichier
-    \item Pour chaque "PrologSentence", on va chercher le prédicat "include"
-    \item Si le prédicat est trouvé, on va chercher le chemin du fichier inclus
-    \item Si le chemin n'a pas déjà été visité, on va chercher le fichier correspondant
-    \item Si le fichier est trouvé, on va chercher tous les fichiers inclus dans ce fichier de manière récursive
-    \item On retourne la liste des fichiers trouvés
+    \item On recherche toutes les "PrologSentence" du fichier.
+    \item Pour chaque "PrologSentence", on va chercher le prédicat "include".
+    \item Si le prédicat est trouvé, on va chercher le chemin du fichier inclus.
+    \item Si le chemin n'a pas déjà été visité, on va chercher le fichier correspondant.
+    \item Si le fichier est trouvé, on va chercher tous les fichiers inclus dans ce fichier de manière récursive.
+    \item On retourne la liste des fichiers trouvés.
 \end{enumerate}
 
 
@@ -135,12 +135,12 @@ En revanche, la recherche doit être exécutée dans un thread séparé pour év
 \newdoubleline
 Le fonctionnement est le suivant:
 \begin{enumerate}
-    \item On récupère le prédicat à rechercher
-    \item On lance la recherche dans un thread séparé afin de ne pas bloquer l'IDE
-    \item On récupère tous les fichiers .pl
-    \item On filtre en fonction de la portée désirée (choisi par l'utilisateur)
-    \item On filtre et on retourne les résultats sous forme de UsageInfo
-    \item Le Thread s'arrête et les résultats sont affichés
+    \item On récupère le prédicat à rechercher.
+    \item On lance la recherche dans un thread séparé afin de ne pas bloquer l'IDE.
+    \item On récupère tous les fichiers .pl.
+    \item On filtre en fonction de la portée désirée (choisi par l'utilisateur).
+    \item On filtre et on retourne les résultats sous forme de UsageInfo.
+    \item Le Thread s'arrête et les résultats sont affichés.
 \end{enumerate}
 
 \noindent \textbf{Lancement d'un thread séparé}

@@ -1,52 +1,96 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <idea-plugin>
     <id>ch.heiafr.intelliprolog</id>
-    <name>IntelliProlog</name>
-    <version>1.0.0-SNAPSHOT</version>
+    <name>PrologCode</name>
+    <version>2.0.1</version>
     <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
-    <description><![CDATA[IntelliJ plugin to add support for GNUProlog, possibly other Prolog implementations in the future]]></description>
-    <change-notes />
+    <description><![CDATA[
+       <p>PrologCode is a plugin for IntelliJ IDEA that provides support for the Prolog language. Specifically, it provides:</p>
+         <ul>
+              <li>Prolog syntax highlighting</li>
+              <li>Prolog code completion</li>
+              <li>Prolog code folding</li>
+              <li>Prolog code navigation</li>
+              <li>Three different ways to run a GNU Prolog REPL</li>
+              <li>Real-time background syntax checking</li>
+          </ul>
+
+       <p>Initially, this plugin was developed as part of a project for the course "Programmation logique" at <a href="https://heia-fr.ch/">HEIA-FR</a>.</p>
+
+       <h3>Usage</h3>
+       <br>
+         <p>Installation:</p>
+         <ul>
+            <li>For the plugin to work, you need to have GNU Prolog installed on your system. You can download it from <a href="https://www.gprolog.org/#download">here</a>.</li>
+            <li>Once you have installed GNU Prolog, you can create a new Prolog project by going to <b>File > New > Project</b> and selecting <b>Prolog</b> from the list of project types.</li>
+            <li>Once you have created a Prolog project, you can set the path to the GNU Prolog executable by going in project settings (<b>File > Project Structure</b>) and selecting the <b>Project SDK</b> tab. You can then click on the <b>New</b> button and select <b>Prolog</b> from the list of available SDKs. You can then select the path to the GNU Prolog executable.</li>
+         </ul>
+         <br>
+         <p>Running a Prolog file:</p>
+         <ul>
+            <li>When you are editing a Prolog file, you can run it by right-clicking on the file and selecting <b>Run <filename> in gprolog within IDE console</b>.</li>
+            <li>You can also run a Prolog file by right-clicking on the file and selecting <b>Run <filename> in gprolog within an external console</b></li>
+         </ul>
+       <br/>
+       <br/>
+       <p>
+       The plugin will automatically detect the Prolog files (.pl) and will associate them with the plugin.
+       </p>
+    ]]></description>
+    <change-notes/>
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="220.*" />
+    <idea-version since-build="222.*"/>
     }}}}
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <postStartupActivity implementation="ch.heiafr.intelliprolog.PrologProjectComponent" />
-        <gotoDeclarationHandler implementation="ch.heiafr.intelliprolog.reference.PrologGotoDeclarationHandler" />
-        <lang.findUsagesProvider language="Prolog" implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider" />
-        <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher" />
-        <renamePsiElementProcessor implementation="ch.heiafr.intelliprolog.reference.PrologRenamePsiElementProcessor" />
-        <moduleType id="Prolog_Module" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType" />
-        <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE" language="Prolog" extensions="pl" />
-        <sdkType id="Prolog" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType" />
-        <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition" />
-        <lang.syntaxHighlighterFactory language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologSyntaxHighlighterFactory" />
-        <annotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologAnnotator" />
-        <colorSettingsPage implementation="ch.heiafr.intelliprolog.PrologColorSettingsPage" />
-        <lang.braceMatcher language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologPairedBraceMatcher" />
-        <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter" />
-        <lang.foldingBuilder language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder" />
-        <externalAnnotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologExternalAnnotator"/>
-      <completion.contributor language="Prolog" implementationClass="ch.heiafr.intelliprolog.completion.PrologCompletionContributor" />
+        <postStartupActivity implementation="ch.heiafr.intelliprolog.PrologProjectComponent"/>
+        <gotoDeclarationHandler implementation="ch.heiafr.intelliprolog.reference.PrologGotoDeclarationHandler"/>
+        <lang.findUsagesProvider language="Prolog"
+                                 implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider"/>
+        <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher"/>
+        <renamePsiElementProcessor implementation="ch.heiafr.intelliprolog.reference.PrologRenamePsiElementProcessor"/>
+        <moduleType id="Prolog_Module" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
+        <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"
+                  language="Prolog" extensions="pl"/>
+        <sdkType id="Prolog" implementation="ch.heiafr.intelliprolog.sdk.PrologSdkType"/>
+        <lang.parserDefinition language="Prolog" implementationClass="ch.heiafr.intelliprolog.PrologParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Prolog"
+                                       implementationClass="ch.heiafr.intelliprolog.editor.PrologSyntaxHighlighterFactory"/>
+        <annotator language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologAnnotator"/>
+        <colorSettingsPage implementation="ch.heiafr.intelliprolog.PrologColorSettingsPage"/>
+        <lang.braceMatcher language="Prolog"
+                           implementationClass="ch.heiafr.intelliprolog.editor.PrologPairedBraceMatcher"/>
+        <lang.commenter language="Prolog" implementationClass="ch.heiafr.intelliprolog.editor.PrologCommenter"/>
+        <lang.foldingBuilder language="Prolog"
+                             implementationClass="ch.heiafr.intelliprolog.editor.PrologFoldingBuilder"/>
+        <externalAnnotator language="Prolog"
+                           implementationClass="ch.heiafr.intelliprolog.editor.PrologExternalAnnotator"/>
+        <completion.contributor language="Prolog"
+                                implementationClass="ch.heiafr.intelliprolog.completion.PrologCompletionContributor"/>
     </extensions>
     <actions>
         <!-- Add your actions here -->
-        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction" class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction" text="Load/Reload Current File in REPL...">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift L" />
-            <add-to-group group-id="EditorPopupMenu" anchor="last" />
-            <add-to-group group-id="RunMenu" anchor="first" />
+        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+                class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInConsoleAction"
+                text="Load/Reload Current File in REPL...">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift L"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
         LoadPrologFileInExternalTerminal
-        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal" class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal" text="Load current file in an external terminal...">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift T" />
-            <add-to-group group-id="EditorPopupMenu" anchor="last" />
-            <add-to-group group-id="RunMenu" anchor="first" />
+        <action id="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+                class="ch.heiafr.intelliprolog.repl.actions.LoadPrologFileInExternalTerminal"
+                text="Load current file in an external terminal...">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift T"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
-        <action id="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction" class="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction" text="Run gProlog REPL...">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift R" />
-            <add-to-group group-id="EditorPopupMenu" anchor="last" />
-            <add-to-group group-id="RunMenu" anchor="first" />
+        <action id="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction"
+                class="ch.heiafr.intelliprolog.repl.actions.RunPrologConsoleAction" text="Run gProlog REPL...">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift R"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <add-to-group group-id="RunMenu" anchor="first"/>
         </action>
     </actions>
 </idea-plugin>

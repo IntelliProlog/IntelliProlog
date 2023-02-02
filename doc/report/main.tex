@@ -4,6 +4,9 @@
 \usepackage{pdfpages}
 \usepackage[acronym, toc]{glossaries}
 \usepackage{hyperref}
+\makenoidxglossaries
+    \loadglsentries{glossary}
+
 
 %\usepackage[breakable]{tcolorbox}
 %    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
@@ -362,8 +365,7 @@
 
     
     \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
-    
-    
+
 \begin{document}
     % Renommer les listings
     \renewcommand\lstlistingname{Code}
@@ -388,9 +390,9 @@
     \input{chapters/features}
     \input{chapters/deployment}
     \input{chapters/conclusion}
+    
+    \printnoidxglossary[title=Glossaire,nonumberlist]
    
-    
-    
     
     
     % table of figures
@@ -406,7 +408,8 @@
     \addcontentsline{toc}{chapter}{Liste des codes}
     \lstlistoflistings
     }
-    
+
+
     
     % add bibliography
     \bibliographystyle{alphabetic}

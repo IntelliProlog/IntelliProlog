@@ -20,7 +20,7 @@ Enfin, un pipeline a été mis en place sur GitLab afin de tester le plugin à c
 Le plugin ne permet pas de lancer le script prolog dans la console d'IntelliJ Idea sous Windows.
 \\
 \\
-\textbf{Description du bug}: Une fois le script prolog compilé et lancé, l'interpréteur prolog boucle sur l'entrée de la console d'IntelliJ Idea ce qui empêche l'utilisateur de saisir des commandes.
+\textbf{Description du bug}: Une fois le script prolog compilé et lancé, l'interpréteur prolog boucle sur l'entrée de la console d'IntelliJ Idea, ce qui empêche l'utilisateur de saisir des commandes.
 \\
 \begin{figure}
     \centering
@@ -31,13 +31,13 @@ Le plugin ne permet pas de lancer le script prolog dans la console d'IntelliJ Id
 
 \noindent \textbf{Cause du bug}: La cause n'a pas été clairement identifiée. Cependant, il semble que le problème vienne du fait que le programme prolog s'attend à recevoir des entrées de la console d'IntelliJ Idea et que celle-ci lui envoie des retours à la ligne sans que l'utilisateur ne les ait saisis. Malgré plusieurs tests, je n'ai pas réussi à trouver la cause exacte du problème.
 \\
-Comme le problème ne se pose pas sous Linux et macOS, il est possible que le problème vienne de la façon dont IntelliJ Idea gère les retours à la ligne sous Windows.
+Comme le problème ne se pose pas sous Linux et macOS, il est possible que celui-ci vienne de la façon dont IntelliJ Idea gère les retours à la ligne sous Windows.
 \\
-Un test qu'il faudrait faire, serait de faire notre propre programme qui attend des entrées de la console et de voir si le problème se pose également. Si c'est le cas, alors le problème ne vient pas du plugin mais d'IntelliJ Idea. Si le problème ne se pose pas, alors il faudrait chercher la cause du problème dans le plugin ou dans l'intérpréteur prolog.
+Un test à envisager serait de faire notre propre programme qui attend des entrées de la console et de voir si le problème se pose également. Si c'est le cas, alors le problème ne vient pas du plugin mais d'IntelliJ Idea. Si le problème ne se pose pas, alors il faudrait en chercher la cause dans le plugin ou dans l'interpréteur prolog.
 \\
 \\
 \textbf{Solution du bug}: Durant l'implémentation de la fonctionnalité permettant d'afficher les erreurs de compilation dans le code, j'ai trouvé une solution fonctionnelle.
-\newdoubleline En lançant un invite de commande invisible, il est possible de lancer des commandes via les InputStream et OutputStream de Java. Voici le code permettant de lancer le script prolog :
+\newdoubleline En lançant une invite de commande invisible, il est possible de lancer des commandes via les InputStream et OutputStream de Java. Voici le code permettant de lancer le script prolog :
 \begin{lstlisting}[caption={Code permettant de lancer le script prolog}, label={lst:run_script_prolog}]
 private Process createWindowsProcess(Path interpreterPath) throws IOException {
     Process p;
@@ -86,17 +86,16 @@ private Process createWindowsProcess(Path interpreterPath) throws IOException {
     \label{fig:bug_2_plc_op}
 \end{figure}
 
-\noindent \textbf{Cause du bug}: Dans le fichier de grammaire BNF, l'opérateur "\#=<" n'est pas présent mais à la place il y a l'opérateur "\#<=" qui, lui, n'existe pas en Prolog.
-Il s'agit certainement d'une faute de frappe lors de la rédaction de celle-ci.
+\noindent \textbf{Cause du bug}: Dans le fichier de grammaire BNF, l'opérateur "\#=<" n'est pas présent mais, à la place, il y a l'opérateur "\#<=" qui, lui, n'existe pas en Prolog.
+Il s'agit certainement d'une faute de frappe lors de la rédaction de celui-ci.
 \\
 \textbf{Solution du bug}: L'opérateur a été ajouté dans la grammaire.
 
 \section{Mise à jour du SDK}
 \noindent
 Le SDK utilisé pour le développement du plugin est la version 173.0 (2017.3.xxx) de IntelliJ Idea.
-Actuellement, la version la plus récente est la 222.4345.14 (2022.2.3) et de nombreuse méthodes utilisées dans le plugin sont dépréciées.
-
-Le but est de mettre à jour le SDK vers une version plus récente afin de pouvoir utiliser les méthodes les plus récentes.
+Actuellement, la version la plus récente est la 222.4345.14 (2022.2.3) et de nombreuses méthodes utilisées dans le plugin sont dépréciées.
+\newdoubleline Le but est de mettre à jour le SDK vers une version plus récente afin de pouvoir utiliser les méthodes les plus récentes.
 
 \subsection{Passage du projet en Gradle}
 \noindent
@@ -105,14 +104,14 @@ Pour lancer le plugin, il fallait donc installer un IDE (par exemple IntelliJ Id
 \\ \noindent Afin de se conformer à la documentation de JetBrains ainsi que de faciliter grandement le développement du plugin, le projet a été migré vers Gradle.
 \\\noindent Pour cela, il a fallu ajouter un fichier build.gradle.kts à la racine du projet et configurer les dépendances.
 \\ \noindent Afin de pouvoir générer le parser et le lexer, il a fallu ajouter des goals Gradle pour lancer les commandes suivantes :
-\begin{lstlisting}
+\begin{lstlisting}[caption={Génération du parser et du lexer}, label={lst:gen_parser_lexer}]
 gradle generateParser
 gradle generateLexer
 \end{lstlisting}
 
 
 \noindent Ces commandes sont définies dans le fichier build.gradle.kts et permettent de générer le parser et le lexer à partir des fichiers .flex et .bnf.
-\begin{lstlisting}
+\begin{lstlisting}[caption={Gradle pour la génération du parser et du lexer}, label={lst:gradle_lexer_parser}]
 generateLexer {
     source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
     targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
@@ -139,9 +138,9 @@ generateParser {
     purgeOldFiles.set(false)
 }
 \end{lstlisting}
-\noindent Il a aussi fallu configurer le grammarKit afin de spécifier la version de JFlex.
+\noindent Il a aussi fallu configurer le GrammarKit afin de spécifier la version de JFlex.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Utilisation de JFlex}, label={lst:jflex}]
 grammarKit {
     jflexRelease.set("1.7.0-2")
 }
@@ -166,7 +165,7 @@ Le fichier settings.properties est lu par le fichier build.gradle.kts afin de co
 \subsection{Le problème du GrammarKit}
 \noindent
 Le plugin utilise le GrammarKit afin de générer le parser et le lexer à partir des fichiers .flex et .bnf.
-\\ \noindent Le problème est que pour pouvoir générer le parser et le lexer, il faut que le plugin soit compilé et pour que le plugin soit compilé, il faut que le parser et le lexer soient générés\ldots
+\\ \noindent Le problème est que pour pouvoir générer le parser et le lexer, il faut que le plugin soit compilé et pour cela, il faut que le parser et le lexer soient générés\ldots
 \newdoubleline
 Pour résoudre ce problème, j'ai cherché une solution sur de nombreux forums et malgré plusieurs tentatives, je n'ai pas réussi à trouver de solution fonctionnelle aussi bien en local que sur la CI.
 \\ \noindent J'ai donc décidé d'écrire mes propres "goals" Gradle afin de générer le parser et le lexer en 3 étapes :
@@ -177,7 +176,7 @@ Pour résoudre ce problème, j'ai cherché une solution sur de nombreux forums e
 \end{enumerate}
 
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Code Gradle pour l'initilisation du projet}, label={lst:project_init_gradle}]
 register("compileAndRegenerate") {
     dependsOn("compileJava")
     finalizedBy("generateParser")
@@ -195,13 +194,13 @@ register("initProject") {
 \end{lstlisting}
 
 \noindent \textbf{Attention :} lorsque le projet est cloné, il faut lancer la commande suivante afin de générer le parser et le lexer :
-\begin{lstlisting}
+\begin{lstlisting}[caption={Initialisation du projet}, label={lst:project_init}]
     gradle initProject
 \end{lstlisting}
 
 \noindent J'ai du implémenter certaines méthodes dans un fichier "PrologNamedElementHelperImpl.java" afin de pouvoir générer le parser et le lexer sans erreur de compilation.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption={Code permettant de supprimer les erreurs de compilation}, label={lst:code_error_compilation}]
 public class PrologNamedElementHelperImpl extends ASTWrapperPsiElement implements PrologNamedElement {
 
   public PrologNamedElementHelperImpl(@NotNull ASTNode node) {

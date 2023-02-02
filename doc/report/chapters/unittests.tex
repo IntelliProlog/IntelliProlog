@@ -1,4 +1,4 @@
-\chapter{Test unitaires}
+\chapter{Tests unitaires}
 \noindent Les tests unitaires sont spécifiques à IntelliJ et permettent de tester les fonctionnalités du plugin.
 Ils sont écrits en Java et sont exécutés à chaque commit sur la CI.
 
@@ -8,27 +8,27 @@ Ils sont écrits en Java et sont exécutés à chaque commit sur la CI.
 \noindent Les tests unitaires sont écrits dans le dossier "test" à la racine du projet.
 \newdoubleline Ils sont séparés en 2 classes de tests :
 \begin{itemize}
-    \item \textbf{PrologCodeInsightTest} : Test les fonctionnalités telles que :
+    \item \textbf{PrologCodeInsightTest} qui teste les fonctionnalités telles que :
     \begin{itemize}
-        \item Les annotations
-        \item Les commentaires (Line comment, Block comment)
-        \item Le renommage par refactoring
-        \item La fonction "Find usages"
-        \item L'auto-complétion
+        \item les annotations
+        \item les commentaires (Line comment, Block comment)
+        \item le renommage par refactoring
+        \item la fonction "Find usages"
+        \item l'auto-complétion
     \end{itemize}
-    \item \textbf{PrologParsingTest} : Test si le parser et le lexer sont correctement générés et fonctionnels.
+    \item \textbf{PrologParsingTest} qui teste si le parser et le lexer sont correctement générés et fonctionnels.
 \end{itemize}
 
 \noindent La classe "PrologCodeInsightTest" étend la classe "LightJavaCodeInsightFixtureTestCase" qui permet de tester les fonctionnalités du plugin de manière plus simple.
 \newdoubleline Cette classe permet de configurer des tests automatiques avec des fichiers d'entrée et des fichiers de sortie attendus. Voici un exemple de test :
-\begin{lstlisting}
-    public void testRenameRefactor() {
-        myFixture.configureByFiles("RenameTestData1.pl", "RenameTestData2.pl", "RenameTestData3.pl");
-        myFixture.renameElementAtCaretUsingHandler("fifo_new_renamed");
-        myFixture.checkResultByFile("RenameTestData1.pl", "RenameTestData1Renamed.pl", false);
-        myFixture.checkResultByFile("RenameTestData2.pl", "RenameTestData2Renamed.pl", false);
-        myFixture.checkResultByFile("RenameTestData3.pl", "RenameTestData3Renamed.pl", false);
-    }
+\begin{lstlisting}[caption={Tests unitaires pour le refactoring}, label={lst:unittests_refactor}]
+public void testRenameRefactor() {
+    myFixture.configureByFiles("RenameTestData1.pl", "RenameTestData2.pl", "RenameTestData3.pl");
+    myFixture.renameElementAtCaretUsingHandler("fifo_new_renamed");
+    myFixture.checkResultByFile("RenameTestData1.pl", "RenameTestData1Renamed.pl", false);
+    myFixture.checkResultByFile("RenameTestData2.pl", "RenameTestData2Renamed.pl", false);
+    myFixture.checkResultByFile("RenameTestData3.pl", "RenameTestData3Renamed.pl", false);
+}
 \end{lstlisting}
 
 \noindent La méthode "configureByFiles" permet de charger les fichiers d'entrée.
@@ -39,7 +39,7 @@ Ils sont écrits en Java et sont exécutés à chaque commit sur la CI.
 
 \noindent Les tests unitaires sont exécutés à chaque commit sur la CI.
 \newdoubleline Pour les exécuter en local, il faut lancer la commande suivante :
-\begin{lstlisting}
+\begin{lstlisting}[caption={Lancement des tests}, label={lst:run_tests}]
     gradle test
 \end{lstlisting}
 
