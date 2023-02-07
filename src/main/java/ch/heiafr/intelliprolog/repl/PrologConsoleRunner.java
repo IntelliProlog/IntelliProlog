@@ -102,7 +102,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private Process createLinuxProcess(Path interpreterPath) throws IOException {
         if (isInExternalWindow) {
             Path prologFile = Path.of(filePath);
-            String[] command = {"osascript", "-e", interpreterPath.toString(),
+            String[] command = {"xterm", "-e", interpreterPath.toString(),
                     "--query-goal", "consult('" + prologFile + "')"};
             ProcessBuilder pb = new ProcessBuilder(command);
             this.command = String.join(" ", pb.command());
@@ -169,7 +169,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         if (isInExternalWindow) {
             p = Runtime.getRuntime().exec("cmd.exe /min");
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-            writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
+            writer.write("cd /d " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
             writer.write("set LINEDIT=gui=yes"); //Prevent windows from opening a console
             writer.newLine();
