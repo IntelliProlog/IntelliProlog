@@ -4,22 +4,16 @@ import ch.heiafr.intelliprolog.sdk.PrologSdkType;
 import com.intellij.execution.CantRunException;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionHelper;
-import com.intellij.execution.Platform;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.ParametersList;
 import com.intellij.execution.console.ConsoleHistoryController;
 import com.intellij.execution.console.ConsoleRootType;
 import com.intellij.execution.console.ProcessBackedConsoleExecuteActionHandler;
 import com.intellij.execution.process.OSProcessHandler;
 import com.intellij.execution.runners.AbstractConsoleRunnerWithHistory;
 import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,13 +21,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<PrologConsole> {
 
@@ -181,7 +171,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
             writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
             writer.newLine();
-            writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
+            writer.write("cd /d " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
             writer.write(interpreterPath.toString()); //Launch the compiler
             writer.newLine();
