@@ -44,9 +44,7 @@ public class PrologRenamePsiElementProcessor extends RenamePsiElementProcessor {
                     PsiTreeUtil.collectElementsOfType(file, PrologNamedElement.class).stream()
                             .filter(e -> Objects.equals(e.getName(), element.getText()))
                             .filter(e -> ReferenceHelper.getArityFromClicked(e) == arity)
-                            .forEach(e -> {
-                                allRenames.put(e, newName);
-                            }));
+                            .forEach(e -> allRenames.put(e, newName)));
         } else {
             //Case 2
             PsiTreeUtil.findChildrenOfType(element.getContainingFile(), PrologNamedElement.class).stream()

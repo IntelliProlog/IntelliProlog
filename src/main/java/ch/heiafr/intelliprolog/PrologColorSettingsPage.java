@@ -13,7 +13,7 @@ import javax.swing.*;
 import java.util.Map;
 
 public class PrologColorSettingsPage implements ColorSettingsPage {
-    private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
+    private static final AttributesDescriptor @NotNull [] DESCRIPTORS = new AttributesDescriptor[]{
             new AttributesDescriptor("Operator", PrologSyntaxHighlighter.OPERATOR),
             new AttributesDescriptor("Cut", PrologSyntaxHighlighter.CUT),
             new AttributesDescriptor("Quoted Atom", PrologSyntaxHighlighter.QUOTED_ATOM),
@@ -44,14 +44,16 @@ public class PrologColorSettingsPage implements ColorSettingsPage {
     @NotNull
     @Override
     public String getDemoText() {
-        return "factorial(0, 1).\n" +
-                "factorial(N, F) :-\n" +
-                "        N>0,\n" +
-                "        N1 is N-1,\n" +
-                "        factorial(N1, F1),\n" +
-                "        F is F1 * N.\n" +
-                "not(P) :- P, !, fail.\n" +
-                "not(_).\n";
+        return """
+                factorial(0, 1).
+                factorial(N, F) :-
+                        N>0,
+                        N1 is N-1,
+                        factorial(N1, F1),
+                        F is F1 * N.
+                not(P) :- P, !, fail.
+                not(_).
+                """;
     }
 
     @Nullable

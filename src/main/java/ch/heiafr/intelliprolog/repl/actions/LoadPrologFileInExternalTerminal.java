@@ -3,14 +3,12 @@ package ch.heiafr.intelliprolog.repl.actions;
 import ch.heiafr.intelliprolog.PrologIcons;
 import ch.heiafr.intelliprolog.repl.PrologConsoleRunner;
 import ch.heiafr.intelliprolog.repl.PrologREPLUtils;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDocumentManager;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -51,5 +49,10 @@ public final class LoadPrologFileInExternalTerminal extends AnAction {
             presentation.setVisible(true);
             presentation.setText(String.format("Load \"%s\" in gProlog within an external terminal", file.getName()));
         }
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

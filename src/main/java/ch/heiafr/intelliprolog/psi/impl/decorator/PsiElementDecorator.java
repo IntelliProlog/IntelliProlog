@@ -60,7 +60,7 @@ class PsiElementDecorator implements PsiElement {
     @Contract(
             pure = true
     )
-    public PsiElement[] getChildren() {
+    public PsiElement @NotNull [] getChildren() {
         return decoratedPsiElement.getChildren();
     }
 
@@ -172,11 +172,10 @@ class PsiElementDecorator implements PsiElement {
     }
 
     @Override
-    @NotNull
     @Contract(
             pure = true
     )
-    public char[] textToCharArray() {
+    public char @NotNull [] textToCharArray() {
         return decoratedPsiElement.textToCharArray();
     }
 
@@ -250,6 +249,7 @@ class PsiElementDecorator implements PsiElement {
         return decoratedPsiElement.addAfter(element, anchor);
     }
 
+    @Deprecated
     @Override
     public void checkAdd(@NotNull final PsiElement element) throws IncorrectOperationException {
         decoratedPsiElement.checkAdd(element);
@@ -275,6 +275,7 @@ class PsiElementDecorator implements PsiElement {
         decoratedPsiElement.delete();
     }
 
+    @Deprecated
     @Override
     public void checkDelete() throws IncorrectOperationException {
         decoratedPsiElement.checkDelete();
@@ -320,7 +321,7 @@ class PsiElementDecorator implements PsiElement {
     @Contract(
             pure = true
     )
-    public PsiReference[] getReferences() {
+    public PsiReference @NotNull [] getReferences() {
         return decoratedPsiElement.getReferences();
     }
 
@@ -329,12 +330,12 @@ class PsiElementDecorator implements PsiElement {
     @Contract(
             pure = true
     )
-    public <T> T getCopyableUserData(final Key<T> key) {
+    public <T> T getCopyableUserData(final @NotNull Key<T> key) {
         return decoratedPsiElement.getCopyableUserData(key);
     }
 
     @Override
-    public <T> void putCopyableUserData(final Key<T> key, @Nullable final T value) {
+    public <T> void putCopyableUserData(final @NotNull Key<T> key, @Nullable final T value) {
         decoratedPsiElement.putCopyableUserData(key, value);
     }
 

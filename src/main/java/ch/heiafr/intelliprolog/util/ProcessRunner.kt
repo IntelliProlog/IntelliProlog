@@ -29,7 +29,7 @@ class ProcessRunner(workingDirectory: String? = null) {
             streamWriter.close()
         }
 
-        var myInput: InputStream = process.inputStream!!
+        val myInput: InputStream = process.inputStream!!
         val data = readData(myInput)
 
         process.waitFor()
@@ -38,16 +38,16 @@ class ProcessRunner(workingDirectory: String? = null) {
     }
 
     fun getProcess(cmd: List<String>, path: String? = null): Process {
-        val processBuilder: ProcessBuilder = ProcessBuilder(cmd)
+        val processBuilder = ProcessBuilder(cmd)
 
         if (path != null) {
             val environment = processBuilder.environment()!!
-            environment.put("PATH", environment.get("PATH") + ":" + path)
+            environment["PATH"] = environment["PATH"] + ":" + path
         }
 
         if (OSUtil.isMac) {
             val environment = processBuilder.environment()!!
-            environment.put("PATH", environment.get("PATH") + ":/usr/local/bin")
+            environment["PATH"] = environment["PATH"] + ":/usr/local/bin"
         }
 
         if (myWorkingDirectory != null) {
@@ -62,11 +62,10 @@ class ProcessRunner(workingDirectory: String? = null) {
     fun readData(input: InputStream, callback: Callback): Unit {
         val reader = BufferedReader(InputStreamReader(input))
         while (true) {
-            var line = reader.readLine()
+            val line = reader.readLine()
             if (line == null) {
                 return
             }
-
             callback.call(line)
         }
     }

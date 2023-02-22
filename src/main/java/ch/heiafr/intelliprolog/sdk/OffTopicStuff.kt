@@ -8,14 +8,13 @@ fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
     return try {
         // println("processBuilder: " + cmd + arg)
         val proc = ProcessBuilder(cmd, arg)  //ProcessBuilder("cmd", "/c", "dir")
-                // .directory(workingDir)
-                .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                .redirectError(ProcessBuilder.Redirect.PIPE)
-                .start()
+            // .directory(workingDir)
+            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+            .redirectError(ProcessBuilder.Redirect.PIPE)
+            .start()
         proc.waitFor(2, TimeUnit.SECONDS)
-        val res = proc.inputStream.bufferedReader().readText()
-        return res
-    } catch(e: IOException) {
+        return proc.inputStream.bufferedReader().readText()
+    } catch (e: IOException) {
         e.printStackTrace()
         null
     }

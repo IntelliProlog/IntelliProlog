@@ -43,7 +43,7 @@ public class PrologFoldingBuilder implements FoldingBuilder {
     public FoldingDescriptor[] buildFoldRegions(@NotNull ASTNode node, @NotNull Document document) {
         List<FoldingDescriptor> descriptors = new ArrayList<>();
         collectDescriptorsRecursively(node, document, descriptors);
-        return descriptors.toArray(new FoldingDescriptor[descriptors.size()]);
+        return descriptors.toArray(new FoldingDescriptor[0]);
     }
 
     private void collectDescriptorsRecursively(ASTNode node, Document document, List<FoldingDescriptor> descriptors) {

@@ -10,7 +10,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import org.jdom.Element
 import java.io.File
 import java.io.FileFilter
-import java.io.FilenameFilter
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -33,12 +32,8 @@ class PrologSdkType : SdkType("GPROLOG") {
             for (name in prologPaths) {
                 prologDirs.add(SDKInfo(name))
             }
-            Collections.sort(prologDirs, object : Comparator<SDKInfo> {
-                override fun compare(o1: SDKInfo, o2: SDKInfo): Int {
-                    return o1.version.compareTo(o2.version)
-                }
-            })
-            return prologDirs.get(prologDirs.size - 1)
+            prologDirs.sortWith(Comparator { o1, o2 -> o1.version.compareTo(o2.version) })
+            return prologDirs[prologDirs.size - 1]
         }
 
         fun checkForProlog(path: String): Boolean {
@@ -98,9 +93,9 @@ class PrologSdkType : SdkType("GPROLOG") {
         companion object {
             fun getVersion(name: String?): PrologVersion {
                 val versionStr: List<String> = if (name == null) {
-                    listOf<String>()
+                    listOf()
                 } else {
-                    name.split("[^0-9]+".toRegex()).filter { !it.isEmpty() }
+                    name.split("[^0-9]+".toRegex()).filter { it.isNotEmpty() }
                 }
                 val parts = ArrayList<Int>()
                 for (part in versionStr) {
@@ -158,13 +153,11 @@ class PrologSdkType : SdkType("GPROLOG") {
             if (!versionsRoot.isDirectory) {
                 return null
             }
-            versions = (versionsRoot.listFiles(object : FilenameFilter {
-                override fun accept(dir: File, name: String): Boolean {
-                    return !File(dir, name).isDirectory && isProlog(name.lowercase())
-                }
-            })?.toList() ?: listOf())
+            versions = (versionsRoot.listFiles { dir, name ->
+                !File(dir,name).isDirectory && isProlog(name.lowercase())
+            }?.toList() ?: listOf())
         } else if (SystemInfo.isWindows) {
-            var cDrive = "C:"
+            val cDrive = "C:"
             val versionsRoot = File(cDrive, "GNU-Prolog")
             if (!versionsRoot.isDirectory)
                 return cDrive
@@ -195,7 +188,7 @@ class PrologSdkType : SdkType("GPROLOG") {
 //  override fun suggestSdkName(currentSdkName: String?, sdkHome: String?): String {
     override fun suggestSdkName(currentSdkName: String?, sdkHome: String): String {
         val suggestedName: String
-        if (currentSdkName != null && currentSdkName.isNotEmpty()) {
+        if (!currentSdkName.isNullOrEmpty()) {
             suggestedName = currentSdkName
         } else {
             val versionString = getVersionString(sdkHome)
@@ -239,9 +232,11 @@ class PrologSdkType : SdkType("GPROLOG") {
         return GPROLOG_ICON
     }
 
+/*  // Deprecated (calls getIcon())
     override fun getIconForAddAction(): Icon {
         return icon
     }
+*/
 
     override fun setupSdkPaths(sdk: Sdk) {
     }

@@ -54,7 +54,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         PrologConsoleRunner runner = new PrologConsoleRunner(module, consoleName, workingDir, filePath, isInExternalWindow);
         try {
             runner.initAndRun();
-            runner.getProcessHandler();
+            // runner.getProcessHandler();  // unused ?
         } catch (ExecutionException e) {
             ExecutionHelper.showErrors(module.getProject(), List.<Exception>of(e), consoleName, null);
         }
@@ -155,7 +155,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         Process p;
         BufferedWriter writer;
         command = "cmd.exe /min";
-
+        Path fileName = Path.of(filePath).getFileName();
         if (isInExternalWindow) {
             p = Runtime.getRuntime().exec("cmd.exe /min");
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
@@ -163,7 +163,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.newLine();
             writer.write("set LINEDIT=gui=yes"); //Prevent windows from opening a console
             writer.newLine();
-            String query = " --query-goal \"consult('" + Path.of(filePath).getFileName() + "')\"";
+            String query = " --query-goal \"consult('" + fileName + "')\"";
             writer.write("start " + interpreterPath.toString() + query); //Launch the compiler
             writer.newLine();
         } else {
@@ -175,7 +175,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.newLine();
             writer.write(interpreterPath.toString()); //Launch the compiler
             writer.newLine();
-            writer.write("consult('" + Path.of(filePath).getFileName() + "').");
+            writer.write("consult('" + fileName + "').");
             writer.newLine();
         }
 

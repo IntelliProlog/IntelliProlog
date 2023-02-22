@@ -12,18 +12,19 @@ fun joinPath(first: String, vararg more: String): String {
 
 
 fun deleteRecursive(path: File) {
+    var allOk = true
     val files = path.listFiles()
     if (files != null) {
         for (file in files) {
             if (file.isDirectory) {
                 deleteRecursive(file)
-                file.delete()
+                allOk = file.delete() && allOk
             } else {
-                file.delete()
+                allOk = file.delete() && allOk
             }
         }
     }
-    path.delete()
+    allOk = path.delete() && allOk
 }
 
 fun copyFile(iStream: InputStream, destination: File) {
@@ -70,7 +71,7 @@ fun readLines(file: File): Iterable<String> {
                     }
                     if (line == null && reader != null) {
                         reader?.close()
-                        reader == null
+                        reader = null
                     }
                     return line
                 }

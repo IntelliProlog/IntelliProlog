@@ -37,8 +37,8 @@ public class PrologExternalAnnotator extends ExternalAnnotator<List<CompilerResu
     public void apply(@NotNull PsiFile file, List<CompilerResult> annotationResult, @NotNull AnnotationHolder holder) {
 
         for (CompilerResult res : annotationResult) {
-            var range = lineToOffset(file, res.getLine());
-            AnnotationBuilder ab = holder.newAnnotation(res.getSeverity(), res.getMessage());
+            var range = lineToOffset(file, res.line());
+            AnnotationBuilder ab = holder.newAnnotation(res.severity(), res.message());
             ab = ab.range(new TextRange(range.getFirst(), range.getSecond()));
             ab.create();
         }

@@ -1,5 +1,7 @@
 package ch.heiafr.intelliprolog.util
 
+import kotlin.math.min
+
 class PrologVersion constructor(private val version: List<Int>) : Comparable<PrologVersion> {
 
     companion object {
@@ -25,7 +27,7 @@ class PrologVersion constructor(private val version: List<Int>) : Comparable<Pro
     override fun hashCode(): Int {
         var result = 1
         for (v in version) {
-            result = 31 * result + v.toInt()
+            result = 31 * result + v
         }
         return result
     }
@@ -33,7 +35,7 @@ class PrologVersion constructor(private val version: List<Int>) : Comparable<Pro
     override fun toString(): String {
         val buf = StringBuilder()
         for (v in version) {
-            if (buf.length > 0) {
+            if (buf.isNotEmpty()) {
                 buf.append('.')
             }
             buf.append(v)
@@ -45,8 +47,8 @@ class PrologVersion constructor(private val version: List<Int>) : Comparable<Pro
     override fun compareTo(other: PrologVersion): Int {
         val v1 = this.version
         val v2 = other.version
-        val minSize = Math.min(v1.size, v2.size)
-        for (i in 0..minSize - 1) {
+        val minSize = min(v1.size, v2.size)
+        for (i in 0 until minSize) {
             val compare = v1[i].compareTo(v2[i])
             if (compare != 0)
                 return compare

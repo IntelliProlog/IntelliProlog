@@ -2,7 +2,6 @@ package ch.heiafr.intelliprolog.compiler;
 
 import ch.heiafr.intelliprolog.sdk.PrologSdkType;
 import com.intellij.execution.CantRunException;
-import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.projectRoots.Sdk;
 import com.intellij.openapi.roots.ModuleRootManager;
@@ -13,7 +12,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 
 public class CompilerHelper {
 
@@ -46,7 +44,6 @@ public class CompilerHelper {
             writer.flush();
             writer.close();
         } else if (SystemInfo.isMac || SystemInfo.isLinux) {
-
             String[] env = new String[System.getenv().size()];
             int i = 0;
             for (String key : System.getenv().keySet()) {
@@ -71,19 +68,15 @@ public class CompilerHelper {
 
 
     public static String[] autoSplit(String l) {
-
         String[] result = l.split(":");
-
         if (result.length == 3) {
             return result;
         }
-
         //Take only 3 last values
         String[] last = new String[3];
         last[0] = result[result.length - 3];
         last[1] = result[result.length - 2];
         last[2] = result[result.length - 1];
-
         return last;
     }
 }

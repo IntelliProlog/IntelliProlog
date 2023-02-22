@@ -1,3 +1,4 @@
+/*  // Deprecated (FileType is used instead)
 package ch.heiafr.intelliprolog;
 
 import com.intellij.openapi.fileTypes.FileTypeConsumer;
@@ -11,3 +12,4 @@ public class PrologFileTypeFactory extends FileTypeFactory {
         consumer.consume(PrologFileType.INSTANCE);
     }
 }
+*/

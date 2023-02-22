@@ -21,7 +21,7 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
      * @param elt    input PSI element
      * @param offset offset in the file
      * @param editor editor instance
-     * @return the list of targets to navigate to, or null if the handler is not applicable to the specified element.
+     * @return the array of targets to navigate to, or null if the handler is not applicable to the specified element.
      */
     @Override
     public PsiElement @Nullable [] getGotoDeclarationTargets(@Nullable PsiElement elt, int offset, Editor editor) {
@@ -55,7 +55,7 @@ public class PrologGotoDeclarationHandler implements GotoDeclarationHandler {
                 .filter(c -> c instanceof PrologCompound ?
                         Objects.equals(((PrologCompound) c).getCompoundName().getName(), elt.getText()) :
                         Objects.equals(c.getText(), elt.getText()))
-                .collect(Collectors.toList());
+                .toList();
 
 
         PrologSentence currentSentence = PsiTreeUtil.getParentOfType(elt, PrologSentence.class);

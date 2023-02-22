@@ -35,8 +35,7 @@ class PrologModuleType : ModuleType<PrologModuleBuilder>("PROLOG_MODULE") {
     }
 
     override fun modifyProjectTypeStep(settingsStep: SettingsStep, moduleBuilder: ModuleBuilder): ModuleWizardStep? {
-        val cond: Condition<SdkTypeId?>
-        cond = Condition { t -> moduleBuilder.isSuitableSdkType(t) }
+        val cond: Condition<SdkTypeId?> = Condition { t -> moduleBuilder.isSuitableSdkType(t) }
         return ProjectWizardStepFactory.getInstance().createJavaSettingsStep(settingsStep, moduleBuilder, cond)
     }
 }

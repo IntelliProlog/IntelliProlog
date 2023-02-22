@@ -2,6 +2,7 @@ package ch.heiafr.intelliprolog.reference;
 
 import ch.heiafr.intelliprolog.PrologFileType;
 import ch.heiafr.intelliprolog.psi.*;
+import com.intellij.lang.ASTNode;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.PsiElement;
@@ -63,7 +64,7 @@ public class ReferenceHelper {
      * @param pattern The pattern to check
      * @return The element if the pattern fit, null otherwise
      */
-    private static PsiElement patternFitPsiElement(PsiElement elt, Class[] pattern) {
+    private static PsiElement patternFitPsiElement(PsiElement elt, Class<?>[] pattern) {
         for (Class<?> aClass : pattern) {
             if (!aClass.isInstance(elt)) {
                 return null;
@@ -191,8 +192,9 @@ public class ReferenceHelper {
      * @return The compound if found, null otherwise
      */
     public static PrologCompound compoundFromClickedElement(PsiElement clickedElement) {
-        if (clickedElement.getNode().getElementType() == PrologTypes.UNQUOTED_COMPOUND_NAME
-                || clickedElement instanceof PrologCompoundName) {
+        ASTNode n = clickedElement.getNode();
+        if (clickedElement instanceof PrologCompoundName ||
+                (n != null && n.getElementType() == PrologTypes.UNQUOTED_COMPOUND_NAME) ) {
             return PsiTreeUtil.getParentOfType(clickedElement, PrologCompound.class);
         }
         return null;
@@ -251,7 +253,7 @@ public class ReferenceHelper {
                 .map(ReferenceHelper::extractQuotedString)//Extract the quoted string
                 .filter(Objects::nonNull)//Prevent null values
                 .filter(s -> !files.contains(s)) //Filter out already visited files
-                .collect(Collectors.toList()); //Collect to list
+                .toList(); //Collect to list
 
         files.addAll(paths); //Add the new paths to the list of visited files to prevent infinite recursion
 
@@ -320,8 +322,6 @@ public class ReferenceHelper {
     private static Collection<PsiElement> findEveryFileThatInclude(PsiFile file, List<String> visited) {
         var filenames = FilenameIndex.getAllFilesByExt(file.getProject(), PrologFileType.INSTANCE.getDefaultExtension());
 
-        Collection<PsiElement> result = new ArrayList<>();
-
         Collection<PsiElement> allFiles =  filenames.stream()
                 .filter(f -> !visited.contains(f.getName()))
                 .map(f -> PsiManager.getInstance(file.getProject()).findFile(f))
@@ -335,7 +335,7 @@ public class ReferenceHelper {
                 .collect(Collectors.toList());
 
         visited.add(file.getName());
-        result.addAll(allFiles);
+        Collection<PsiElement> result = new ArrayList<>(allFiles);
 
         for(var f : allFiles){
             var files = findEveryFileThatInclude(f.getContainingFile(), visited);

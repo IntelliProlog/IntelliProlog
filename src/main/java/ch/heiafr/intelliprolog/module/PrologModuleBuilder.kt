@@ -1,13 +1,15 @@
 package ch.heiafr.intelliprolog.module
 
 import ch.heiafr.intelliprolog.sdk.PrologSdkType
-import com.intellij.ide.util.projectWizard.*
+import com.intellij.ide.util.projectWizard.ModuleBuilder
+import com.intellij.ide.util.projectWizard.ModuleWizardStep
+import com.intellij.ide.util.projectWizard.SettingsStep
+import com.intellij.ide.util.projectWizard.WizardContext
 import com.intellij.openapi.module.StdModuleTypes
 import com.intellij.openapi.projectRoots.ProjectJdkTable
 import com.intellij.openapi.projectRoots.SdkTypeId
 import com.intellij.openapi.roots.ModifiableRootModel
 import com.intellij.openapi.roots.ui.configuration.ModulesProvider
-import com.intellij.openapi.util.Condition
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.LocalFileSystem
 import java.io.File
@@ -47,14 +49,16 @@ class PrologModuleBuilder : ModuleBuilder() {
                 rootModel.inheritSdk()
             } else {
                 // BAP: not sure it's reasonable...
-                rootModel.sdk = candidates.get(0)
+                rootModel.sdk = candidates[0]
             }
         }
 
         val contentEntry = doAddContentEntry(rootModel)
         if (contentEntry != null) {
             val srcPath = contentEntryPath!! + File.separator + "src"
-            File(srcPath).mkdirs()
+            if (!File(srcPath).mkdirs()) {
+                return  // cannot create that directory... should we somehow log this?
+            }
             val sourceRoot = LocalFileSystem.getInstance()!!.refreshAndFindFileByPath(FileUtil.toSystemIndependentName(srcPath))
             if (sourceRoot != null) {
                 contentEntry.addSourceFolder(sourceRoot, false, "")

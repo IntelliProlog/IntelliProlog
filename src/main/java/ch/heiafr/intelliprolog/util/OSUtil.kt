@@ -10,7 +10,7 @@ object OSUtil {
     val isMac: Boolean = SystemInfo.isMac
 
     @JvmStatic
-    fun getExe(cmd: String): String = if (isWindows) cmd + ".exe" else cmd
+    fun getExe(cmd: String): String = if (isWindows) "$cmd.exe" else cmd
 
     fun userHome(): String = System.getProperty("user.home")!!
 
