@@ -8,7 +8,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.7.20"
 
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.12.0" //Latest version
+    id("org.jetbrains.intellij") version "1.15.0" //Latest version
     id("org.jetbrains.grammarkit") version "2021.2.2"
 }
 
@@ -67,7 +67,6 @@ tasks {
             sourceCompatibility = it
             targetCompatibility = it
         }
-
     }
     wrapper {
         gradleVersion = properties("gradleVersion")
@@ -82,6 +81,7 @@ tasks {
 
 
     generateLexer {
+        // sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
         targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
         targetClass.set("PrologLexer")
@@ -91,7 +91,6 @@ tasks {
 
 
     generateParser {
-
         try {
             val compiledFilesSources =
                 files("build/classes/java/main/")
@@ -99,7 +98,7 @@ tasks {
         } catch (e: Exception) {
             // Ignore => no compiled files when running the task for the first time
         }
-
+        //sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
         pathToParser.set("PrologParser.java")
@@ -130,9 +129,11 @@ tasks {
         }
         finalizedBy("compileAndRegenerate")
     }
-
 }
 
+tasks.withType<Jar>() {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
 
 
 
