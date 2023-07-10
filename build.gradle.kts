@@ -9,7 +9,7 @@ plugins {
 
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.15.0" //Latest version
-    id("org.jetbrains.grammarkit") version "2021.2.2"  // "2021.2.2"  2022.3
+    id("org.jetbrains.grammarkit") version "2022.3"  // "2021.2.2"  2022.3
 }
 
 
@@ -23,7 +23,7 @@ kotlin {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
 }
 
 sourceSets {
@@ -91,13 +91,16 @@ tasks {
 
 
     generateParser {
+/*
         try {
             val compiledFilesSources =
                 files("build/classes/java/main/")
-            classpath.from(compiledFilesSources)
+            val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
+            classpath1.from(compiledFilesSources)
         } catch (e: Exception) {
             // Ignore => no compiled files when running the task for the first time
         }
+*/
         //sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
         source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
@@ -123,8 +126,8 @@ tasks {
     register("initProject") {
 
         doFirst {
-            generateParser.get().generateParser()
-            generateLexer.get().generateLexer()
+            generateParser //.get().generateParser()
+            generateLexer  //.get().generateLexer()
             println("Classes generated")
         }
         finalizedBy("compileAndRegenerate")
