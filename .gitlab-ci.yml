@@ -3,7 +3,7 @@ stages:
   - test
   - release
 
-image: registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:7.3-jdk17
+image: registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17
 
 build:
   stage: build

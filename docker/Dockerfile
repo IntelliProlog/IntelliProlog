@@ -4,7 +4,7 @@
 
 # Use the official gradle image
 #TO UPDATE according to the gradle version used in the project
-FROM gradle:7.3-jdk17
+FROM gradle:8.2.0-jdk17
 
 # Gradle install the dependencies
 COPY ../build.gradle.kts ../gradle.properties ./
