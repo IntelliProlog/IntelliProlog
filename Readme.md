@@ -30,7 +30,7 @@
 
 ## Pipeline
 
-### Informations
+### Information
 * The pipeline is configured to run on all branch. The release job is only triggered when a tag is pushed.
 * The pipeline use a custom docker image to run the tests. The Dockerfile is located in the `docker` folder.
 * The docker image is located in the [Private Docker Registry](https://gitlab.forge.hefr.ch/frederic.bapst/intelli-prolog-2/container_registry) of the project
@@ -41,3 +41,9 @@ The pipeline is used to automatically build and test the plugin.
  - The build job will build the plugin and upload the artifacts. It contains the plugin jar file.
  - The release job will create a new ZIP file containing the plugin jar file and the plugin XML file. It can be used to install the plugin manually.
 
+### Trying to update the docker image (BAP, 10.07.23) 
+- temporarily copy gradle.properties and build.gradlekts into docker/
+- start Docker Desktop; then in a terminal (was on Windows)
+- docker build -t registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17 .
+- docker login registry.forge.hefr.ch   (use the PAT generated on gitlab)
+- docker push registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17

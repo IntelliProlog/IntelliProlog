@@ -5,11 +5,11 @@ plugins {
     id("java")
 
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.0"
 
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.15.0" //Latest version
-    id("org.jetbrains.grammarkit") version "2021.2.2"
+    id("org.jetbrains.grammarkit") version "2021.2.2"  // "2021.2.2"  2022.3
 }
 
 
