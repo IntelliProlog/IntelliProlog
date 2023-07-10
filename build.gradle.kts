@@ -91,17 +91,17 @@ tasks {
 
 
     generateParser {
-        /*
+        // /*
         try {
             val compiledFilesSources =
                 files("build/classes/java/main/")
-            classpath.from(compiledFilesSources)
-//            val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
-//            classpath1.from(compiledFilesSources)
+            // classpath.from(compiledFilesSources)
+            val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
+            classpath1.from(compiledFilesSources)
         } catch (e: Exception) {
             // Ignore => no compiled files when running the task for the first time
         }
-        */
+        // */
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
         //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
