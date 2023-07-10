@@ -9,7 +9,7 @@ plugins {
 
     // Gradle IntelliJ Plugin
     id("org.jetbrains.intellij") version "1.15.0" //Latest version
-    id("org.jetbrains.grammarkit") version "2022.3"  // "2021.2.2"  2022.3
+    id("org.jetbrains.grammarkit") version "2022.3.1"  // "2021.2.2"  2022.3
 }
 
 
@@ -81,8 +81,8 @@ tasks {
 
 
     generateLexer {
-        // sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
-        source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
+        sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
+        //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
         targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
         targetClass.set("PrologLexer")
         skeleton.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.skeleton"))
@@ -91,18 +91,19 @@ tasks {
 
 
     generateParser {
-/*
+        /*
         try {
             val compiledFilesSources =
                 files("build/classes/java/main/")
-            val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
-            classpath1.from(compiledFilesSources)
+            classpath.from(compiledFilesSources)
+//            val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
+//            classpath1.from(compiledFilesSources)
         } catch (e: Exception) {
             // Ignore => no compiled files when running the task for the first time
         }
-*/
-        //sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
-        source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
+        */
+        sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
+        //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")
         pathToParser.set("PrologParser.java")
         pathToPsiRoot.set("psi")
