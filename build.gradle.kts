@@ -1,3 +1,5 @@
+// import org.jetbrains.grammarkit.tasks.GenerateParserTask
+
 fun properties(key: String) = project.findProperty(key).toString()
 
 plugins {
@@ -98,7 +100,9 @@ tasks {
             // classpath.from(compiledFilesSources)
             val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
             classpath1.from(compiledFilesSources)
+            this@generateParser.classpath = classpath1 //.from(compiledFilesSources)
         } catch (e: Exception) {
+            println("ignored exception in generateParser (first time)")
             // Ignore => no compiled files when running the task for the first time
         }
         // */
