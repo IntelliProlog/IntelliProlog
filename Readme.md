@@ -42,7 +42,7 @@ The pipeline is used to automatically build and test the plugin.
  - The release job will create a new ZIP file containing the plugin jar file and the plugin XML file. It can be used to install the plugin manually.
 
 ### Trying to update the docker image (BAP, 10.07.23) 
-- temporarily copy gradle.properties and build.gradlekts into docker/
+- temporarily copy gradle.properties and build.gradle.kts into docker/
 - start Docker Desktop; then in a terminal (was on Windows)
 - docker build -t registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17 .
 - docker login registry.forge.hefr.ch   (use the PAT generated on gitlab)

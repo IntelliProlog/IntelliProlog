@@ -11,13 +11,13 @@ fun joinPath(first: String, vararg more: String): String {
 }
 
 
-fun deleteRecursive(path: File) {
+fun deleteRecursive(path: File): Boolean {
     var allOk = true
     val files = path.listFiles()
     if (files != null) {
         for (file in files) {
             if (file.isDirectory) {
-                deleteRecursive(file)
+                allOk = deleteRecursive(file) && allOk
                 allOk = file.delete() && allOk
             } else {
                 allOk = file.delete() && allOk
@@ -25,6 +25,7 @@ fun deleteRecursive(path: File) {
         }
     }
     allOk = path.delete() && allOk
+    return allOk
 }
 
 fun copyFile(iStream: InputStream, destination: File) {
