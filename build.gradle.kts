@@ -44,6 +44,7 @@ repositories {
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
+//    implementation("org.jetbrains.intellij.plugins:gradle-grammarkit-plugin:2022.3.1")
 }
 
 // Configure Gradle IntelliJ Plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
@@ -100,7 +101,7 @@ tasks {
             // classpath.from(compiledFilesSources)
             val classpath1: ConfigurableFileCollection = project.objects.fileCollection()
             classpath1.from(compiledFilesSources)
-            this@generateParser.classpath = classpath1 //.from(compiledFilesSources)
+            this@generateParser.classpath += classpath1 //.from(compiledFilesSources)
         } catch (e: Exception) {
             println("ignored exception in generateParser (first time)")
             // Ignore => no compiled files when running the task for the first time
@@ -129,10 +130,9 @@ tasks {
     }
 
     register("initProject") {
-
         doFirst {
-            generateParser //.get().generateParser()
-            generateLexer  //.get().generateLexer()
+            generateParser.get().exec() // generateParser()
+            generateLexer.get().exec()  //.get().generateLexer()
             println("Classes generated")
         }
         finalizedBy("compileAndRegenerate")
