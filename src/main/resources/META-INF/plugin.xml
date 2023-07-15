@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>ch.heiafr.intelliprolog</id>
     <name>PrologCode</name>
-    <version>2.0.1</version>
+    <version>2.0.3</version>
     <vendor email="intelli.prolog@gmail.com" url="https://heia-fr.ch/">HEIA-FR</vendor>
     <description><![CDATA[
        <p>PrologCode is a plugin for IntelliJ IDEA that provides support for the Prolog language. Specifically, it provides:</p>
@@ -39,7 +39,7 @@
     ]]></description>
     <change-notes/>
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="222.*"/>
+    <idea-version since-build="222.3345"/>
     }}}}
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.java</depends>

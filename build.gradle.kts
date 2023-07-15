@@ -75,13 +75,13 @@ tasks {
         gradleVersion = properties("gradleVersion")
     }
 
-
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
-        //untilBuild.set(properties("pluginUntilBuild"))
+        untilBuild.set("")
+        // only this (undocumented) trick seems to work so that until-build
+        // in plugin.xml is not set
     }
-
 
     generateLexer {
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
@@ -94,7 +94,6 @@ tasks {
 
 
     generateParser {
-        // /*
         try {
             val compiledFilesSources =
                 files("build/classes/java/main/")
@@ -106,7 +105,6 @@ tasks {
             println("ignored exception in generateParser (first time)")
             // Ignore => no compiled files when running the task for the first time
         }
-        // */
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
         //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
         targetRoot.set("src/gen/java/")

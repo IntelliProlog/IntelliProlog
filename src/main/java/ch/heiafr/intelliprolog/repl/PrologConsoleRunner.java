@@ -37,15 +37,12 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         this.module = module;
         isInExternalWindow = externalWindow;
         filePath = sourceFilePath;
-
     }
 
     public static void run(Module module, String filePath, boolean isInExternalWindow) {
-
         if (filePath == null || module == null) {
             return;
         }
-
 
         String workingDir = new File(filePath).getParent();
         String fileName = new File(filePath).getName();
@@ -150,24 +147,23 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         return p;
     }
 
-
     private Process createWindowsProcess(Path interpreterPath) throws IOException {
         Process p;
         BufferedWriter writer;
         command = "cmd.exe /min";
         Path fileName = Path.of(filePath).getFileName();
         if (isInExternalWindow) {
-            p = Runtime.getRuntime().exec("cmd.exe /min");
+            p = Runtime.getRuntime().exec(command);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
             writer.write("cd /d " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
-            writer.write("set LINEDIT=gui=yes"); //Prevent windows from opening a console
+            writer.write("set LINEDIT=gui=yes"); // let windows open a console
             writer.newLine();
             String query = " --query-goal \"consult('" + fileName + "')\"";
             writer.write("start " + interpreterPath.toString() + query); //Launch the compiler
             writer.newLine();
         } else {
-            p = Runtime.getRuntime().exec("cmd.exe /min");
+            p = Runtime.getRuntime().exec(command);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
             writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
             writer.newLine();
