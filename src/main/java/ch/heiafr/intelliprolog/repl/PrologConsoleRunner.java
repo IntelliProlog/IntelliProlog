@@ -40,13 +40,15 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     }
 
     public static void run(Module module, String filePath, boolean isInExternalWindow) {
-        if (filePath == null || module == null) {
-            return;
+        String workingDir;
+        String consoleName = " Prolog Console";
+        if(filePath == null) {  // ie the "Run Prolog REPL" menu command
+            workingDir = ModuleRootManager.getInstance(module).getContentRoots()[0].getPath();
+        } else {
+            workingDir = new File(filePath).getParent();
+            String fileName = new File(filePath).getName();
+            consoleName = fileName + consoleName;
         }
-
-        String workingDir = new File(filePath).getParent();
-        String fileName = new File(filePath).getName();
-        String consoleName = fileName + " Prolog Console";
 
         PrologConsoleRunner runner = new PrologConsoleRunner(module, consoleName, workingDir, filePath, isInExternalWindow);
         try {
@@ -55,7 +57,6 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         } catch (ExecutionException e) {
             ExecutionHelper.showErrors(module.getProject(), List.<Exception>of(e), consoleName, null);
         }
-
     }
 
     @Override
@@ -65,12 +66,10 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
     @Override
     protected @Nullable Process createProcess() throws ExecutionException {
-
         Path interpreterPath = getInterpreterPath(this.module);
         if (interpreterPath == null) {
             throw new CantRunException("No interpreter found. First, set an interpreter in the module settings.");
         }
-
         try {
             if (SystemInfo.isWindows) {
                 return createWindowsProcess(interpreterPath);
@@ -88,15 +87,21 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
     private Process createLinuxProcess(Path interpreterPath) throws IOException {
         if (isInExternalWindow) {
-            Path prologFile = Path.of(filePath);
+            String queryGoal = "nl"; // stupid goal when filePath==null (ie "run REPL")
+            Path prologFile = null;
+            if(filePath != null) {
+                prologFile = Path.of(filePath);
+                queryGoal = "consult('" + prologFile + "')";
+            }
             String[] command = {"xterm", "-e", interpreterPath.toString(),
-                    "--query-goal", "consult('" + prologFile + "')"};
+                    "--query-goal", queryGoal};
             ProcessBuilder pb = new ProcessBuilder(command);
             this.command = String.join(" ", pb.command());
-            pb.directory(prologFile.getParent().toFile());
+            if(prologFile != null)
+                pb.directory(prologFile.getParent().toFile());
             return pb.start();
         } else {
-            //Same as macOS :)
+            // Same as macOS :)
             return createMacProcess(interpreterPath);
         }
     }
@@ -114,15 +119,19 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                 env[i - 1] += ":" + interpreterPath.getParent().toString();
             }
         }
-
-        Path prologFile = Path.of(filePath);
+        Path prologFile = null;
+        String queryGoal = "nl"; // stupid goal when filePath==null (ie "run REPL")
+        if(filePath != null) {
+            prologFile = Path.of(filePath);
+            queryGoal = "consult('" + prologFile + "')";
+        }
         if (isInExternalWindow) {
 
             String appleScript = "tell app \"Terminal\" to do script "
                     + "\""
                     + interpreterPath.toString() + " --query-goal "
                     + "\\\""
-                    + "consult('" + prologFile + "')"
+                    + queryGoal
                     + "\\\" "
                     + "\"";
 
@@ -130,7 +139,9 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
 
             ProcessBuilder pb = new ProcessBuilder(command);
             this.command = String.join(" ", pb.command());
-            pb.directory(prologFile.getParent().toFile());
+            if(prologFile != null) {
+                pb.directory(prologFile.getParent().toFile());
+            }
             p = pb.start();
 
         } else {
@@ -140,7 +151,9 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.newLine();
             writer.write(interpreterPath.getFileName().toString()); //Launch the compiler
             writer.newLine();
-            writer.write("consult('" + prologFile.getFileName() + "').");
+            if(prologFile != null) {
+                writer.write("consult('" + prologFile.getFileName() + "').");
+            }
             writer.newLine();
             writer.flush();
         }
@@ -151,7 +164,13 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         Process p;
         BufferedWriter writer;
         command = "cmd.exe /min";
-        Path fileName = Path.of(filePath).getFileName();
+        // String command1 = "powershell -WindowStyle Minimized";  // does not help with LINEDIT problem...
+        Path prologFile = null;
+        String queryGoal = "nl"; // stupid goal when filePath==null (ie "run REPL")
+        if(filePath != null) {
+            prologFile = Path.of(filePath).getFileName();
+            queryGoal = "consult('" + prologFile + "')";
+        }
         if (isInExternalWindow) {
             p = Runtime.getRuntime().exec(command);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
@@ -159,19 +178,22 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.newLine();
             writer.write("set LINEDIT=gui=yes"); // let windows open a console
             writer.newLine();
-            String query = " --query-goal \"consult('" + fileName + "')\"";
+            String query = " --query-goal \"" + queryGoal + "\"";
             writer.write("start " + interpreterPath.toString() + query); //Launch the compiler
             writer.newLine();
         } else {
             p = Runtime.getRuntime().exec(command);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
-            writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
+            //writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
+            writer.write("set LINEDIT=no"); //Prevent windows from opening a console
             writer.newLine();
             writer.write("cd /d " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
             writer.write(interpreterPath.toString()); //Launch the compiler
             writer.newLine();
-            writer.write("consult('" + fileName + "').");
+            if(prologFile != null) {
+                writer.write("consult('" + prologFile + "').");
+            }
             writer.newLine();
         }
 
@@ -201,7 +223,6 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
      ********************/
 
     private static Path getInterpreterPath(Module m) {
-
         Sdk sdk = ProjectRootManager.getInstance(m.getProject()).getProjectSdk();
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType)) {
             ModuleRootManager moduleRootManager = ModuleRootManager.getInstance(m);
@@ -210,7 +231,6 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         if (sdk == null || !(sdk.getSdkType() instanceof PrologSdkType) || sdk.getHomePath() == null) {
             return null;
         }
-
         return Paths.get(sdk.getHomePath());
     }
 }
