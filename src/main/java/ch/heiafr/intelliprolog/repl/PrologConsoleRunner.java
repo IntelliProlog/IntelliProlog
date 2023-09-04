@@ -81,7 +81,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                 throw new CantRunException("Unsupported OS");
             }
         } catch (IOException e) {
-            throw new CantRunException("Could not create process");
+            throw new CantRunException("Could not create process", e);
         }
     }
 
