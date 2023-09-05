@@ -24,8 +24,12 @@ import java.io.OutputStreamWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.regex.Pattern;
+import java.nio.file.Files;
 
 public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<PrologConsole> {
+    private static final String QUERY_FLAG = "--query-goal ";
 
     private final boolean isInExternalWindow;
     private final String filePath;
@@ -93,8 +97,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                 prologFile = Path.of(filePath);
                 queryGoal = "consult('" + prologFile + "')";
             }
-            String[] command = {"xterm", "-e", interpreterPath.toString(),
-                    "--query-goal", queryGoal};
+            String[] command = assembleCommandForLinux(interpreterPath.toString(), queryGoal);
             ProcessBuilder pb = new ProcessBuilder(command);
             this.command = String.join(" ", pb.command());
             if(prologFile != null)
@@ -104,6 +107,30 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             // Same as macOS :)
             return createMacProcess(interpreterPath);
         }
+    }
+
+    private String[] assembleCommandForLinux(String prologInterpreter,
+                                             String consultGoal) {
+        String[][] commands = {
+                {"x-terminal-emulator", "-e", prologInterpreter, QUERY_FLAG, consultGoal},
+                {"gnome-terminal",      "-x", prologInterpreter, QUERY_FLAG, consultGoal},
+                // xterm was universal some years ago...
+                {"xterm",               "-e", prologInterpreter, QUERY_FLAG, consultGoal},
+                {"konsole",             "-e", prologInterpreter, QUERY_FLAG, consultGoal},
+                {"lxterminal",          "-e", prologInterpreter, QUERY_FLAG, consultGoal}
+                // any other suggestions?
+        };
+
+        for(String[] c:commands) {
+            String exec = c[0];
+            boolean existsInPath = Stream.of(System.getenv("PATH")
+                            .split(Pattern.quote(File.pathSeparator)))
+                    .map(Paths::get)
+                    .anyMatch(path -> Files.exists(path.resolve(exec)));
+            if (existsInPath) return c;
+        }
+        // Let's bet on the old xterm...
+        return commands[2];
     }
 
     private Process createMacProcess(Path interpreterPath) throws IOException {
