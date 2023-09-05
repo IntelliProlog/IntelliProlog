@@ -28,7 +28,7 @@
          <br>
          <p>Running a Prolog file:</p>
          <ul>
-            <li>When you are editing a Prolog file, you can run it by right-clicking on the file and selecting <b>Run <filename> in gprolog within IDE console</b>.</li>
+            <li>When you are editing a Prolog file, you can run it by right-clicking on the file and selecting <b>Load <filename> in gprolog within ...</b> (an external terminal or an IntelliJ console.</li>
             <li>You can also run a Prolog file by right-clicking on the file and selecting <b>Run <filename> in gprolog within an external console</b></li>
          </ul>
        <br/>

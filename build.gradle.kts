@@ -81,6 +81,7 @@ tasks {
         untilBuild.set("")
         // only this (undocumented) trick seems to work so that until-build
         // in plugin.xml is not set
+        changeNotes.set(file(properties("pluginChangeNotesFile")).readText())
     }
 
     generateLexer {
