@@ -136,7 +136,6 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private Process createMacProcess(Path interpreterPath) throws IOException {
         Process p;
         BufferedWriter writer;
-        command = "/bin/bash";
 
         String[] env = new String[System.getenv().size()];
         int i = 0;
@@ -148,31 +147,29 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
         }
         Path prologFile = null;
         String queryGoal = "nl"; // stupid goal when filePath==null (ie "run REPL")
+        String changeDirectoryCommand = "";
         if(filePath != null) {
             prologFile = Path.of(filePath);
             queryGoal = "consult('" + prologFile + "')";
+            String preferredWorkingDirectory = prologFile.getParent().toFile().toString();
+            changeDirectoryCommand = "cd " + backslashDoubleQuoted(preferredWorkingDirectory) + " && ";
         }
         if (isInExternalWindow) {
-
-            String appleScript = "tell app \"Terminal\" to do script "
-                    + "\""
-                    + interpreterPath.toString() + " --query-goal "
-                    + "\\\""
-                    + queryGoal
-                    + "\\\" "
-                    + "\"";
+            String gprologCommand = backslashDoubleQuoted(interpreterPath.toString())
+                    + " --query-goal "
+                    + backslashDoubleQuoted(queryGoal);
+            String appleScript = "tell app \"Terminal\" to activate do script "
+                    + doubleQuoted(changeDirectoryCommand + gprologCommand);
+            // tell app "Terminal" to activate do script "cd \" … \" && \" … gprolog \" --query-goal \"consult(' … ')\""
 
             String[] command = {"osascript", "-e", appleScript};
-
             ProcessBuilder pb = new ProcessBuilder(command);
             this.command = String.join(" ", pb.command());
-            if(prologFile != null) {
-                pb.directory(prologFile.getParent().toFile());
-            }
+            // System.out.println("mac-command:" + this.command);  // remove once it's validated
             p = pb.start();
-
         } else {
-            p = Runtime.getRuntime().exec("/bin/bash", env); //Create a terminal instance
+            command = "/bin/bash";
+            p = Runtime.getRuntime().exec(command, env); //Create a terminal instance
             writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
             writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
@@ -185,6 +182,14 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.flush();
         }
         return p;
+    }
+
+    static String doubleQuoted(String s) {
+        return "\"" + s + "\"";
+    }
+
+    static String backslashDoubleQuoted(String s) {
+        return "\\\"" + s + "\\\"";
     }
 
     private Process createWindowsProcess(Path interpreterPath) throws IOException {

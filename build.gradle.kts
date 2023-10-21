@@ -84,6 +84,10 @@ tasks {
         changeNotes.set(file(properties("pluginChangeNotesFile")).readText())
     }
 
+    publishPlugin {
+        token.set("")
+    }
+
     generateLexer {
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
         //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
@@ -92,7 +96,6 @@ tasks {
         skeleton.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.skeleton"))
         purgeOldFiles.set(true)
     }
-
 
     generateParser {
         try {
