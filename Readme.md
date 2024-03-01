@@ -37,13 +37,14 @@
 
 ### Usage of the pipeline
 The pipeline is used to automatically build and test the plugin.
- - The test job will run the tests and upload the results as an artifact. It contains the test results as HTML.
- - The build job will build the plugin and upload the artifacts. It contains the plugin jar file.
- - The release job will create a new ZIP file containing the plugin jar file and the plugin XML file. It can be used to install the plugin manually.
+- The test job will run the tests and upload the results as an artifact. It contains the test results as HTML.
+- The build job will build the plugin and upload the artifacts. It contains the plugin jar file.
+- The release job will create a new ZIP file containing the plugin jar file and the plugin XML file. It can be used to install the plugin manually.
 
 ### Trying to update the docker image (BAP, 10.07.23) 
 - temporarily copy gradle.properties and build.gradle.kts into docker/
 - start Docker Desktop; then in a terminal (was on Windows)
 - docker build -t registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17 .
-- docker login registry.forge.hefr.ch   (use the PAT generated on gitlab)
+- (I created a pushingImagesForIntelliPrologCI PAT on https://gitlab.forge.hefr.ch/-/user_settings/personal_access_tokens)
+- docker login registry.forge.hefr.ch   (use the Personal Access Token generated on gitlab) 
 - docker push registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17
