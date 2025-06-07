@@ -7,11 +7,11 @@ plugins {
     id("java")
 
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.9.0"
+    id("org.jetbrains.kotlin.jvm") version "2.1.21"  // 2.0.21
 
     // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.15.0" //Latest version
-    id("org.jetbrains.grammarkit") version "2022.3.1"  // "2021.2.2"  2022.3
+    id("org.jetbrains.intellij") version "1.17.4" //Latest version 1.17.4
+    id("org.jetbrains.grammarkit") version "2022.3.2.2"  // "2021.2.2"  2022.3 2022.3.2.2
 }
 
 
@@ -85,14 +85,16 @@ tasks {
     }
 
     publishPlugin {
-        token.set("")
+        token = providers.gradleProperty("intellijPlatformPublishingToken")
+        // token.set("")
     }
 
     generateLexer {
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.flex"))
         //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.flex")
-        targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
-        targetClass.set("PrologLexer")
+        //targetDir.set("src/gen/java/ch/heiafr/intelliprolog/")
+        targetOutputDir.set(file("src/gen/java/ch/heiafr/intelliprolog/"))
+        // targetClass.set("PrologLexer")
         skeleton.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.skeleton"))
         purgeOldFiles.set(true)
     }
@@ -111,7 +113,8 @@ tasks {
         }
         sourceFile.set(file("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf"))
         //source.set("src/main/java/ch/heiafr/intelliprolog/Prolog.bnf")
-        targetRoot.set("src/gen/java/")
+        //targetRoot.set("src/gen/java/")
+        targetRootOutputDir.set(file("src/gen/java/"))
         pathToParser.set("PrologParser.java")
         pathToPsiRoot.set("psi")
         purgeOldFiles.set(false)
@@ -133,11 +136,12 @@ tasks {
 
     register("initProject") {
         doFirst {
-            generateParser.get().exec() // generateParser()
             generateLexer.get().exec()  //.get().generateLexer()
+            generateParser.get().exec() // generateParser()
             println("Classes generated")
         }
-        finalizedBy("compileAndRegenerate")
+        finalizedBy("buildPlugin")
+        //finalizedBy("compileAndRegenerate")
     }
 }
 /*

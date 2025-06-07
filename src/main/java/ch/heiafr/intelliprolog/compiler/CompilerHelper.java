@@ -33,7 +33,8 @@ public class CompilerHelper {
     public static Process getProcess(Path compiler, Path filePath) throws IOException, CantRunException {
         Process p = null;
         if (SystemInfo.isWindows) {
-            p = Runtime.getRuntime().exec("cmd.exe /min");
+            String[] myCommand = {"cmd.exe", "/min"};
+            p = Runtime.getRuntime().exec(myCommand); // deprecated: exec("cmd.exe /min")
             BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
             writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
             writer.newLine();
@@ -52,8 +53,8 @@ public class CompilerHelper {
                     env[i-1] += ":" + compiler.getParent().toString();
                 }
             }
-
-            p = Runtime.getRuntime().exec("/bin/bash", env); //Create a terminal instance
+            String[] myCommand = {"/bin/bash"};
+            p = Runtime.getRuntime().exec(myCommand, env); //Create a terminal instance
             BufferedWriter writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
             writer.write(compiler.getFileName().toString()); //Launch the compiler
             writer.newLine();

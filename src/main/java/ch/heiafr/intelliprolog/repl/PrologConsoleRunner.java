@@ -162,14 +162,15 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
                     + doubleQuoted(changeDirectoryCommand + gprologCommand);
             // tell app "Terminal" to activate do script "cd \" … \" && \" … gprolog \" --query-goal \"consult(' … ')\""
 
-            String[] command = {"osascript", "-e", appleScript};
-            ProcessBuilder pb = new ProcessBuilder(command);
+            String[] myCommand = {"osascript", "-e", appleScript};
+            ProcessBuilder pb = new ProcessBuilder(myCommand);
             this.command = String.join(" ", pb.command());
             // System.out.println("mac-command:" + this.command);  // remove once it's validated
             p = pb.start();
         } else {
             command = "/bin/bash";
-            p = Runtime.getRuntime().exec(command, env); //Create a terminal instance
+            String[] myCommand = {command};
+            p = Runtime.getRuntime().exec(myCommand, env); //Create a terminal instance
             writer = new BufferedWriter(new java.io.OutputStreamWriter(p.getOutputStream()));
             writer.write("cd " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
@@ -195,7 +196,8 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
     private Process createWindowsProcess(Path interpreterPath) throws IOException {
         Process p;
         BufferedWriter writer;
-        command = "cmd.exe /min";
+        String[] myCommand = {"cmd.exe", "/min"};
+        command = String.join(" ", myCommand);
         // String command1 = "powershell -WindowStyle Minimized";  // does not help with LINEDIT problem...
         Path prologFile = null;
         String queryGoal = "nl"; // stupid goal when filePath==null (ie "run REPL")
@@ -204,7 +206,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             queryGoal = "consult('" + prologFile + "')";
         }
         if (isInExternalWindow) {
-            p = Runtime.getRuntime().exec(command);
+            p = Runtime.getRuntime().exec(myCommand);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
             writer.write("cd /d " + Path.of(getWorkingDir())); //Go to the working directory
             writer.newLine();
@@ -214,7 +216,7 @@ public class PrologConsoleRunner extends AbstractConsoleRunnerWithHistory<Prolog
             writer.write("start " + interpreterPath.toString() + query); //Launch the compiler
             writer.newLine();
         } else {
-            p = Runtime.getRuntime().exec(command);
+            p = Runtime.getRuntime().exec(myCommand);
             writer = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
             //writer.write("set LINEDIT=gui=no"); //Prevent windows from opening a console
             writer.write("set LINEDIT=no"); //Prevent windows from opening a console

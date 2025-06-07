@@ -4,7 +4,7 @@ import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 
-fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
+private fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
     return try {
         // println("processBuilder: " + cmd + arg)
         val proc = ProcessBuilder(cmd, arg)  //ProcessBuilder("cmd", "/c", "dir")
@@ -23,7 +23,7 @@ fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
 // Hard to believe: on windows, "gprolog.exe --version" writes something on the
 // console, but not on the process stdout...
 
-fun getPrologVersion(prologPath: File): String? {
+private fun getPrologVersion(prologPath: File): String? {
     if (prologPath.isDirectory) {
         return null
     }

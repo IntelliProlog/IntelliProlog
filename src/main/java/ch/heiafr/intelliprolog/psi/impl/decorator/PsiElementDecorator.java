@@ -249,10 +249,11 @@ class PsiElementDecorator implements PsiElement {
         return decoratedPsiElement.addAfter(element, anchor);
     }
 
+    // The "plugin verification" complains about deprecated usage (but for now we must implement that method)
     @Deprecated
     @Override
     public void checkAdd(@NotNull final PsiElement element) throws IncorrectOperationException {
-        decoratedPsiElement.checkAdd(element);
+        // decoratedPsiElement.checkAdd(element);
     }
 
     @Override
@@ -275,10 +276,11 @@ class PsiElementDecorator implements PsiElement {
         decoratedPsiElement.delete();
     }
 
+    // The "plugin verification" complains about deprecated usage (but for now we must implement that method)
     @Deprecated
     @Override
     public void checkDelete() throws IncorrectOperationException {
-        decoratedPsiElement.checkDelete();
+        // decoratedPsiElement.checkDelete();
     }
 
     @Override

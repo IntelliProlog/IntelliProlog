@@ -10,9 +10,9 @@ import com.intellij.openapi.vfs.VirtualFile
 import org.jdom.Element
 import java.io.File
 import java.io.FileFilter
-import java.io.IOException
+//import java.io.IOException
 import java.util.*
-import java.util.concurrent.TimeUnit
+//import java.util.concurrent.TimeUnit
 import javax.swing.Icon
 
 class PrologSdkType : SdkType("GPROLOG") {
@@ -32,7 +32,7 @@ class PrologSdkType : SdkType("GPROLOG") {
             for (name in prologPaths) {
                 prologDirs.add(SDKInfo(name))
             }
-            prologDirs.sortWith(Comparator { o1, o2 -> o1.version.compareTo(o2.version) })
+            prologDirs.sortWith { o1, o2 -> o1.version.compareTo(o2.version) }
             return prologDirs[prologDirs.size - 1]
         }
 
@@ -46,7 +46,7 @@ class PrologSdkType : SdkType("GPROLOG") {
                         return f.name == "gprolog"
                     }
                 })
-                return children.isNotEmpty()
+                return children == null || children.isNotEmpty()
             } else {
                 return isProlog(file.name)
             }
@@ -57,20 +57,20 @@ class PrologSdkType : SdkType("GPROLOG") {
                 name == "gprolog.exe" ||
                 name.matches("gprolog-[.0-9*]+".toRegex())
 
-        private fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
-            return try {
-                val proc = ProcessBuilder(cmd, arg)
-                        // .directory(workingDir)
-                        .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                        .redirectError(ProcessBuilder.Redirect.PIPE)
-                        .start()
-                proc.waitFor(2, TimeUnit.SECONDS)
-                proc.inputStream.bufferedReader().readText()
-            } catch(e: IOException) {
-                e.printStackTrace()
-                null
-            }
-        }
+//        private fun runCommand(cmd: String, arg: String): String? {  // workingDir: File
+//            return try {
+//                val proc = ProcessBuilder(cmd, arg)
+//                        // .directory(workingDir)
+//                        .redirectOutput(ProcessBuilder.Redirect.PIPE)
+//                        .redirectError(ProcessBuilder.Redirect.PIPE)
+//                        .start()
+//                proc.waitFor(2, TimeUnit.SECONDS)
+//                proc.inputStream.bufferedReader().readText()
+//            } catch(e: IOException) {
+//                e.printStackTrace()
+//                null
+//            }
+//        }
 
         fun getPrologVersion(prologPath: File): String? {
             if (prologPath.isDirectory) {
@@ -114,36 +114,51 @@ class PrologSdkType : SdkType("GPROLOG") {
 
     override fun getHomeChooserDescriptor(): FileChooserDescriptor {
         val isWindows = SystemInfo.isWindows
+        val shouldBeVisible = fun(f: VirtualFile): Boolean {
+            if (f.isDirectory) return true
+            if (!f.name.lowercase().startsWith("gprolog")) return false
+            if (!isWindows) return true
+            val path = f.path
+            var looksExecutable = false
+            for (ext in WINDOWS_EXECUTABLE_SUFFIXES) {
+                if (path.endsWith(ext)) {
+                    looksExecutable = true
+                    break
+                }
+            }
+            return looksExecutable
+        }
         return object : FileChooserDescriptor(true, false, false, false, false, false) {
             @Throws(Exception::class)
             override fun validateSelectedFiles(files: Array<out VirtualFile>) {
-                if (files.size != 0) {
+                if (files.isNotEmpty()) {
                     if (!isValidSdkHome(files[0].path)) {
                         throw Exception("Not valid gprolog " + files[0].name)
                     }
                 }
             }
 
-            override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
-                if (!file.isDirectory) {
-                    if (!file.name.lowercase().startsWith("gprolog")) {
-                        return false
-                    }
-                    if (isWindows) {
-                        val path = file.path
-                        var looksExecutable = false
-                        for (ext in WINDOWS_EXECUTABLE_SUFFIXES) {
-                            if (path.endsWith(ext)) {
-                                looksExecutable = true
-                                break
-                            }
-                        }
-                        return looksExecutable && super.isFileVisible(file, showHiddenFiles)
-                    }
-                }
-                return super.isFileVisible(file, showHiddenFiles)
-            }
-        }.withTitle("Select GProlog executable").withShowHiddenFiles(SystemInfo.isUnix)
+//            override fun isFileVisible(file: VirtualFile, showHiddenFiles: Boolean): Boolean {
+//                if (!file.isDirectory) {
+//                    if (!file.name.lowercase().startsWith("gprolog")) {
+//                        return false
+//                    }
+//                    if (isWindows) {
+//                        val path = file.path
+//                        var looksExecutable = false
+//                        for (ext in WINDOWS_EXECUTABLE_SUFFIXES) {
+//                            if (path.endsWith(ext)) {
+//                                looksExecutable = true
+//                                break
+//                            }
+//                        }
+//                        return looksExecutable && super.isFileVisible(file, showHiddenFiles)
+//                    }
+//                }
+//                return super.isFileVisible(file, showHiddenFiles)
+//            }
+        }.withFileFilter(shouldBeVisible)
+            .withTitle("Select GProlog executable").withShowHiddenFiles(SystemInfo.isUnix)
     }
 
     override fun suggestHomePath(): String? {
