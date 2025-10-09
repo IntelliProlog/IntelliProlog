@@ -18,8 +18,8 @@ class PrologModuleBuilder : ModuleBuilder() {
 
     override fun getBuilderId() = "intelliprolog.module.builder"
 
-    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? =
-            StdModuleTypes.JAVA!!.modifySettingsStep(settingsStep, this)
+//    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? =
+//            StdModuleTypes.JAVA!!.modifySettingsStep(settingsStep, this)
 
 //    override fun modifySettingsStep(settingsStep: SettingsStep): ModuleWizardStep? {
 //        val moduleBuilder: ModuleBuilder

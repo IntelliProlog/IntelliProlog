@@ -49,6 +49,8 @@
         <lang.findUsagesProvider language="Prolog"
                                  implementationClass="ch.heiafr.intelliprolog.reference.PrologFindUsageProvider"/>
         <customUsageSearcher implementation="ch.heiafr.intelliprolog.reference.PrologCustomUsageSearcher"/>
+<!--        <lang.refactoringSupport language="Prolog"-->
+<!--                implementationClass="ch.heiafr.intelliprolog.reference.PrologRefactoringSupportProvider"/>-->
         <renamePsiElementProcessor implementation="ch.heiafr.intelliprolog.reference.PrologRenamePsiElementProcessor"/>
         <moduleType id="Prolog_Module" implementationClass="ch.heiafr.intelliprolog.module.PrologModuleType"/>
         <fileType name="Prolog file" implementationClass="ch.heiafr.intelliprolog.PrologFileType" fieldName="INSTANCE"

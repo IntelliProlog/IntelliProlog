@@ -3,9 +3,9 @@
 ## Local development
 ### Prerequisites
 * IntelliJ Idea - Latest version (Ultimate is recommended)
-  * Grammar Kit Plugin
-  * DevKit Plugin
-  * PSI Viewer Plugin
+  * Grammar-Kit Plugin
+  * Plugin DevKit Plugin
+  * Psi-Viewer Plugin
   
 * JDK 11
 * Gradle 7.3
@@ -48,3 +48,13 @@ The pipeline is used to automatically build and test the plugin.
 - (I created a pushingImagesForIntelliPrologCI PAT on https://gitlab.forge.hefr.ch/-/user_settings/personal_access_tokens)
 - docker login registry.forge.hefr.ch   (use the Personal Access Token generated on gitlab) 
 - docker push registry.forge.hefr.ch/frederic.bapst/intelli-prolog-2/preconfigured-gradle:8.2.0-jdk17
+
+### Warning about deprecated (BAP, 08.10.25)
+
+PsiElementDecorator.checkAdd(PsiElement) (4)
+PsiElementDecorator.checkDelete() (4)
+SdkType.suggestHomePath() (1)
+PsiElement.checkAdd(PsiElement) (1)
+PsiElement.checkDelete() (1)
+
+Marked for removal (in EAP 2025.3): StdModuleTypes () 

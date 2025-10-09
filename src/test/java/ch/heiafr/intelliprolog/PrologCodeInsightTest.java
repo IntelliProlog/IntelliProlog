@@ -71,7 +71,8 @@ public class PrologCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
 
     public void testRenameRefactor() {
         myFixture.configureByFiles("RenameTestData1.pl", "RenameTestData2.pl", "RenameTestData3.pl");
-        myFixture.renameElementAtCaretUsingHandler("fifo_new_renamed");
+        myFixture.renameElementAtCaretUsingHandler("fifo_new_renamed");  // BAP: fails with the PrologRefactoringSupportProvider...
+        myFixture.renameElementAtCaret("fifo_new_renamed");
         myFixture.checkResultByFile("RenameTestData1.pl", "RenameTestData1Renamed.pl", false);
         myFixture.checkResultByFile("RenameTestData2.pl", "RenameTestData2Renamed.pl", false);
         myFixture.checkResultByFile("RenameTestData3.pl", "RenameTestData3Renamed.pl", false);

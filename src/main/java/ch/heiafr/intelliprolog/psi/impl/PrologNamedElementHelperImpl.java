@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class PrologNamedElementHelperImpl extends ASTWrapperPsiElement implements PrologNamedElement {
-
+  private String myName;
   public PrologNamedElementHelperImpl(@NotNull ASTNode node) {
     super(node);
   }

@@ -87,6 +87,7 @@ public class CompletionIndexer {
             PsiTreeUtil.findChildrenOfType(psiFile, PrologAtom.class).stream()
                     .filter(atom -> atom.getLastChild().getNode().getElementType().equals(PrologTypes.UNQUOTED_ATOM))
                     .map(PsiNamedElement::getName)
+                    .filter(Objects::nonNull) // BAP: could it be null?
                     .forEach(atomIndex::add);
 
             PsiTreeUtil.findChildrenOfType(psiFile, PrologCompound.class).stream()
@@ -102,6 +103,7 @@ public class CompletionIndexer {
                     //Don't care about anonymous variables
                     .filter(atom -> atom.getLastChild().getNode().getElementType().equals(PrologTypes.NAMED_VARIABLE))
                     .map(PsiNamedElement::getName)
+                    .filter(Objects::nonNull) // BAP: could it be null?
                     .forEach(variableIndex::add);
         }
     }

@@ -75,6 +75,12 @@ tasks {
         gradleVersion = properties("gradleVersion")
     }
 
+    runPluginVerifier {
+        // change the default of downloading/testing _every_ release
+        // (see https://jb.gg/intellij-platform-builds-list)
+        ideVersions.set(listOf("IU-252.26830.84", "IU-241.14494.240"))
+    }
+
     patchPluginXml {
         version.set(properties("pluginVersion"))
         sinceBuild.set(properties("pluginSinceBuild"))
